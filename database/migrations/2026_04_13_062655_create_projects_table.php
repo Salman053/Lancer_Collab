@@ -16,11 +16,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
-
-            $table->string('client_name')->nullable();
-            $table->string('client_email')->nullable();
-            $table->string('address')->nullable();
-
             $table->string('status')->default('open');
             $table->string('priority')->default('medium');
             $table->string('type')->default('Web');
@@ -32,13 +27,12 @@ return new class extends Migration
             $table->string('currency', 3)->default('USD');
             $table->decimal('actual_cost', 15, 2)->default(0);
             $table->string('billing_type')->default('fixed');
-
+            $table->string("color")->default("blue");
             $table->date('start_date')->nullable();
             $table->date('deadline')->nullable();
             $table->timestamp('completed_at')->nullable();
 
             $table->string('thumbnail')->nullable();
-            $table->string('attachment_path')->nullable();
             $table->foreignId("client_id")->nullable()->constrained("users")->onDelete("set null");
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories');

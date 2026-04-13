@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProjectType;
-use App\Enums\ProjectStatus; 
+use App\Enums\ProjectStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,8 +31,8 @@ class Project extends Model
         'deadline',
         'completed_at',
         'thumbnail',
-        'user_id',   
-        'client_id', 
+        'user_id',
+        'client_id',
     ];
 
     protected $casts = [
@@ -61,4 +61,10 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'client_id');
     }
+
+    public function milestones()
+    {
+        return $this->hasMany(Milestone::class)->orderBy('order');
+    }
+
 }

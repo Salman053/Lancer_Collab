@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('role')->default('guest');
             $table->streing('status')->default('active');
 
-            $table->string('phone')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
