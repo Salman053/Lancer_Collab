@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Enums;
 
 enum UserStatus: string
@@ -12,7 +11,7 @@ enum UserStatus: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ACTIVE => 'Active Account',
             self::INACTIVE => 'Inactive',
             self::BLOCKED => 'Blocked/Suspended',
@@ -22,11 +21,18 @@ enum UserStatus: string
 
     public function color(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ACTIVE => 'success',
             self::INACTIVE => 'secondary',
             self::BLOCKED => 'danger',
             self::ARCHIVED => 'warning',
         };
+    }
+
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(fn ($case) => [
+            $case->value => $case->label(),
+        ])->toArray();
     }
 }

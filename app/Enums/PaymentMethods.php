@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Enums;
 
 enum PaymentMethods: string
@@ -18,5 +19,12 @@ enum PaymentMethods: string
             self::CASH => 'Cash Payment',
             self::EASY_PAISA => 'Easy Paisa Pakistan',
         };
+    }
+
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(fn ($case) => [
+            $case->value => $case->label(),
+        ])->toArray();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Enums;
 
 enum PaymentStatus: string
@@ -8,10 +9,9 @@ enum PaymentStatus: string
     case FAILED = 'failed';
     case REFUNDED = 'refunded';
 
-    
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'Pending Review',
             self::COMPLETED => 'Payment Successful',
             self::FAILED => 'Transaction Failed',
@@ -19,10 +19,9 @@ enum PaymentStatus: string
         };
     }
 
-    
     public function color(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'warning',
             self::COMPLETED => 'success',
             self::FAILED => 'danger',
@@ -30,9 +29,15 @@ enum PaymentStatus: string
         };
     }
 
-    
     public static function array(): array
     {
         return array_column(self::cases(), 'value', 'name');
+    }
+
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(fn ($case) => [
+            $case->value => $case->label(),
+        ])->toArray();
     }
 }

@@ -27,7 +27,6 @@ class Payment extends Model
         'amount' => 'decimal:2',
     ];
 
-    // Example Helper: Check if paid
     public function isCompleted(): bool
     {
         return $this->status === PaymentStatus::COMPLETED;

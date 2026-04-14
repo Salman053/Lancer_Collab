@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Models;
 
-use App\Enums\UserRole;
+use App\Enums\UserRoles;
 use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,9 +16,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',   
-        'status', 
-        'phone',  
+        'role',
+        'status',
+        'phone',
     ];
 
     protected $hidden = [
@@ -28,10 +29,10 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-        'email_verified_at' => 'datetime',
+            'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => UserRole::class,     
-            'status' => UserStatus::class, 
+            'role' => UserRoles::class,
+            'status' => UserStatus::class,
         ];
     }
 }

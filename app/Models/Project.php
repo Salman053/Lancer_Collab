@@ -46,17 +46,13 @@ class Project extends Model
         'type' => ProjectType::class,
     ];
 
-    /**
-     * The User who owns/manages the project.
-     */
+   
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * The registered Client associated with the project.
-     */
+    
     public function client(): BelongsTo
     {
         return $this->belongsTo(User::class, 'client_id');
