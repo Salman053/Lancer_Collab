@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 
 import { NoiseTexture } from '@/components/backgrounds/noise-texture';
 import { ThemeToggle } from '@/components/theme-toggle';
+import AnimatedThemeToggler from '@/components/ui/animated-theme-toggler';
 
 interface AuthLayoutProps {
     children: ReactNode;
@@ -24,7 +25,7 @@ export default function AuthLayout({
             <Head title={title} />
 
             <div className="absolute top-6 right-6 z-50">
-                <ThemeToggle />
+                <AnimatedThemeToggler />
             </div>
 
             <NoiseTexture />

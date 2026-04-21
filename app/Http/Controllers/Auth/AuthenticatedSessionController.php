@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserRoles;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +34,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $intendedUrl = redirect()->intended()->getTargetUrl();
+
+        if ($intendedUrl === url('/') || $intendedUrl === url('/dashboard')) {
+            return $this->redirectBasedOnRole();
+        }
+
+        return redirect()->intended();
     }
 
     /**
@@ -47,5 +54,20 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function redirectBasedOnRole(): RedirectResponse
+    {
+        $user = Auth::user();
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        return match ($user->role) {
+            UserRoles::ADMIN => redirect()->route('dashboard'),
+            UserRoles::FREELANCER => redirect()->route('freelancer.dashboard'),
+            UserRoles::CLIENT => redirect()->route('client.dashboard'),
+            default => redirect()->route('home'),
+        };
     }
 }
