@@ -2,6 +2,8 @@ import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
+import FlashNotifications from '@/components/flash-notifications';
+import { Toaster } from '@/components/ui/sonner';
 import { type BreadcrumbItem } from '@/types';
 
 export default function AppSidebarLayout({ children, breadcrumbs = [] }: { children: React.ReactNode; breadcrumbs?: BreadcrumbItem[] }) {
@@ -12,6 +14,8 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: { child
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}
             </AppContent>
+            <Toaster />
+            <FlashNotifications />
         </AppShell>
     );
 }

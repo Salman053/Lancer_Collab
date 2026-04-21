@@ -1,9 +1,9 @@
 import ClientForm from '@/components/freelancer/client-form';
 import ClientTable from '@/components/freelancer/client-table';
+import { Note } from '@/components/note';
 import PageHeader from '@/components/page-header';
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import AppLayout from '@/layouts/app-layout';
 import { Client, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -12,7 +12,7 @@ import { useState } from 'react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: '/freelancer/dashbaord',
+        href: '/freelancer/dashboard',
     },
     {
         title: 'Clients',
@@ -43,11 +43,13 @@ export default function Index({ clients }: { clients: Client[] }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Clients" />
             <div className="flex flex-col gap-6 p-6">
+
                 <div className="flex items-center justify-between">
                     <PageHeader
                         title="All Clients"
                         subtitle="Manage all your clients from here"
                     />
+
 
                     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
                         <DrawerTrigger asChild>
@@ -56,7 +58,9 @@ export default function Index({ clients }: { clients: Client[] }) {
                             </Button>
                         </DrawerTrigger>
                         <DrawerContent>
+
                             <div className="mx-auto w-full max-w-2xl mt-4">
+
                                 <ClientForm
                                     className='border-none shadow-none'
                                     client={editingClient}
@@ -66,6 +70,7 @@ export default function Index({ clients }: { clients: Client[] }) {
                         </DrawerContent>
                     </Drawer>
                 </div>
+
 
                 <ClientTable clients={clients} onEdit={handleEdit} />
             </div>

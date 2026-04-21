@@ -1,6 +1,5 @@
 import { Client } from '@/types';
 import { Button } from '@/components/ui/button';
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Edit, Trash2, Mail, Phone, Building2 } from 'lucide-react';
 import { router } from '@inertiajs/react';
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
@@ -19,9 +19,7 @@ interface ClientTableProps {
 
 export default function ClientTable({ clients, onEdit }: ClientTableProps) {
     const onDelete = (id: number) => {
-        if (confirm('Are you sure you want to delete this client?')) {
-            router.delete(route('freelancer.clients.destroy', id));
-        }
+        router.delete(route('freelancer.clients.destroy', id));
     };
 
     if (clients.length === 0) {
@@ -74,9 +72,16 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <Badge variant={client.status === 'active' ? 'secondary' : 'outline'}>
-                                    {client.status || 'Active'}
-                                </Badge>
+                                <div className="flex flex-col gap-1 capitalize w-fit " >
+                                    <Badge className='w-fit' variant={client.status === 'active' ? 'secondary' : 'outline'}>
+                                        {client.status || 'Active'}
+                                    </Badge>
+                                    {client.account_id && (
+                                        <Badge variant={"secondary"} className="text-[10px] py-0 px-1 ">
+                                            Account Provisioned
+                                        </Badge>
+                                    )}
+                                </div>
                             </TableCell>
                             <TableCell className="text-right">
                                 <DropdownMenu>
@@ -91,13 +96,22 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                                             <Edit className="mr-2 h-4 w-4" />
                                             Edit
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                            onClick={() => onDelete(client.id)}
-                                            className="text-destructive focus:text-destructive"
-                                        >
-                                            <Trash2 className="mr-2 h-4 w-4" />
-                                            Delete
-                                        </DropdownMenuItem>
+                                        <ConfirmDialog
+                                            trigger={
+                                                <DropdownMenuItem
+                                                    onSelect={(e) => e.preventDefault()}
+                                                    className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                                                >
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            }
+                                            title="Delete Client"
+                                            description={`Are you sure you want to delete ${client.name}? All associated data will be permanently removed. This action cannot be undone.`}
+                                            confirmText="Delete Client"
+                                            variant="destructive"
+                                            onConfirm={() => onDelete(client.id)}
+                                        />
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </TableCell>

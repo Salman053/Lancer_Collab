@@ -19,9 +19,10 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2 } from 'lucide-react';
+import { Note } from '@/components/note'; // Import your note component
+import { Loader2, KeyRound, Info } from 'lucide-react';
 import { Client } from '@/types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 const timezones = [
@@ -37,11 +38,17 @@ const timezones = [
     'Australia/Sydney',
 ];
 
-const ClientForm = ({ className, client = null, onSuccess = null }: {
-    client?: Client | null, onSuccess?: (() => void) | null
-    , className?: string
+const ClientForm = ({
+    className,
+    client = null,
+    onSuccess = null
+}: {
+    client?: Client | null,
+    onSuccess?: (() => void) | null,
+    className?: string
 }) => {
     const isEditing = !!client;
+    const [showPasswordHint, setShowPasswordHint] = useState(!isEditing);
 
     const { data, setData, post, put, processing, errors, reset } = useForm({
         name: client?.name || '',
@@ -56,6 +63,14 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
             notifications: true,
         },
     });
+
+    // Auto-hide password hint after 5 seconds (optional)
+    useEffect(() => {
+        if (!isEditing && data.name) {
+            const timer = setTimeout(() => setShowPasswordHint(false), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [data.name, isEditing]);
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -77,20 +92,67 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
         }
     };
 
+    // Generate dynamic password preview
+    const getDefaultPassword = () => {
+        if (!data.name) return '[clientname]123';
+        const nameSlug = data.name.toLowerCase().replace(/\s/g, '');
+        return `${nameSlug}123`;
+    };
+
     return (
         <Card className={cn("w-full max-w-2xl mx-auto", className)}>
             <CardHeader>
-                <CardTitle>
-                    {isEditing ? 'Edit Client' : 'Create New Client'}
-                </CardTitle>
-                <CardDescription>
-                    {isEditing
-                        ? 'Update client information'
-                        : 'Add a new client to your system'}
-                </CardDescription>
+                <div className="flex items-start justify-between">
+                    <div>
+                        <CardTitle>
+                            {isEditing ? 'Edit Client' : 'Create New Client'}
+                        </CardTitle>
+                        <CardDescription className="mt-1.5">
+                            {isEditing
+                                ? 'Update client information and manage account details'
+                                : 'Add a new client to your system. All fields marked with * are required.'}
+                        </CardDescription>
+                    </div>
+                    {!isEditing && (
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                            <KeyRound className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                    )}
+                </div>
             </CardHeader>
+
             <form onSubmit={submit}>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-1">
+                    {/* Password Information Note - Prominent placement for new clients */}
+                    {!isEditing && showPasswordHint && (
+                        <Note
+                            variant="info"
+                            className="mb-2"
+                            onClose={() => setShowPasswordHint(false)}
+                        >
+                            <div className="space-y-2">
+
+                                <p className="text-sm">
+                                    When you create this client, an account will be automatically generated with the password:
+                                </p>
+                                <div className="mt-2 rounded-md bg-blue-100 dark:bg-blue-900/50 p-2 font-mono text-sm">
+                                    {data.name ? getDefaultPassword() : '[clientname]123'}
+                                </div>
+
+                            </div>
+                        </Note>
+                    )}
+
+                    {/* For editing mode - show a subtle reminder */}
+                    {isEditing && (
+                        <Note variant="info" className="mb-2 bg-blue-50/50">
+                            <div className="flex items-center gap-2 text-sm">
+                                <Info className="h-4 w-4" />
+                                <span>Client password can be changed in the <strong>Security Settings</strong></span>
+                            </div>
+                        </Note>
+                    )}
+
                     {/* Name Field */}
                     <div className="space-y-2">
                         <Label htmlFor="name">
@@ -103,10 +165,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             onChange={(e) => setData('name', e.target.value)}
                             placeholder="John Doe"
                             className={errors.name ? 'border-red-500' : ''}
+                            aria-describedby="name-error"
                         />
                         {errors.name && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.name}</AlertDescription>
+                                <AlertDescription id="name-error">{errors.name}</AlertDescription>
                             </Alert>
                         )}
                     </div>
@@ -123,10 +186,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="client@example.com"
                             className={errors.email ? 'border-red-500' : ''}
+                            aria-describedby="email-error"
                         />
                         {errors.email && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.email}</AlertDescription>
+                                <AlertDescription id="email-error">{errors.email}</AlertDescription>
                             </Alert>
                         )}
                     </div>
@@ -141,10 +205,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             onChange={(e) => setData('phone', e.target.value)}
                             placeholder="+1 (555) 000-0000"
                             className={errors.phone ? 'border-red-500' : ''}
+                            aria-describedby="phone-error"
                         />
                         {errors.phone && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.phone}</AlertDescription>
+                                <AlertDescription id="phone-error">{errors.phone}</AlertDescription>
                             </Alert>
                         )}
                     </div>
@@ -159,10 +224,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             onChange={(e) => setData('company', e.target.value)}
                             placeholder="Company Name"
                             className={errors.company ? 'border-red-500' : ''}
+                            aria-describedby="company-error"
                         />
                         {errors.company && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.company}</AlertDescription>
+                                <AlertDescription id="company-error">{errors.company}</AlertDescription>
                             </Alert>
                         )}
                     </div>
@@ -177,10 +243,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             placeholder="Street Address, City, State, ZIP Code"
                             rows={3}
                             className={errors.address ? 'border-red-500' : ''}
+                            aria-describedby="address-error"
                         />
                         {errors.address && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.address}</AlertDescription>
+                                <AlertDescription id="address-error">{errors.address}</AlertDescription>
                             </Alert>
                         )}
                     </div>
@@ -192,7 +259,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             value={data.timezone}
                             onValueChange={(value) => setData('timezone', value)}
                         >
-                            <SelectTrigger className={errors.timezone ? 'border-red-500' : ''}>
+                            <SelectTrigger
+                                id="timezone"
+                                className={errors.timezone ? 'border-red-500' : ''}
+                                aria-describedby="timezone-error"
+                            >
                                 <SelectValue placeholder="Select timezone" />
                             </SelectTrigger>
                             <SelectContent>
@@ -205,7 +276,7 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                         </Select>
                         {errors.timezone && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.timezone}</AlertDescription>
+                                <AlertDescription id="timezone-error">{errors.timezone}</AlertDescription>
                             </Alert>
                         )}
                     </div>
@@ -217,7 +288,11 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                             value={data.status}
                             onValueChange={(value: any) => setData('status', value)}
                         >
-                            <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
+                            <SelectTrigger
+                                id="status"
+                                className={errors.status ? 'border-red-500' : ''}
+                                aria-describedby="status-error"
+                            >
                                 <SelectValue placeholder="Select status" />
                             </SelectTrigger>
                             <SelectContent>
@@ -230,13 +305,13 @@ const ClientForm = ({ className, client = null, onSuccess = null }: {
                         </Select>
                         {errors.status && (
                             <Alert variant="destructive" className="mt-2">
-                                <AlertDescription>{errors.status}</AlertDescription>
+                                <AlertDescription id="status-error">{errors.status}</AlertDescription>
                             </Alert>
                         )}
                     </div>
                 </CardContent>
 
-                <CardFooter className="flex justify-end space-x-2">
+                <CardFooter className="flex justify-end space-x-3">
                     <Button
                         type="button"
                         variant="outline"
