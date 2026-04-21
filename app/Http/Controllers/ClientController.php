@@ -15,16 +15,10 @@ class ClientController extends Controller
     public function index(): Response
     {
         return Inertia::render('freelancer/clients/index', [
-            'hello' => 'salman',
+            'clients' => Client::where('user_id', auth()->id())
+                ->latest()
+                ->get(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
     }
 
     /**
@@ -32,23 +26,22 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-    }
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients,email',
+            'phone' => 'nullable|string|max:50',
+            'company' => 'nullable|string|max:255',
+            'address' => 'nullable|string',
+            'timezone' => 'nullable|string|max:100',
+            'status' => 'required|string|in:active,inactive,lead,suspended,pending',
+            'preferences' => 'nullable|array',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Client $client)
-    {
-        //
-    }
+        $validated['user_id'] = auth()->id();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Client $client)
-    {
-        //
+        Client::create($validated);
+
+        return back()->with('success', 'Client created successfully.');
     }
 
     /**
@@ -56,7 +49,24 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        if ($client->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients,email,'.$client->id,
+            'phone' => 'nullable|string|max:50',
+            'company' => 'nullable|string|max:255',
+            'address' => 'nullable|string',
+            'timezone' => 'nullable|string|max:100',
+            'status' => 'required|string|in:active,inactive,lead,suspended,pending',
+            'preferences' => 'nullable|array',
+        ]);
+
+        $client->update($validated);
+
+        return back()->with('success', 'Client updated successfully.');
     }
 
     /**
@@ -64,6 +74,12 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        if ($client->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $client->delete();
+
+        return back()->with('success', 'Client deleted successfully.');
     }
 }

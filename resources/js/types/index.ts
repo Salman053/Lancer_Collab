@@ -42,15 +42,20 @@ export interface User {
     [key: string]: unknown;
 }
 export interface Client {
+    id: number;
+    user_id: number;
     name: string;
     email: string;
     phone: string;
     company: string;
     address: string;
     timezone: string;
+    status: 'active' | 'inactive' | 'lead' | 'suspended' | 'pending';
     preferences: {
         newsletter: boolean;
         notifications: boolean;
     };
-    [key: string]: any; 
+    created_at: string;
+    updated_at: string;
+    [key: string]: any;
 }

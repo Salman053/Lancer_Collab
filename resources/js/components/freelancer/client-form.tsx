@@ -37,26 +37,27 @@ const timezones = [
     'Australia/Sydney',
 ];
 
-const ClientForm = ({ className,client = null, onSuccess = null }: {
+const ClientForm = ({ className, client = null, onSuccess = null }: {
     client?: Client | null, onSuccess?: (() => void) | null
-    ,className ?:string
+    , className?: string
 }) => {
     const isEditing = !!client;
 
-    const { data, setData, post, put, processing, errors, reset } = useForm<Client>({
+    const { data, setData, post, put, processing, errors, reset } = useForm({
         name: client?.name || '',
         email: client?.email || '',
         phone: client?.phone || '',
         company: client?.company || '',
         address: client?.address || '',
         timezone: client?.timezone || 'UTC',
+        status: client?.status || 'active',
         preferences: client?.preferences || {
             newsletter: false,
             notifications: true,
         },
     });
 
-    const submit = (e:React.FormEvent) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         const options = {
@@ -70,14 +71,14 @@ const ClientForm = ({ className,client = null, onSuccess = null }: {
         };
 
         if (isEditing) {
-         put(route('freelancer.clients.update', client.id), options);
+            put(route('freelancer.clients.update', client.id), options);
         } else {
             post(route('freelancer.clients.store'), options);
         }
     };
 
     return (
-        <Card className={cn("w-full max-w-2xl mx-auto",className)}>
+        <Card className={cn("w-full max-w-2xl mx-auto", className)}>
             <CardHeader>
                 <CardTitle>
                     {isEditing ? 'Edit Client' : 'Create New Client'}
@@ -205,6 +206,31 @@ const ClientForm = ({ className,client = null, onSuccess = null }: {
                         {errors.timezone && (
                             <Alert variant="destructive" className="mt-2">
                                 <AlertDescription>{errors.timezone}</AlertDescription>
+                            </Alert>
+                        )}
+                    </div>
+
+                    {/* Status Field */}
+                    <div className="space-y-2">
+                        <Label htmlFor="status">Status</Label>
+                        <Select
+                            value={data.status}
+                            onValueChange={(value: any) => setData('status', value)}
+                        >
+                            <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
+                                <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="active">Active Client</SelectItem>
+                                <SelectItem value="lead">Potential Lead</SelectItem>
+                                <SelectItem value="pending">Awaiting Verification</SelectItem>
+                                <SelectItem value="inactive">Past Client</SelectItem>
+                                <SelectItem value="suspended">Account Suspended</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        {errors.status && (
+                            <Alert variant="destructive" className="mt-2">
+                                <AlertDescription>{errors.status}</AlertDescription>
                             </Alert>
                         )}
                     </div>

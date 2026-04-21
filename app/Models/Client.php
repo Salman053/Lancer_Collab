@@ -10,12 +10,18 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'phone',
+        'whatsapp_number',
         'company',
         'address',
+        'website_url',
+        'profile_image_url',
         'timezone',
+        'status',
+        'notes',
         'preferences',
         'last_login_at',
     ];
