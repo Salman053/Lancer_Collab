@@ -1,5 +1,5 @@
-import ClientForm from '@/components/freelancer/client-form';
-import ClientTable from '@/components/freelancer/client-table';
+import ClientForm from '@/components/client/client-form';
+import ClientTable from '@/components/client/client-table';
 import { Note } from '@/components/note';
 import PageHeader from '@/components/page-header';
 import { Button } from '@/components/ui/button';

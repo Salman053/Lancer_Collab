@@ -25,6 +25,7 @@ Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freel
         return Inertia::render('freelancer/dashboard');
     })->name('freelancer.dashboard');
     Route::get('clients', [ClientController::class, 'index'])->name('freelancer.clients');
+    Route::get('clients/{client}', [ClientController::class, 'show'])->name('freelancer.clients.show');
     Route::post('clients', [ClientController::class, 'store'])->name('freelancer.clients.store');
     Route::put('clients/{client}', [ClientController::class, 'update'])->name('freelancer.clients.update');
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('freelancer.clients.destroy');

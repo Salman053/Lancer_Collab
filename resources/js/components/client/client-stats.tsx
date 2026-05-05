@@ -1,0 +1,58 @@
+import { Client } from '@/types';
+import { Card, CardContent } from '@/components/ui/card';
+import { Briefcase, Calendar, Clock, UserCheck } from 'lucide-react';
+
+interface ClientStatsProps {
+    client: Client;
+}
+
+export function ClientStats({ client }: ClientStatsProps) {
+    const stats = [
+        {
+            label: "Member Since",
+            value: new Date(client.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }),
+            icon: Calendar
+        },
+        {
+            label: "Last Updated",
+            value: new Date(client.updated_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }),
+            icon: Clock
+        },
+        {
+            label: "Status",
+            value: client.status,
+            icon: UserCheck
+        },
+        {
+            label: "Client ID",
+            value: `#${client.id}`,
+            icon: Briefcase
+        }
+    ];
+
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((stat, idx) => (
+                <Card key={idx}>
+                    <CardContent className="flex items-center gap-4 p-6">
+                        <div className="p-3 bg-primary/10 rounded-lg">
+                            <stat.icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                            <p className="text-sm text-muted-foreground">{stat.label}</p>
+                            <p className="text-lg font-semibold capitalize">{stat.value}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    );
+}

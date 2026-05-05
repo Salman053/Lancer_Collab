@@ -27,7 +27,8 @@ enum ClientStatus: string
             self::ACTIVE => 'success',
             self::LEAD => 'info',
             self::PENDING => 'warning',
-            self::SUSPENDED, self::INACTIVE => 'danger',
+            self::SUSPENDED => 'danger',
+            self::INACTIVE => 'danger',
         };
     }
 

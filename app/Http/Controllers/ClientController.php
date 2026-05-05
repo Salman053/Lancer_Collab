@@ -96,6 +96,17 @@ class ClientController extends Controller
         return back()->with('success', 'Client updated successfully.');
     }
 
+    public function show(Client $client)
+    {
+        if ($client->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return Inertia::render('freelancer/clients/show', [
+            'client' => $client,
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

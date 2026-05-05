@@ -28,7 +28,7 @@ class ProjectsController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -63,7 +63,7 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        
     }
 
     /**
