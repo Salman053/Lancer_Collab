@@ -1,8 +1,7 @@
-import ClientForm from '@/components/freelancer/client-form';
-import ClientTable from '@/components/freelancer/client-table';
-import { Note } from '@/components/note';
 import PageHeader from '@/components/page-header';
 import ProjectForm from '@/components/project/project-form';
+import ProjectTable from '@/components/project/project-table';
+
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -33,8 +32,14 @@ export default function Index({ projects, clients }: { clients: Client[], projec
 
     const handleEdit = (project: Project) => {
         setEditingProject(project);
-        setIsDialogOpen(true);
+        // Use a small timeout to ensure the dropdown menu is fully closed 
+        // and its cleanup logic has run before opening the dialog.
+        setTimeout(() => {
+            setIsDialogOpen(true);
+        }, 100);
     };
+
+
 
     const handleAddNew = () => {
         setEditingProject(null);
@@ -58,7 +63,7 @@ export default function Index({ projects, clients }: { clients: Client[], projec
 
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button onClick={handleAddNew} className="cursor-pointer" variant="secondary">
+                            <Button onClick={handleAddNew} className="cursor-pointer" variant="primary">
                                 New Project
                             </Button>
                         </DialogTrigger>
@@ -78,11 +83,11 @@ export default function Index({ projects, clients }: { clients: Client[], projec
                     </Dialog>
                 </div>
 
-                {/* Your projects content here */}
                 <div>
-                    {/* Add your projects table/list component here */}
-                    <p className="text-muted-foreground">Projects list will appear here...</p>
+                    <ProjectTable
+                        projects={projects} onEdit={handleEdit} />
                 </div>
+
             </div>
         </AppLayout>
     );

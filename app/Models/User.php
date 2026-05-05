@@ -26,6 +26,21 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function activeClients()
+    {
+        return $this->clients()->where('status', 'active');
+    }
+
     protected function casts(): array
     {
         return [

@@ -16,9 +16,6 @@ class Project extends Model
         'title',
         'slug',
         'description',
-        'client_name',
-        'client_email',
-        'address',
         'status',
         'priority',
         'type',
@@ -33,6 +30,8 @@ class Project extends Model
         'thumbnail',
         'user_id',
         'client_id',
+        'notes',
+        'color',
     ];
 
     protected $casts = [
@@ -55,11 +54,9 @@ class Project extends Model
     
     public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
-    public function project():BelongsTo{
-        return $this->belongsTo(Project::class);
-    }
+
 
     public function milestones()
     {

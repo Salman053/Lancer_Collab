@@ -26,7 +26,9 @@ export default function Index({ clients }: { clients: Client[] }) {
 
     const handleEdit = (client: Client) => {
         setEditingClient(client);
-        setIsDrawerOpen(true);
+        setTimeout(() => {
+            setIsDrawerOpen(true);
+        }, 100);
     };
 
     const handleAddNew = () => {
@@ -50,17 +52,13 @@ export default function Index({ clients }: { clients: Client[] }) {
                         subtitle="Manage all your clients from here"
                     />
 
+                    <Button onClick={handleAddNew} className='cursor-pointer' variant={'primary'}>
+                        New Client
+                    </Button>
 
                     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-                        <DrawerTrigger asChild>
-                            <Button onClick={handleAddNew} className='cursor-pointer' variant={'secondary'}>
-                                New Client
-                            </Button>
-                        </DrawerTrigger>
                         <DrawerContent>
-
                             <div className="mx-auto w-full max-w-2xl mt-4">
-
                                 <ClientForm
                                     className='border-none shadow-none'
                                     client={editingClient}
@@ -70,6 +68,7 @@ export default function Index({ clients }: { clients: Client[] }) {
                         </DrawerContent>
                     </Drawer>
                 </div>
+
 
 
                 <ClientTable clients={clients} onEdit={handleEdit} />

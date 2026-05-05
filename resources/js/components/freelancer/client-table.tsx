@@ -92,10 +92,11 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-[160px]">
-                                        <DropdownMenuItem onClick={() => onEdit(client)}>
+                                        <DropdownMenuItem onSelect={() => onEdit(client)}>
                                             <Edit className="mr-2 h-4 w-4" />
                                             Edit
                                         </DropdownMenuItem>
+
                                         <ConfirmDialog
                                             trigger={
                                                 <DropdownMenuItem
