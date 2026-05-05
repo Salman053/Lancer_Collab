@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Projects;
+use App\Models\Client;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
@@ -12,15 +13,20 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        //
+
+        $activeClients = Client::active()->get();
+        return inertia("freelancer/projects/index", [
+            "projects" => [],
+            "clients" => $activeClients
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -28,13 +34,14 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Projects $projects)
+    public function show(Project $project)
     {
         //
     }
@@ -42,7 +49,7 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Projects $projects)
+    public function edit(Project $project)
     {
         //
     }
@@ -50,7 +57,7 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Projects $projects)
+    public function update(Request $request, Project $project)
     {
         //
     }
@@ -58,7 +65,7 @@ class ProjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Projects $projects)
+    public function destroy(Project $project)
     {
         //
     }

@@ -2,6 +2,7 @@
 
 use App\Enums\UserRoles;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProjectsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,6 +28,10 @@ Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freel
     Route::post('clients', [ClientController::class, 'store'])->name('freelancer.clients.store');
     Route::put('clients/{client}', [ClientController::class, 'update'])->name('freelancer.clients.update');
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('freelancer.clients.destroy');
+    Route::get('projects', [ProjectsController::class, 'index'])->name('freelancer.projects');
+    Route::post('projects', [ProjectsController::class, 'store'])->name('freelancer.projects.store');
+    Route::put('projects/{project}', [ProjectsController::class, 'update'])->name('freelancer.projects.update');
+    Route::delete('projects/{project}', [ProjectsController::class, 'destroy'])->name('freelancer.projects.destroy');
 });
 
 require __DIR__.'/settings.php';

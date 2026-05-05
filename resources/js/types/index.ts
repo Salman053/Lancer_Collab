@@ -60,3 +60,34 @@ export interface Client {
     updated_at: string;
     [key: string]: any;
 }
+
+
+
+export interface Project {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    status: 'open' | 'in_progress' | 'review' | 'completed' | 'cancelled';
+    priority: 'low' | 'medium' | 'high' | 'urgent';
+    type: 'Web' | 'Mobile' | 'Design' | 'Consulting' | 'Marketing' | 'Other';
+    progress: number;
+    notes: string | null;
+    budget: number | null;
+    currency: string;
+    actual_cost: number;
+    billing_type: 'fixed' | 'hourly' | 'retainer';
+    color: string;
+    start_date: string | null;
+    deadline: string | null;
+    completed_at: string | null;
+    thumbnail: string | null;
+    client_id: number | null;
+    user_id: number;
+    deleted_at: string | null;
+    created_at: string;
+    updated_at: string;
+    
+    // Optional: eager loaded relationships
+    client?: Client;
+}
