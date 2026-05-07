@@ -134,3 +134,12 @@ export interface ProjectUpdate {
     project?: Project;
     user?: User;
 }
+
+export interface ChatBoxProps {
+    title: string;
+    avatarFallback: string;
+    messages: any[];
+    auth: any;
+    onSendMessage: (message: string) => void;
+    processing: boolean;
+}

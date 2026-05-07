@@ -1,6 +1,22 @@
 import { useEffect, useState } from 'react';
 
 export type Appearance = 'light' | 'dark' | 'system';
+export type AnimationVariant =
+    | 'circle'
+    | 'fade'
+    | 'slide-up'
+    | 'slide-down'
+    | 'slide-left'
+    | 'slide-right'
+    | 'rotate'
+    | 'scale'
+    | 'blur'
+    | 'flip'
+    | 'bounce'
+    | 'wave'
+    | 'glow'
+    | 'spiral'
+    | 'none';
 
 const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -28,6 +44,7 @@ export function initializeTheme() {
 
 export function useAppearance() {
     const [appearance, setAppearance] = useState<Appearance>('system');
+    const [animationVariant, setAnimationVariant] = useState<AnimationVariant>('circle');
 
     const updateAppearance = (mode: Appearance) => {
         setAppearance(mode);
@@ -35,12 +52,20 @@ export function useAppearance() {
         applyTheme(mode);
     };
 
+    const updateAnimationVariant = (variant: AnimationVariant) => {
+        setAnimationVariant(variant);
+        localStorage.setItem('animationVariant', variant);
+    };
+
     useEffect(() => {
         const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
-        updateAppearance(savedAppearance || 'system');
+        const savedVariant = localStorage.getItem('animationVariant') as AnimationVariant | null;
+
+        if (savedAppearance) updateAppearance(savedAppearance);
+        if (savedVariant) setAnimationVariant(savedVariant);
 
         return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
     }, []);
 
-    return { appearance, updateAppearance };
+    return { appearance, updateAppearance, animationVariant, updateAnimationVariant };
 }

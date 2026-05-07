@@ -70,7 +70,7 @@ const HeroSection = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <AnimatedThemeToggler variant='circle' />
+            <AnimatedThemeToggler />
             {auth.user ? (
               <DashboardButton auth={auth} />
             ) : (

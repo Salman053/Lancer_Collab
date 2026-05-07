@@ -2,20 +2,22 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage, Link } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { 
-    Briefcase, 
-    Users, 
-    DollarSign, 
-    CheckCircle2, 
-    ArrowUpRight, 
-    Clock, 
+import {
+    Briefcase,
+    Users,
+    DollarSign,
+    CheckCircle2,
+    ArrowUpRight,
+    Clock,
     Calendar,
     Plus,
-    MoreHorizontal
+    MoreHorizontal,
+    Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import React from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -33,6 +35,7 @@ interface DashboardProps {
     };
     recent_projects: any[];
     upcoming_tasks: any[];
+    [key: string]: any;
 }
 
 export default function Dashboard() {
@@ -41,7 +44,7 @@ export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Freelancer Dashboard" />
-            
+
             <div className="p-6 space-y-8 animate-in fade-in duration-500">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -69,33 +72,33 @@ export default function Dashboard() {
 
                 {/* Stats Grid */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <StatCard 
-                        title="Active Projects" 
-                        value={stats.active_projects} 
+                    <StatCard
+                        title="Active Projects"
+                        value={stats.active_projects}
                         icon={<Briefcase className="h-4 w-4" />}
                         description="Currently in development"
                         trend="+12%"
                         color="blue"
                     />
-                    <StatCard 
-                        title="Total Clients" 
-                        value={stats.total_clients} 
+                    <StatCard
+                        title="Total Clients"
+                        value={stats.total_clients}
                         icon={<Users className="h-4 w-4" />}
                         description="Across all categories"
                         trend="+5%"
                         color="purple"
                     />
-                    <StatCard 
-                        title="Revenue" 
-                        value={`$${(stats.total_revenue / 1000).toFixed(1)}k`} 
+                    <StatCard
+                        title="Revenue"
+                        value={`$${(stats.total_revenue / 1000).toFixed(1)}k`}
                         icon={<DollarSign className="h-4 w-4" />}
                         description="Total earnings to date"
                         trend="+18%"
                         color="green"
                     />
-                    <StatCard 
-                        title="Tasks Pending" 
-                        value={stats.pending_tasks} 
+                    <StatCard
+                        title="Tasks Pending"
+                        value={stats.pending_tasks}
                         icon={<CheckCircle2 className="h-4 w-4" />}
                         description="Awaiting completion"
                         trend="-3"
@@ -105,7 +108,7 @@ export default function Dashboard() {
 
                 <div className="grid gap-6 lg:grid-cols-7">
                     {/* Recent Projects */}
-                    <Card className="lg:col-span-4 shadow-sm border-sidebar-border/50">
+                    <Card className="lg:col-span-4 shadow-sm ">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle>Recent Projects</CardTitle>
@@ -161,7 +164,7 @@ export default function Dashboard() {
                     </Card>
 
                     {/* Upcoming Tasks */}
-                    <Card className="lg:col-span-3 shadow-sm border-sidebar-border/50">
+                    <Card className="lg:col-span-3 shadow-sm">
                         <CardHeader>
                             <CardTitle>Upcoming Tasks</CardTitle>
                             <CardDescription>Tasks due in the next 7 days</CardDescription>
@@ -226,54 +229,58 @@ export default function Dashboard() {
     );
 }
 
-function StatCard({ title, value, icon, description, trend, color }: any) {
-    const colors: any = {
-        blue: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400',
-        purple: 'text-purple-600 bg-purple-50 dark:bg-purple-900/20 dark:text-purple-400',
-        green: 'text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400',
-        amber: 'text-amber-600 bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400',
+interface StatCardProps {
+    title: string;
+    value: string | number;
+    icon: React.ReactNode;
+    description: string;
+    trend: string;
+    color: 'blue' | 'purple' | 'green' | 'amber';
+}
+
+export function StatCard({ title, value, icon, description, trend, color }: StatCardProps) {
+    const colorMap = {
+        blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
+        purple: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+        green: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20',
+        amber: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
     };
 
+    const isPositive = trend.startsWith('+');
+
     return (
-        <Card className="overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1 group border-sidebar-border/50">
+        <Card className="relative overflow-hidden group transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] border-border/50 bg-card/50 backdrop-blur-sm">
+            {/* Top accent line that appears on hover */}
+            <div className={`absolute top-0 left-0 w-full h-[2px] transition-transform duration-500 -translate-x-full group-hover:translate-x-0 ${colorMap[color].split(' ')[0].replace('text', 'bg')}`} />
+
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{title}</CardTitle>
-                <div className={`p-2 rounded-lg transition-transform duration-300 group-hover:scale-110 ${colors[color]}`}>
-                    {icon}
+                <CardTitle className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/70">
+                    {title}
+                </CardTitle>
+                <div className={`p-2.5 rounded-xl border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${colorMap[color]}`}>
+                    {React.cloneElement(icon as React.ReactElement<any>, { className: 'size-4' })}
                 </div>
             </CardHeader>
+
             <CardContent>
-                <div className="text-2xl font-bold tracking-tight">{value}</div>
-                <div className="flex items-center gap-2 mt-1">
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${trend.startsWith('+') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
-                        {trend}
-                    </span>
-                    <p className="text-xs text-muted-foreground font-medium">{description}</p>
+                <div className="text-3xl font-bold tracking-tight text-foreground tabular-nums">
+                    {value}
+                </div>
+
+                <div className="flex items-center gap-2 mt-3">
+                    <div className={`flex items-center text-[11px] font-bold px-2 py-0.5 rounded-md ${isPositive
+                            ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400'
+                            : 'text-rose-600 bg-rose-50 dark:bg-rose-500/10 dark:text-rose-400'
+                        }`}>
+                        {isPositive ? '↑' : '↓'} {trend}
+                    </div>
+                    <p className="text-[11px] text-muted-foreground font-medium italic">
+                        {description}
+                    </p>
                 </div>
             </CardContent>
         </Card>
     );
 }
 
-function Sparkles({ className }: { className?: string }) {
-    return (
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            className={className}
-        >
-            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-            <path d="M5 3v4"/>
-            <path d="M19 17v4"/>
-            <path d="M3 5h4"/>
-            <path d="M17 19h4"/>
-        </svg>
-    );
-}
+// Sparkles SVG remains same but usage within the icon container is cleaner.

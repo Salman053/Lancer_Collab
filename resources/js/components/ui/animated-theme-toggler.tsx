@@ -3,23 +3,7 @@ import { Moon, Sun, Sparkles, Palette, RotateCw, Waves, Orbit } from "lucide-rea
 import { flushSync } from "react-dom"
 
 import { cn } from "@/lib/utils"
-
-type AnimationVariant =
-  | "circle"           // Default circular ripple effect
-  | "fade"             // Smooth fade transition
-  | "slide-up"         // Slides from bottom
-  | "slide-down"       // Slides from top
-  | "slide-left"       // Slides from right
-  | "slide-right"      // Slides from left
-  | "rotate"           // Rotates from center
-  | "scale"            // Scales in/out
-  | "blur"             // Blur effect
-  | "flip"             // 3D flip effect
-  | "bounce"           // Bouncy animation
-  | "wave"             // Wave-like animation
-  | "glow"             // Glowing effect
-  | "spiral"           // Spiral expansion
-  | "none"             // No animation
+import { useAppearance, type AnimationVariant } from "@/hooks/use-appearance"
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number
@@ -169,29 +153,19 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
 export const AnimatedThemeToggler = ({
   className,
   duration = 400,
-  variant = "circle",
+  variant,
   showIconAnimation = true,
   ...props
 }: AnimatedThemeTogglerProps) => {
+  const { appearance, updateAppearance, animationVariant: globalVariant } = useAppearance()
+  const currentVariant = variant || globalVariant
   const [isDark, setIsDark] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"))
-    }
-
-    updateTheme()
-
-    const observer = new MutationObserver(updateTheme)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-
-    return () => observer.disconnect()
-  }, [])
+    setIsDark(document.documentElement.classList.contains("dark"))
+  }, [appearance])
 
   const getCircleAnimation = useCallback((x: number, y: number, maxRadius: number) => {
     return {
@@ -240,13 +214,11 @@ export const AnimatedThemeToggler = ({
     )
 
     const applyTheme = () => {
-      const newTheme = !isDark
-      setIsDark(newTheme)
-      document.documentElement.classList.toggle("dark")
-      localStorage.setItem("theme", newTheme ? "dark" : "light")
+      const isCurrentlyDark = document.documentElement.classList.contains("dark")
+      updateAppearance(isCurrentlyDark ? "light" : "dark")
     }
 
-    if (variant === "none" || typeof document.startViewTransition !== "function") {
+    if (currentVariant === "none" || typeof document.startViewTransition !== "function") {
       applyTheme()
       setIsAnimating(false)
       return
@@ -259,8 +231,8 @@ export const AnimatedThemeToggler = ({
     const ready = transition?.ready
     if (ready && typeof ready.then === "function") {
       ready.then(() => {
-        const config = variantConfigs[variant]
-        const animation = getCustomAnimation(variant, x, y, maxRadius)
+        const config = variantConfigs[currentVariant]
+        const animation = getCustomAnimation(currentVariant, x, y, maxRadius)
 
         document.documentElement.animate(
           animation as PropertyIndexedKeyframes | Keyframe[],
@@ -277,9 +249,7 @@ export const AnimatedThemeToggler = ({
         }, duration)
       })
     }
-  }, [isDark, duration, variant, getCustomAnimation, showIconAnimation, isAnimating])
-
-  const CurrentIcon = variantConfigs[variant]?.icon || Sun
+  }, [currentVariant, duration, getCustomAnimation, showIconAnimation, isAnimating, updateAppearance])
 
   return (
     <>
@@ -288,33 +258,33 @@ export const AnimatedThemeToggler = ({
           0%, 100% { transform: scale(1) rotate(0deg); }
           50% { transform: scale(1.2) rotate(15deg); }
         }
-        
+
         @keyframes icon-spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
-        
+
         @keyframes icon-pulse {
           0%, 100% { transform: scale(1); opacity: 1; }
           50% { transform: scale(0.8); opacity: 0.5; }
         }
-        
+
         .animate-icon-bounce {
           animation: icon-bounce 0.3s ease-in-out;
         }
-        
+
         .animate-icon-spin {
           animation: icon-spin 0.5s ease-in-out;
         }
-        
+
         .animate-icon-pulse {
           animation: icon-pulse 0.3s ease-in-out;
         }
-        
+
         ::view-transition-old(root) {
           animation: none !important;
         }
-        
+
         ::view-transition-new(root) {
           animation: none !important;
         }
@@ -387,13 +357,13 @@ export const ThemeVariantSelector = ({ currentVariant, onVariantChange }: ThemeV
             key={variant.value}
             onClick={() => onVariantChange(variant.value)}
             className={cn(
-              "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all",
+              "flex items-center gap-2 rounded-lg px-3 py-2 text-xs transition-all",
               currentVariant === variant.value
                 ? "bg-blue-500 text-white shadow-md"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
             )}
           >
-            <Icon className="size-4" />
+            {/* <Icon className="size-4" /> */}
             <span>{variant.label}</span>
           </button>
         )
