@@ -4,7 +4,6 @@ import { CheckCircle, Briefcase, Sparkles, Shield, Zap, Star } from 'lucide-reac
 import { ReactNode } from 'react';
 
 import { NoiseTexture } from '@/components/backgrounds/noise-texture';
-import { ThemeToggle } from '@/components/theme-toggle';
 import AnimatedThemeToggler from '@/components/ui/animated-theme-toggler';
 
 interface AuthLayoutProps {
@@ -37,12 +36,12 @@ export default function AuthLayout({
                     <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
                         {/* Animated Background Pattern */}
                         <div className="absolute inset-0">
-                            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"></div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-white to-neutral-50 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950"></div>
 
                             {/* Animated geometric shapes */}
-                            <div className="absolute top-20 -left-20 w-96 h-96 rounded-full border border-gray-200 dark:border-gray-700 opacity-20 animate-pulse"></div>
-                            <div className="absolute bottom-20 -right-20 w-96 h-96 rounded-full border border-gray-200 dark:border-gray-700 opacity-20 animate-pulse animation-delay-2000"></div>
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-gray-200 dark:border-gray-700 opacity-10 animate-spin-slow"></div>
+                            <div className="absolute top-20 -left-20 w-96 h-96 rounded-full border border-neutral-200 dark:border-neutral-800 opacity-20 animate-pulse"></div>
+                            <div className="absolute bottom-20 -right-20 w-96 h-96 rounded-full border border-neutral-200 dark:border-neutral-800 opacity-20 animate-pulse animation-delay-2000"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-neutral-200 dark:border-neutral-800 opacity-10 animate-spin-slow"></div>
 
                             {/* Decorative dots grid */}
                             <div className="absolute inset-0" style={{
@@ -56,10 +55,10 @@ export default function AuthLayout({
                             <div className="group">
                                 <Link href={route("home")} className="inline-flex items-center gap-2.5 text-2xl font-bold tracking-tight">
                                     <div className="relative">
-                                        <Sparkles className="h-3 w-3 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        <Sparkles className="h-3 w-3 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-brand" />
                                     </div>
                                     <span className="bg-gradient-to-r from-brand to-brand/70 bg-clip-text text-transparent">
-                                        ProjectHub
+                                        LaraCollab
                                     </span>
                                 </Link>
                                 <div className="h-0.5 w-0 group-hover:w-full bg-brand transition-all duration-500 mt-1"></div>
@@ -68,24 +67,24 @@ export default function AuthLayout({
                             {/* Main Value Proposition */}
                             <div className="space-y-8">
                                 {/* Animated badge */}
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
-                                    <Sparkles className="h-3.5 w-3.5" />
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm">
+                                    <Sparkles className="h-3.5 w-3.5 text-brand" />
                                     <span className="text-xs font-medium tracking-wide uppercase">Trusted by 500+ agencies</span>
                                 </div>
 
                                 {/* Hero quote */}
                                 <blockquote className="space-y-6">
-                                    <p className="text-3xl font-bold leading-tight tracking-tight">
+                                    <p className="text-3xl font-bold leading-tight tracking-tight text-neutral-900 dark:text-neutral-100">
                                         "The best platform we've used for managing client projects. Saves us hours every week."
                                     </p>
                                     <footer className="space-y-3">
                                         <div className="flex items-center gap-3">
                                             <div className="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center">
-                                                <span className="font-semibold text-lg">JD</span>
+                                                <span className="font-semibold text-lg text-brand">JD</span>
                                             </div>
                                             <div>
-                                                <p className="font-semibold">John Doe</p>
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">CEO, TechStart Inc</p>
+                                                <p className="font-semibold text-neutral-900 dark:text-neutral-100">John Doe</p>
+                                                <p className="text-sm text-neutral-500 dark:text-neutral-400">CEO, TechStart Inc</p>
                                             </div>
                                         </div>
 
@@ -109,19 +108,19 @@ export default function AuthLayout({
                                     <div className="p-1.5 rounded-lg bg-brand/10 group-hover:scale-110 transition-transform duration-200 text-brand">
                                         <CheckCircle className="h-4 w-4" />
                                     </div>
-                                    <span className="text-sm font-medium">14-day free trial, no credit card required</span>
+                                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">14-day free trial, no credit card required</span>
                                 </div>
                                 <div className="flex items-center gap-3 group cursor-default">
                                     <div className="p-1.5 rounded-lg bg-brand/10 group-hover:scale-110 transition-transform duration-200 text-brand">
                                         <Shield className="h-4 w-4" />
                                     </div>
-                                    <span className="text-sm font-medium">Cancel anytime, no questions asked</span>
+                                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Cancel anytime, no questions asked</span>
                                 </div>
                                 <div className="flex items-center gap-3 group cursor-default">
                                     <div className="p-1.5 rounded-lg bg-brand/10 group-hover:scale-110 transition-transform duration-200 text-brand">
                                         <Zap className="h-4 w-4" />
                                     </div>
-                                    <span className="text-sm font-medium">Priority support for all plans</span>
+                                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Priority support for all plans</span>
                                 </div>
                             </div>
                         </div>
@@ -135,8 +134,8 @@ export default function AuthLayout({
                         {showBranding && (
                             <div className="flex justify-center lg:hidden mb-10">
                                 <Link href={route("home")} className="flex items-center gap-2">
-                                    <span className="text-2xl font-bold tracking-tight">
-                                        ProjectHub
+                                    <span className="text-2xl font-bold tracking-tight text-brand">
+                                        LaraCollab
                                     </span>
                                 </Link>
                             </div>
@@ -149,11 +148,11 @@ export default function AuthLayout({
                                     Welcome
                                 </div>
                             </div>
-                            <h1 className="text-4xl font-bold tracking-tight mb-3">
+                            <h1 className="text-4xl font-bold tracking-tight mb-3 text-neutral-900 dark:text-neutral-100">
                                 {title}
                             </h1>
                             <div className="h-0.5 w-12 mx-auto bg-gradient-to-r from-transparent via-brand to-transparent"></div>
-                            <p className="text-gray-600 dark:text-gray-400 mt-4">
+                            <p className="text-neutral-600 dark:text-neutral-400 mt-4">
                                 {description}
                             </p>
                         </div>
@@ -164,15 +163,15 @@ export default function AuthLayout({
                         </div>
 
                         {/* Social Proof with hover effects */}
-                        <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-800">
-                            <p className="text-xs text-center text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">
+                        <div className="mt-10 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+                            <p className="text-xs text-center text-neutral-500 dark:text-neutral-400 mb-4 uppercase tracking-wider">
                                 Trusted by industry leaders
                             </p>
                             <div className="flex justify-center gap-8 opacity-60">
                                 {['ACME', 'TechCorp', 'GlobalSoft', 'InnovateLabs'].map((company, idx) => (
                                     <span
                                         key={idx}
-                                        className="text-xs font-semibold text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 cursor-default"
+                                        className="text-xs font-semibold text-neutral-500 dark:text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors duration-200 cursor-default"
                                     >
                                         {company}
                                     </span>
@@ -228,13 +227,6 @@ export default function AuthLayout({
                     animation-delay: 4s;
                 }
                 
-                /* Smooth transitions */
-                * {
-                    transition-property: opacity, transform, background-color, border-color;
-                    transition-duration: 200ms;
-                    transition-timing-function: ease-out;
-                }
-                
                 /* Custom scrollbar */
                 ::-webkit-scrollbar {
                     width: 8px;
@@ -255,11 +247,11 @@ export default function AuthLayout({
                 }
                 
                 .dark ::-webkit-scrollbar-thumb {
-                    background: #475569;
+                    background: #262626;
                 }
                 
                 .dark ::-webkit-scrollbar-thumb:hover {
-                    background: #64748b;
+                    background: #404040;
                 }
             `}</style>
         </>

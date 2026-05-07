@@ -18,6 +18,7 @@ class Message extends Model
     protected $fillable = [
         'project_id',
         'from_user_id',
+        'to_user_id',
         'to_email',
         'subject',
         'message',
@@ -30,6 +31,7 @@ class Message extends Model
         'is_reply' => 'boolean',
         'sent_at' => 'datetime',
         'created_at' => 'datetime',
+        'read_at' => 'datetime',
     ];
 
     /**

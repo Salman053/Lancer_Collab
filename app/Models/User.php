@@ -7,6 +7,8 @@ use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -26,12 +28,17 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function clients()
+    public function clients(): HasMany
     {
         return $this->hasMany(Client::class);
     }
 
-    public function projects()
+    public function client(): HasOne
+    {
+        return $this->hasOne(Client::class, 'account_id');
+    }
+
+    public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
     }
@@ -39,6 +46,16 @@ class User extends Authenticatable
     public function activeClients()
     {
         return $this->clients()->where('status', 'active');
+    }
+
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'from_user_id');
+    }
+
+    public function receivedMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'to_user_id');
     }
 
     protected function casts(): array

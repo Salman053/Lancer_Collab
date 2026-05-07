@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProjectType;
 use App\Enums\ProjectStatus;
+use App\Enums\MilestoneStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,13 +46,13 @@ class Project extends Model
         'type' => ProjectType::class,
     ];
 
-   
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class, 'client_id');
@@ -63,4 +64,38 @@ class Project extends Model
         return $this->hasMany(Milestone::class)->orderBy('order');
     }
 
+    public function updates()
+    {
+        return $this->hasMany(ProjectUpdate::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function getProgressAttribute(): int
+    {
+        $total = $this->milestones()->count();
+
+        if ($total === 0) {
+            return $this->attributes['progress'] ?? 0;
+        }
+
+        $completed = $this->milestones()
+            ->where('status', MilestoneStatus::COMPLETED)
+            ->count();
+
+        return (int) (($completed / $total) * 100);
+    }
 }

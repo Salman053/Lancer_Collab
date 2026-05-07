@@ -34,13 +34,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $intendedUrl = redirect()->intended()->getTargetUrl();
+        $user = Auth::user();
+        
+        $defaultRoute = match ($user->role) {
+            UserRoles::ADMIN => route('dashboard'),
+            UserRoles::FREELANCER => route('freelancer.dashboard'),
+            UserRoles::CLIENT => route('client.dashboard'),
+            default => route('home'),
+        };
 
-        if ($intendedUrl === url('/') || $intendedUrl === url('/dashboard')) {
-            return $this->redirectBasedOnRole();
-        }
-
-        return redirect()->intended();
+        return redirect()->intended($defaultRoute);
     }
 
     /**

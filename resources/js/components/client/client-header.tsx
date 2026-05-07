@@ -1,9 +1,6 @@
 import { Client } from '@/types';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Edit, ArrowLeft } from 'lucide-react';
-import { router } from '@inertiajs/react';
 
 interface ClientHeaderProps {
     client: Client;

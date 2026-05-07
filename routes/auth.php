@@ -32,6 +32,9 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    Route::get('magic-login/{token}', [App\Http\Controllers\MagicTokensController::class, 'authenticate'])
+        ->name('magic.login');
 });
 
 Route::middleware('auth')->group(function () {

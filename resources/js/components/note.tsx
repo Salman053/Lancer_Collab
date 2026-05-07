@@ -86,7 +86,7 @@ export function Note({
             role="alert"
         >
             <div className="flex gap-3">
-                {icon != null &&
+                {IconComponent && (
                     <div
                         className={cn(
                             "flex h-6 w-6 shrink-0 items-center justify-center rounded-full",
@@ -95,7 +95,7 @@ export function Note({
                     >
                         <IconComponent className={cn("h-4 w-4", config.text)} />
                     </div>
-                }
+                )}
 
                 <div className="flex-1 space-y-1">
                     {displayTitle && (

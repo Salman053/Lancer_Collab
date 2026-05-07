@@ -20,9 +20,13 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        $userRole = Auth::user()->role->value;
+        $user = Auth::user();
+        $userRole = $user->role;
+        
+        // Handle both Enum and string values
+        $roleValue = $userRole instanceof \UnitEnum ? $userRole->value : $userRole;
 
-        if (! in_array($userRole, $roles)) {
+        if (! in_array($roleValue, $roles)) {
             abort(403, 'Unauthorized access.');
         }
 

@@ -71,11 +71,6 @@ export const clientNavItems: NavItem[] = [
         icon: Folder,
     },
     {
-        title: 'Post New Project',
-        url: '/client/projects/create',
-        icon: Briefcase,
-    },
-    {
         title: 'My Freelancers',
         url: '/client/freelancers',
         icon: Users,
@@ -118,13 +113,8 @@ export const freelancerNavItems: NavItem[] = [
         icon: FileText,
     },
     {
-        title: 'Active Projects',
-        url: '/freelancer/my-projects',
-        icon: Folder,
-    },
-    {
         title: 'Earnings',
-        url: '/freelancer/earnings',
+        url: '/freelancer/payments',
         icon: CreditCard,
     },
     {
@@ -137,11 +127,6 @@ export const freelancerNavItems: NavItem[] = [
         url: '/freelancer/messages',
         icon: MessageSquare,
         badge: '5',
-    },
-    {
-        title: 'My Reviews',
-        url: '/freelancer/reviews',
-        icon: Star,
     },
 ];
 
@@ -168,14 +153,14 @@ export const guestNavItems: NavItem[] = [
 export const footerNavItems: Record<string, NavItem[]> = {
     common: [
         {
-            title: 'Repository',
-            url: 'https://github.com/laravel/react-starter-kit',
-            icon: Folder,
+            title: 'Help Center',
+            url: '/help',
+            icon: BookOpen,
         },
         {
-            title: 'Documentation',
-            url: 'https://laravel.com/docs/starter-kits',
-            icon: BookOpen,
+            title: 'Terms of Service',
+            url: '/terms',
+            icon: FileText,
         },
     ],
     admin: [
@@ -192,19 +177,19 @@ export const footerNavItems: Record<string, NavItem[]> = {
             icon: MessageSquare,
         },
         {
-            title: 'Help',
+            title: 'System Help',
             url: '/client/help',
             icon: BookOpen,
         },
     ],
     freelancer: [
         {
-            title: 'Support',
+            title: 'Freelancer Support',
             url: '/freelancer/support',
             icon: MessageSquare,
         },
         {
-            title: 'Resources',
+            title: 'Resource Library',
             url: '/freelancer/resources',
             icon: Folder,
         },

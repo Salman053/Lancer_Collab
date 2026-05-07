@@ -56,21 +56,4 @@ class Milestone extends Model
    {
       return $this->belongsTo(User::class);
    }
-
-
-
-   public function getProgressAttribute(): int
-   {
-      $total = $this->milestones()->count();
-
-      if ($total === 0) {
-         return 0;
-      }
-
-      $completed = $this->milestones()
-         ->where('status', MilestoneStatus::COMPLETED)
-         ->count();
-
-      return (int) (($completed / $total) * 100);
-   }
 }

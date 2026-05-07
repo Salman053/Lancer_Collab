@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Select,
     SelectContent,
@@ -19,11 +20,12 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Note } from '@/components/note'; // Import your note component
-import { Loader2, KeyRound, Info } from 'lucide-react';
+import { Note } from '@/components/note';
+import { Loader2, KeyRound, Info, User, Phone, Building, Globe, MessageSquare, ShieldCheck, Mail } from 'lucide-react';
 import { Client } from '@/types';
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 const timezones = [
     'UTC',
@@ -54,20 +56,22 @@ const ClientForm = ({
         name: client?.name || '',
         email: client?.email || '',
         phone: client?.phone || '',
+        whatsapp_number: client?.whatsapp_number || '',
         company: client?.company || '',
         address: client?.address || '',
+        website_url: client?.website_url || '',
         timezone: client?.timezone || 'UTC',
         status: client?.status || 'active',
+        notes: client?.notes || '',
         preferences: client?.preferences || {
             newsletter: false,
             notifications: true,
         },
     });
 
-    // Auto-hide password hint after 5 seconds (optional)
     useEffect(() => {
         if (!isEditing && data.name) {
-            const timer = setTimeout(() => setShowPasswordHint(false), 5000);
+            const timer = setTimeout(() => setShowPasswordHint(false), 8000);
             return () => clearTimeout(timer);
         }
     }, [data.name, isEditing]);
@@ -92,7 +96,6 @@ const ClientForm = ({
         }
     };
 
-    // Generate dynamic password preview
     const getDefaultPassword = () => {
         if (!data.name) return '[clientname]123';
         const nameSlug = data.name.toLowerCase().replace(/\s/g, '');
@@ -100,230 +103,274 @@ const ClientForm = ({
     };
 
     return (
-        <Card className={cn("w-full max-w-2xl mx-auto", className)}>
-            <CardHeader>
+        <Card className={cn("w-full mx-auto shadow-lg", className)}>
+            <CardHeader className="bg-muted/30 pb-8">
                 <div className="flex items-start justify-between">
-                    <div>
-                        <CardTitle>
-                            {isEditing ? 'Edit Client' : 'Create New Client'}
+                    <div className="space-y-1">
+                        <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                            {isEditing ? <User className="h-6 w-6" /> : <ShieldCheck className="h-6 w-6" />}
+                            {isEditing ? 'Edit Client Profile' : 'Register New Client'}
                         </CardTitle>
-                        <CardDescription className="mt-1.5">
+                        <CardDescription className="text-base">
                             {isEditing
-                                ? 'Update client information and manage account details'
-                                : 'Add a new client to your system. All fields marked with * are required.'}
+                                ? 'Refine client details and account preferences.'
+                                : 'Set up a new client portal account and professional profile.'}
                         </CardDescription>
                     </div>
                     {!isEditing && (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                            <KeyRound className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <KeyRound className="h-6 w-6" />
                         </div>
                     )}
                 </div>
             </CardHeader>
 
             <form onSubmit={submit}>
-                <CardContent className="space-y-1">
-                    {/* Password Information Note - Prominent placement for new clients */}
+                <CardContent className="p-6 space-y-8">
+                    {/* Security Alert for New Clients */}
                     {!isEditing && showPasswordHint && (
                         <Note
                             variant="info"
-                            className="mb-2"
+                            className="border-blue-200 bg-blue-50/50"
                             onClose={() => setShowPasswordHint(false)}
                         >
-                            <div className="space-y-2">
-
-                                <p className="text-sm">
-                                    When you create this client, an account will be automatically generated with the password:
+                            <div className="flex flex-col gap-1">
+                                <span className="font-semibold text-blue-900">Auto-Provisioning Enabled</span>
+                                <p className="text-sm text-blue-800">
+                                    Creating this client will automatically generate a portal account with password:
+                                    <code className="mx-2 rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-900">
+                                        {data.name ? getDefaultPassword() : '[clientname]123'}
+                                    </code>
                                 </p>
-                                <div className="mt-2 rounded-md bg-blue-100 dark:bg-blue-900/50 p-2 font-mono text-sm">
-                                    {data.name ? getDefaultPassword() : '[clientname]123'}
+                            </div>
+                        </Note>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        {/* Section: Primary Information */}
+                        <div className="space-y-4">
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                <User className="h-4 w-4" /> Primary Information
+                            </h3>
+                            <Separator />
+                            
+                            <div className="space-y-2">
+                                <Label htmlFor="name" className="text-sm font-medium">Full Name <span className="text-destructive">*</span></Label>
+                                <Input
+                                    id="name"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    placeholder="John Doe"
+                                    className={cn(errors.name && "border-destructive focus-visible:ring-destructive")}
+                                />
+                                {errors.name && <p className="text-xs text-destructive font-medium">{errors.name}</p>}
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="email" className="text-sm font-medium">Professional Email <span className="text-destructive">*</span></Label>
+                                <div className="relative">
+                                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        placeholder="john@company.com"
+                                        className={cn("pl-10", errors.email && "border-destructive focus-visible:ring-destructive")}
+                                    />
                                 </div>
-
+                                {errors.email && <p className="text-xs text-destructive font-medium">{errors.email}</p>}
                             </div>
-                        </Note>
-                    )}
 
-                    {/* For editing mode - show a subtle reminder */}
-                    {isEditing && (
-                        <Note variant="info" className="mb-2 bg-blue-50/50">
-                            <div className="flex items-center gap-2 text-sm">
-                                <Info className="h-4 w-4" />
-                                <span>Client password can be changed in the <strong>Security Settings</strong></span>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="status" className="text-sm font-medium">Account Status</Label>
+                                    <Select value={data.status} onValueChange={(v: any) => setData('status', v)}>
+                                        <SelectTrigger id="status">
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="active">Active</SelectItem>
+                                            <SelectItem value="lead">Lead</SelectItem>
+                                            <SelectItem value="pending">Pending</SelectItem>
+                                            <SelectItem value="inactive">Inactive</SelectItem>
+                                            <SelectItem value="suspended">Suspended</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="timezone" className="text-sm font-medium">Timezone</Label>
+                                    <Select value={data.timezone} onValueChange={(v) => setData('timezone', v)}>
+                                        <SelectTrigger id="timezone">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {timezones.map((tz) => (
+                                                <SelectItem key={tz} value={tz}>{tz}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
-                        </Note>
-                    )}
+                        </div>
 
-                    {/* Name Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="name">
-                            Full Name <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            placeholder="John Doe"
-                            className={errors.name ? 'border-red-500' : ''}
-                            aria-describedby="name-error"
-                        />
-                        {errors.name && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="name-error">{errors.name}</AlertDescription>
-                            </Alert>
-                        )}
+                        {/* Section: Contact & Company */}
+                        <div className="space-y-4">
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                <Building className="h-4 w-4" /> Business & Contact
+                            </h3>
+                            <Separator />
+
+                            <div className="space-y-2">
+                                <Label htmlFor="company" className="text-sm font-medium">Company Name</Label>
+                                <Input
+                                    id="company"
+                                    value={data.company}
+                                    onChange={(e) => setData('company', e.target.value)}
+                                    placeholder="Acme Corp"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="phone" className="text-sm font-medium">Phone</Label>
+                                    <div className="relative">
+                                        <Phone className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                        <Input
+                                            id="phone"
+                                            value={data.phone}
+                                            onChange={(e) => setData('phone', e.target.value)}
+                                            placeholder="+1..."
+                                            className="pl-10"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="whatsapp" className="text-sm font-medium">WhatsApp</Label>
+                                    <div className="relative">
+                                        <MessageSquare className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                        <Input
+                                            id="whatsapp"
+                                            value={data.whatsapp_number}
+                                            onChange={(e) => setData('whatsapp_number', e.target.value)}
+                                            placeholder="+1..."
+                                            className="pl-10"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="website" className="text-sm font-medium">Website URL</Label>
+                                <div className="relative">
+                                    <Globe className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                    <Input
+                                        id="website"
+                                        value={data.website_url}
+                                        onChange={(e) => setData('website_url', e.target.value)}
+                                        placeholder="https://..."
+                                        className="pl-10"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Email Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="email">
-                            Email <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="client@example.com"
-                            className={errors.email ? 'border-red-500' : ''}
-                            aria-describedby="email-error"
-                        />
-                        {errors.email && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="email-error">{errors.email}</AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        {/* Section: Address & Notes */}
+                        <div className="space-y-4">
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                <Globe className="h-4 w-4" /> Location & Notes
+                            </h3>
+                            <Separator />
+                            <div className="space-y-2">
+                                <Label htmlFor="address" className="text-sm font-medium">Physical Address</Label>
+                                <Textarea
+                                    id="address"
+                                    value={data.address}
+                                    onChange={(e) => setData('address', e.target.value)}
+                                    placeholder="Street, City, Country"
+                                    className="min-h-[100px] resize-none"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="notes" className="text-sm font-medium">Internal Notes</Label>
+                                <Textarea
+                                    id="notes"
+                                    value={data.notes}
+                                    onChange={(e) => setData('notes', e.target.value)}
+                                    placeholder="Private notes about this client..."
+                                    className="min-h-[100px] resize-none"
+                                />
+                            </div>
+                        </div>
 
-                    {/* Phone Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
-                        <Input
-                            id="phone"
-                            type="tel"
-                            value={data.phone}
-                            onChange={(e) => setData('phone', e.target.value)}
-                            placeholder="+1 (555) 000-0000"
-                            className={errors.phone ? 'border-red-500' : ''}
-                            aria-describedby="phone-error"
-                        />
-                        {errors.phone && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="phone-error">{errors.phone}</AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
-
-                    {/* Company Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="company">Company</Label>
-                        <Input
-                            id="company"
-                            type="text"
-                            value={data.company}
-                            onChange={(e) => setData('company', e.target.value)}
-                            placeholder="Company Name"
-                            className={errors.company ? 'border-red-500' : ''}
-                            aria-describedby="company-error"
-                        />
-                        {errors.company && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="company-error">{errors.company}</AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
-
-                    {/* Address Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="address">Address</Label>
-                        <Textarea
-                            id="address"
-                            value={data.address}
-                            onChange={(e) => setData('address', e.target.value)}
-                            placeholder="Street Address, City, State, ZIP Code"
-                            rows={3}
-                            className={errors.address ? 'border-red-500' : ''}
-                            aria-describedby="address-error"
-                        />
-                        {errors.address && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="address-error">{errors.address}</AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
-
-                    {/* Timezone Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="timezone">Timezone</Label>
-                        <Select
-                            value={data.timezone}
-                            onValueChange={(value) => setData('timezone', value)}
-                        >
-                            <SelectTrigger
-                                id="timezone"
-                                className={errors.timezone ? 'border-red-500' : ''}
-                                aria-describedby="timezone-error"
-                            >
-                                <SelectValue placeholder="Select timezone" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {timezones.map((tz) => (
-                                    <SelectItem key={tz} value={tz}>
-                                        {tz}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        {errors.timezone && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="timezone-error">{errors.timezone}</AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
-
-                    {/* Status Field */}
-                    <div className="space-y-2">
-                        <Label htmlFor="status">Status</Label>
-                        <Select
-                            value={data.status}
-                            onValueChange={(value: any) => setData('status', value)}
-                        >
-                            <SelectTrigger
-                                id="status"
-                                className={errors.status ? 'border-red-500' : ''}
-                                aria-describedby="status-error"
-                            >
-                                <SelectValue placeholder="Select status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="active">Active Client</SelectItem>
-                                <SelectItem value="lead">Potential Lead</SelectItem>
-                                <SelectItem value="pending">Awaiting Verification</SelectItem>
-                                <SelectItem value="inactive">Past Client</SelectItem>
-                                <SelectItem value="suspended">Account Suspended</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        {errors.status && (
-                            <Alert variant="destructive" className="mt-2">
-                                <AlertDescription id="status-error">{errors.status}</AlertDescription>
-                            </Alert>
-                        )}
+                        {/* Section: Preferences */}
+                        <div className="space-y-4">
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                <Info className="h-4 w-4" /> Preferences & System
+                            </h3>
+                            <Separator />
+                            <div className="bg-muted/20 rounded-lg p-4 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label htmlFor="notifications" className="text-sm font-medium cursor-pointer">Email Notifications</Label>
+                                        <p className="text-xs text-muted-foreground">Receive updates on project milestones</p>
+                                    </div>
+                                    <Checkbox 
+                                        id="notifications" 
+                                        checked={data.preferences.notifications}
+                                        onCheckedChange={(v) => setData('preferences', { ...data.preferences, notifications: !!v })}
+                                    />
+                                </div>
+                                <Separator />
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label htmlFor="newsletter" className="text-sm font-medium cursor-pointer">Newsletter Subscription</Label>
+                                        <p className="text-xs text-muted-foreground">Monthly product updates and news</p>
+                                    </div>
+                                    <Checkbox 
+                                        id="newsletter" 
+                                        checked={data.preferences.newsletter}
+                                        onCheckedChange={(v) => setData('preferences', { ...data.preferences, newsletter: !!v })}
+                                    />
+                                </div>
+                            </div>
+                            
+                            {isEditing && (
+                                <Note variant="info" className="bg-primary/5 border-primary/10">
+                                    <div className="flex items-center gap-2 text-xs">
+                                        <Info className="h-3.5 w-3.5 text-primary" />
+                                        <span>Portal security can be managed in the <strong className="text-primary">Client Access</strong> tab.</span>
+                                    </div>
+                                </Note>
+                            )}
+                        </div>
                     </div>
                 </CardContent>
 
-                <CardFooter className="flex justify-end space-x-3">
+                <CardFooter className="bg-muted/30 p-6 flex justify-between items-center">
                     <Button
                         type="button"
-                        variant="outline"
+                        variant="ghost"
                         onClick={() => reset()}
                         disabled={processing}
+                        className="text-muted-foreground hover:text-foreground"
                     >
-                        Reset
+                        Discard Changes
                     </Button>
-                    <Button type="submit" disabled={processing}>
-                        {processing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {isEditing ? 'Update Client' : 'Create Client'}
-                    </Button>
+                    <div className="flex gap-3">
+                        <Button type="submit" size="lg" disabled={processing} className="min-w-[140px]">
+                            {processing ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Saving...
+                                </>
+                            ) : (
+                                isEditing ? 'Update Client' : 'Create Client'
+                            )}
+                        </Button>
+                    </div>
                 </CardFooter>
             </form>
         </Card>

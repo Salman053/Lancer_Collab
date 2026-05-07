@@ -12,9 +12,15 @@ class ProjectsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::with('client')->latest()->get();
+        $query = Auth::user()->projects()->with('client')->latest();
+
+        if ($request->has('active')) {
+            $query->where('status', 'in-progress');
+        }
+
+        $projects = $query->get();
         $activeClients = Auth::user()->activeClients()->get();
 
         return inertia('freelancer/projects/index', [
@@ -28,7 +34,11 @@ class ProjectsController extends Controller
      */
     public function create(Request $request)
     {
-        
+        $activeClients = Auth::user()->activeClients()->get();
+
+        return inertia('freelancer/projects/create', [
+            'clients' => $activeClients,
+        ]);
     }
 
     /**
@@ -37,12 +47,12 @@ class ProjectsController extends Controller
     public function store(ProjectRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         try {
             Project::create($data);
 
-            return redirect()->back()->with('success', 'Project created successfully.');
+            return redirect()->route('freelancer.projects')->with('success', 'Project created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to create project: '.$e->getMessage());
         }
@@ -53,8 +63,18 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
+        if ($project->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return inertia('freelancer/projects/show', [
-            'project' => $project->load('client', 'milestones'),
+            'project' => $project->load([
+                'client.account', 
+                'milestones', 
+                'files',
+                'updates' => fn($q) => $q->latest(),
+                'messages' => fn($q) => $q->with('sender')->oldest()
+            ]),
         ]);
     }
 
@@ -63,7 +83,12 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        
+        $activeClients = Auth::user()->activeClients()->get();
+
+        return inertia('freelancer/projects/edit', [
+            'project' => $project,
+            'clients' => $activeClients,
+        ]);
     }
 
     /**
@@ -76,7 +101,7 @@ class ProjectsController extends Controller
         try {
             $project->update($data);
 
-            return redirect()->back()->with('success', 'Project updated successfully.');
+            return redirect()->route('freelancer.projects')->with('success', 'Project updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update project: '.$e->getMessage());
         }
@@ -87,10 +112,14 @@ class ProjectsController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         try {
             $project->delete();
 
-            return redirect()->back()->with('success', 'Project deleted successfully.');
+            return redirect()->route('freelancer.projects')->with('success', 'Project deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete project: '.$e->getMessage());
         }

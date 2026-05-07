@@ -12,7 +12,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth()->user()->role === 'freelancer';
+        return true;
     }
 
     /**
@@ -41,6 +41,7 @@ class ProjectRequest extends FormRequest
             'client_id' => 'required|exists:clients,id',
             'notes' => 'nullable|string',
             'color' => 'nullable|string|max:20',
+            'thumbnail' => 'nullable|string|max:255',
         ];
     }
 

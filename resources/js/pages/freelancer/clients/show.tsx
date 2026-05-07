@@ -1,11 +1,7 @@
-// pages/freelancer/clients/show.tsx
-import ClientForm from '@/components/client/client-form';
 import { ClientHeader } from '@/components/client/client-header';
 import { ClientInfoCard } from '@/components/client/client-info-card';
 import { ClientNotes } from '@/components/client/client-notes';
 import { ClientStats } from '@/components/client/client-stats';
-import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import AppLayout from '@/layouts/app-layout';
 import { Client, type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
@@ -34,7 +30,7 @@ export default function Show({ client }: { client: Client }) {
     };
 
     const handleUpdate = () => {
-        router.reload(); // Refresh the page data
+        router.reload(); 
         setIsDrawerOpen(false);
     };
 
@@ -80,7 +76,6 @@ export default function Show({ client }: { client: Client }) {
                 </div>
             </div>
 
-            {/* Edit Drawer */}
          
         </AppLayout>
     );

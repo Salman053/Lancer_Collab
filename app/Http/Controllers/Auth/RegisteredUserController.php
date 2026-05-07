@@ -67,8 +67,7 @@ class RegisteredUserController extends Controller
             UserRoles::ADMIN => to_route('dashboard'),
             UserRoles::CLIENT => to_route('client.dashboard'),
             UserRoles::FREELANCER => to_route('freelancer.dashboard'),
-            UserRoles::GUEST => to_route('guest.dashboard'),
-            default => to_route('dashboard'),
+            default => to_route('home'),
         };
     }
 }

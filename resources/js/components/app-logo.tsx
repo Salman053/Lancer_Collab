@@ -1,15 +1,15 @@
-import AppLogoIcon from './app-logo-icon';
+import { Sparkles } from 'lucide-react';
 
 export default function AppLogo() {
     return (
-        <>
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                {/* <AppLogoIcon className="size-5 fill-current text-white dark:text-black" /> */}
-                <h2 className='dark:text-black font-bold '>PH</h2>
+        <div className="flex items-center gap-2">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-brand text-brand-foreground">
+                <Sparkles className="size-5" />
             </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">ProjectHub</span>
+            <div className="ml-1 grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold text-foreground">LaraCollab</span>
+                <span className="truncate text-xs text-muted-foreground">Project Portal</span>
             </div>
-        </>
+        </div>
     );
 }

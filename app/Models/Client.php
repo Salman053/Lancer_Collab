@@ -43,6 +43,11 @@ class Client extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
