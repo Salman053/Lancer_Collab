@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Task } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage, router } from '@inertiajs/react';
 import { CheckCircle2, Circle, Clock, AlertCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,6 +29,10 @@ const statusIcons = {
 export default function TasksIndex() {
     const { tasks } = usePage<{ tasks: any[] }>().props;
 
+    const toggleTask = (taskId: number) => {
+        router.put(route('freelancer.tasks.toggle', taskId));
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Tasks" />
@@ -46,11 +50,15 @@ export default function TasksIndex() {
                         </Card>
                     ) : (
                         tasks.map((task) => (
-                            <Card key={task.id}>
+                            <Card key={task.id} className={task.status === 'completed' ? 'opacity-70' : ''}>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <div className="flex items-center gap-3">
-                                        {statusIcons[task.status as keyof typeof statusIcons]}
-                                        <CardTitle className="text-lg font-medium">{task.title}</CardTitle>
+                                        <button onClick={() => toggleTask(task.id)} className="hover:opacity-75 transition-opacity">
+                                            {statusIcons[task.status as keyof typeof statusIcons]}
+                                        </button>
+                                        <CardTitle className={`text-lg font-medium ${task.status === 'completed' ? 'line-through text-muted-foreground' : ''}`}>
+                                            {task.title}
+                                        </CardTitle>
                                     </div>
                                     <Badge className={priorityColors[task.priority as keyof typeof priorityColors]}>
                                         {task.priority.toUpperCase()}

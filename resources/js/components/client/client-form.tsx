@@ -43,11 +43,13 @@ const timezones = [
 const ClientForm = ({
     className,
     client = null,
-    onSuccess = null
+    onSuccess = null,
+    hideHeader = false
 }: {
     client?: Client | null,
     onSuccess?: (() => void) | null,
-    className?: string
+    className?: string,
+    hideHeader?: boolean
 }) => {
     const isEditing = !!client;
     const [showPasswordHint, setShowPasswordHint] = useState(!isEditing);
@@ -104,26 +106,28 @@ const ClientForm = ({
 
     return (
         <Card className={cn("w-full mx-auto shadow-lg", className)}>
-            <CardHeader className="bg-muted/30 pb-8">
-                <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                        <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                            {isEditing ? <User className="h-6 w-6" /> : <ShieldCheck className="h-6 w-6" />}
-                            {isEditing ? 'Edit Client Profile' : 'Register New Client'}
-                        </CardTitle>
-                        <CardDescription className="text-base">
-                            {isEditing
-                                ? 'Refine client details and account preferences.'
-                                : 'Set up a new client portal account and professional profile.'}
-                        </CardDescription>
-                    </div>
-                    {!isEditing && (
-                        <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                            <KeyRound className="h-6 w-6" />
+            {!hideHeader && (
+                <CardHeader className="bg-muted/30 pb-8">
+                    <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                            <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                                {isEditing ? <User className="h-6 w-6" /> : <ShieldCheck className="h-6 w-6" />}
+                                {isEditing ? 'Edit Client Profile' : 'Register New Client'}
+                            </CardTitle>
+                            <CardDescription className="text-base">
+                                {isEditing
+                                    ? 'Refine client details and account preferences.'
+                                    : 'Set up a new client portal account and professional profile.'}
+                            </CardDescription>
                         </div>
-                    )}
-                </div>
-            </CardHeader>
+                        {!isEditing && (
+                            <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                <KeyRound className="h-6 w-6" />
+                            </div>
+                        )}
+                    </div>
+                </CardHeader>
+            )}
 
             <form onSubmit={submit}>
                 <CardContent className="p-6 space-y-8">

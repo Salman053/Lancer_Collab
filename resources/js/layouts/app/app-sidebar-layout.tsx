@@ -5,6 +5,7 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import FlashNotifications from '@/components/flash-notifications';
 import { Toaster } from '@/components/ui/sonner';
 import { type BreadcrumbItem } from '@/types';
+import { NoiseTexture } from '@/components/backgrounds/noise-texture';
 
 import { useEffect } from 'react';
 
@@ -32,10 +33,13 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: { child
 
     return (
         <AppShell variant="sidebar">
+            <NoiseTexture />
             <AppSidebar />
             <AppContent variant="sidebar">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                {children}
+                <div className="relative z-10 flex flex-1 flex-col">
+                    {children}
+                </div>
             </AppContent>
             <Toaster />
             <FlashNotifications />

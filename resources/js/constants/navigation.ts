@@ -152,47 +152,16 @@ export const guestNavItems: NavItem[] = [
 // Footer navigation items configuration
 export const footerNavItems: Record<string, NavItem[]> = {
     common: [
-        {
-            title: 'Help Center',
-            url: '/help',
-            icon: BookOpen,
-        },
-        {
-            title: 'Terms of Service',
-            url: '/terms',
-            icon: FileText,
-        },
+      
     ],
     admin: [
-        {
-            title: 'Admin Panel',
-            url: '/admin/panel',
-            icon: Shield,
-        },
+      
     ],
     client: [
-        {
-            title: 'Support Center',
-            url: '/client/support',
-            icon: MessageSquare,
-        },
-        {
-            title: 'System Help',
-            url: '/client/help',
-            icon: BookOpen,
-        },
+       
     ],
     freelancer: [
-        {
-            title: 'Freelancer Support',
-            url: '/freelancer/support',
-            icon: MessageSquare,
-        },
-        {
-            title: 'Resource Library',
-            url: '/freelancer/resources',
-            icon: Folder,
-        },
+      
     ],
 };
 

@@ -71,6 +71,20 @@ class TaskController extends Controller
         return back()->with('success', 'Task updated successfully.');
     }
 
+    public function toggleComplete(Task $task)
+    {
+        if ($task->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $task->update([
+            'status' => $task->status === 'completed' ? 'pending' : 'completed',
+            'completed_at' => $task->status === 'completed' ? null : now(),
+        ]);
+
+        return back()->with('success', 'Task status updated.');
+    }
+
     public function destroy(Task $task)
     {
         if ($task->user_id !== Auth::id()) {

@@ -1,6 +1,8 @@
 import { Client } from '@/types';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Pencil } from 'lucide-react';
 
 interface ClientHeaderProps {
     client: Client;
@@ -20,13 +22,6 @@ export function ClientHeader({ client, onEdit }: ClientHeaderProps) {
     return (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b">
             <div className="flex items-center gap-4">
-                {/* <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => router.get(route('freelancer.clients.index'))}
-                >
-                    <ArrowLeft className="h-5 w-5" />
-                </Button> */}
                 <Avatar className="h-16 w-16">
                     {client.profile_image_url ? (
                         <img src={client.profile_image_url} alt={client.name} />
@@ -53,7 +48,13 @@ export function ClientHeader({ client, onEdit }: ClientHeaderProps) {
                     )}
                 </div>
             </div>
-            
+
+            <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={onEdit} className="gap-2">
+                    <Pencil className="h-4 w-4" />
+                    Edit Client
+                </Button>
+            </div>
         </div>
     );
 }

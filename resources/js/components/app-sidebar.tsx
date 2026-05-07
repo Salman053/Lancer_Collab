@@ -10,7 +10,7 @@ export function AppSidebar() {
     const { userRole, dashboardRoute, navigationItems, footerItems } = useRoleNavigation();
 
     return (
-        <Sidebar collapsible="icon" variant="floating" >
+        <Sidebar collapsible="icon" variant="inset" >
             <SidebarHeader  >
                 <SidebarMenu >
                     <SidebarMenuItem>

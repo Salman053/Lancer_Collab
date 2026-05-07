@@ -2,6 +2,9 @@ import { ClientHeader } from '@/components/client/client-header';
 import { ClientInfoCard } from '@/components/client/client-info-card';
 import { ClientNotes } from '@/components/client/client-notes';
 import { ClientStats } from '@/components/client/client-stats';
+import ClientForm from '@/components/client/client-form';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import AppLayout from '@/layouts/app-layout';
 import { Client, type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
@@ -23,15 +26,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Show({ client }: { client: Client }) {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
     const handleEdit = () => {
-        setIsDrawerOpen(true);
+        setIsSheetOpen(true);
     };
 
     const handleUpdate = () => {
         router.reload(); 
-        setIsDrawerOpen(false);
+        setIsSheetOpen(false);
     };
 
     return (
@@ -54,7 +57,7 @@ export default function Show({ client }: { client: Client }) {
 
                     {/* Right Column - Notes & Additional Info */}
                     <div className="space-y-6">
-                        <ClientNotes client={client} onNoteUpdate={handleUpdate} />
+                        <ClientNotes client={client} onEdit={handleEdit} onNoteUpdate={handleUpdate} />
                         
                         {/* Additional Info Card */}
                         {client.preferences && (
@@ -76,7 +79,28 @@ export default function Show({ client }: { client: Client }) {
                 </div>
             </div>
 
-         
+            {/* Edit Client Sheet */}
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                <SheetContent className="sm:max-w-[600px] p-0 border-l">
+                    <ScrollArea className="h-full">
+                        <div className="p-6">
+                            <SheetHeader className="mb-6">
+                                <SheetTitle>Edit Client</SheetTitle>
+                                <SheetDescription>
+                                    Update client information and preferences.
+                                </SheetDescription>
+                            </SheetHeader>
+                            
+                            <ClientForm 
+                                client={client} 
+                                onSuccess={handleUpdate}
+                                hideHeader={true}
+                                className="border-none shadow-none bg-transparent p-0"
+                            />
+                        </div>
+                    </ScrollArea>
+                </SheetContent>
+            </Sheet>
         </AppLayout>
     );
 }

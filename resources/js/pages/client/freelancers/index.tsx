@@ -23,7 +23,7 @@ export default function FreelancersIndex() {
                         <Card key={freelancer.id}>
                             <CardHeader className="flex flex-row items-center gap-4">
                                 <Avatar className="h-12 w-12">
-                                    <AvatarFallback>{freelancer.name.charAt(0)}</AvatarFallback>
+                                    <AvatarFallback className='bg-brand'>{freelancer.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <div>
                                     <CardTitle>{freelancer.name}</CardTitle>

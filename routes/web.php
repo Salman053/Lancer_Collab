@@ -18,6 +18,10 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+Route::get('/executive-demo', function () {
+    return Inertia::render('executive-demo');
+})->name('executive-demo');
+
 Route::middleware(['auth', 'role:'.UserRoles::ADMIN->value])->prefix('admin')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
@@ -38,21 +42,21 @@ Route::middleware(['auth', 'role:'.UserRoles::CLIENT->value])->prefix('client')-
     Route::get('projects/{project}', [\App\Http\Controllers\ClientProjectController::class, 'show'])->name('client.projects.show');
     Route::get('freelancers', [\App\Http\Controllers\Client\FreelancerController::class, 'index'])->name('client.freelancers');
     Route::get('payments', [\App\Http\Controllers\Client\PaymentController::class, 'index'])->name('client.payments');
+    Route::post('tasks', [\App\Http\Controllers\Client\TaskController::class, 'store'])->name('client.tasks.store');
 
     Route::put('milestones/{milestone}', [MilestoneController::class, 'clientUpdate'])->name('client.milestones.update');
     
     Route::get('messages', [MessageController::class, 'index'])->name('client.messages');
 });
 Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freelancer')->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('freelancer/dashboard');
-    })->name('freelancer.dashboard');
+    Route::get('dashboard', [\App\Http\Controllers\Freelancer\DashboardController::class, 'index'])->name('freelancer.dashboard');
     
     Route::get('engagement', [ProjectViewController::class, 'index'])->name('freelancer.engagement');
 
     Route::get('tasks', [TaskController::class, 'index'])->name('freelancer.tasks');
     Route::post('tasks', [TaskController::class, 'store'])->name('freelancer.tasks.store');
     Route::put('tasks/{task}', [TaskController::class, 'update'])->name('freelancer.tasks.update');
+    Route::put('tasks/{task}/toggle', [TaskController::class, 'toggleComplete'])->name('freelancer.tasks.toggle');
     Route::delete('tasks/{task}', [TaskController::class, 'destroy'])->name('freelancer.tasks.destroy');
 
     // Schedule

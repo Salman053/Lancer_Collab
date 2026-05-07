@@ -48,7 +48,7 @@ export default function ChatBox({ title, avatarFallback, messages, auth, onSendM
 
             {/* Message Feed */}
             <ScrollArea className="flex-1 p-4">
-                <div className="space-y-4">
+                <div className="space-y-4 mask-t-from-50% ">
                     {messages.map((msg: any) => {
                         const isSent = msg.from_user_id === auth.user.id;
                         return (
@@ -56,11 +56,11 @@ export default function ChatBox({ title, avatarFallback, messages, auth, onSendM
                                 <div className={cn(
                                     "max-w-[75%] px-4 py-2.5 text-sm shadow-sm",
                                     isSent 
-                                        ? 'bg-emerald-600 text-white rounded-l-2xl rounded-tr-lg' 
-                                        : 'bg-white dark:bg-slate-800 border text-slate-800 dark:text-slate-100 rounded-r-2xl rounded-tl-lg'
+                                        ? 'bg-primary text-primary-foreground rounded-l-2xl rounded-tr-lg' 
+                                        : 'bg-muted border text-foreground rounded-r-2xl rounded-tl-lg'
                                 )}>
                                     <p className="whitespace-pre-wrap">{msg.message}</p>
-                                    <span className={cn("text-[10px] block mt-1", isSent ? 'text-emerald-100' : 'text-slate-400')}>
+                                    <span className={cn("text-[10px] block mt-1", isSent ? 'opacity-70' : 'text-muted-foreground')}>
                                         {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </span>
                                 </div>
@@ -72,17 +72,17 @@ export default function ChatBox({ title, avatarFallback, messages, auth, onSendM
             </ScrollArea>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4 bg-white dark:bg-slate-950 border-t flex items-center gap-2">
-                <Button variant="ghost" size="icon" type="button" className="text-slate-400">
+            <form onSubmit={handleSubmit} className="p-4 bg-card border-t flex items-center gap-2">
+                <Button variant="ghost" size="icon" type="button" className="text-muted-foreground">
                     <Plus className="h-5 w-5" />
                 </Button>
                 <Input 
                     placeholder="Type a message..." 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="rounded-full"
+                    className="rounded-full bg-background"
                 />
-                <Button size="icon" type="submit" className="rounded-full bg-emerald-600 hover:bg-emerald-700" disabled={processing || !message.trim()}>
+                <Button size="icon" type="submit" className="rounded-full" disabled={processing || !message.trim()}>
                     <Send className="h-4 w-4" />
                 </Button>
             </form>

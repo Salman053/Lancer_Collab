@@ -209,7 +209,7 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
 
                             <TabsContent value="milestones" className="space-y-6">
                                 {/* Progress Overview Card */}
-                                <Card className="dark:bg-slate-900/40 dark:border-slate-800">
+                                <Card className="bg-card shadow-sm border-border">
                                     <CardHeader className="pb-4">
                                         <CardTitle className="text-lg flex items-center gap-2">
                                             <Target className="h-5 w-5 text-primary" />
@@ -247,7 +247,7 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                                 </Card>
 
                                 {/* Milestones Card */}
-                                <Card className="dark:bg-slate-900/40 dark:border-slate-800">
+                                <Card className="bg-card shadow-sm border-border">
                                     <CardHeader className="flex flex-row items-center justify-between">
                                         <div className="space-y-1">
                                             <CardTitle className="text-lg">Project Milestones</CardTitle>
@@ -314,7 +314,7 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                             </TabsContent>
 
                             <TabsContent value="updates" className="space-y-6">
-                                <Card className="dark:bg-slate-900/40 dark:border-slate-800">
+                                <Card className="bg-card shadow-sm border-border">
                                     <CardHeader>
                                         <CardTitle>Post a Project Update</CardTitle>
                                         <CardDescription>Keep your client informed about the latest progress.</CardDescription>
@@ -426,7 +426,7 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                         </Card>
 
                         {/* Client Info Card */}
-                        <Card className="dark:bg-slate-900/40 dark:border-slate-800 overflow-hidden">
+                        <Card className="bg-card shadow-sm border-border overflow-hidden">
                             <div className="h-2 w-full" style={{ backgroundColor: project.color || '#3b82f6' }} />
                             <CardHeader className="pb-4">
                                 <CardTitle className="text-lg flex items-center gap-2">
@@ -461,7 +461,7 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                         </Card>
 
                         {/* Internal Notes Card */}
-                        <Card className="dark:bg-slate-900/40 dark:border-slate-800">
+                        <Card className="bg-card shadow-sm border-border">
                             <CardHeader>
                                 <CardTitle className="text-sm font-semibold flex items-center gap-2 text-muted-foreground">
                                     <Clock className="h-4 w-4" />
