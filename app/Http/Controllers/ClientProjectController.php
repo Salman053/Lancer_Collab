@@ -68,6 +68,7 @@ class ClientProjectController extends Controller
                 'payments',
                 'updates' => fn ($q) => $q->latest(),
                 'messages' => fn ($q) => $q->with('sender')->oldest(),
+                'tasks',
             ]),
         ]);
     }

@@ -3,9 +3,10 @@ import { useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FileText, Trash2, Download, Upload } from 'lucide-react';
+import ConfirmDialog from '@/components/confirm-dialog';
 
 export default function FileManager({ project, files, auth }: { project: any, files: any[], auth: any }) {
-    const { data, setData, post, processing, reset } = useForm({
+    const { data, setData, post, delete: destroyFile, processing, reset } = useForm({
         project_id: project.id,
         file: null as File | null,
     });
@@ -16,6 +17,10 @@ export default function FileManager({ project, files, auth }: { project: any, fi
         post(route('freelancer.files.store'), {
             onSuccess: () => reset('file'),
         });
+    };
+
+    const handleDelete = (fileId: number) => {
+        destroyFile(route('freelancer.files.destroy', fileId));
     };
 
     return (
@@ -50,11 +55,18 @@ export default function FileManager({ project, files, auth }: { project: any, fi
                                 </a>
                             </Button>
                             {auth.user.role === 'freelancer' && (
-                                <Button variant="ghost" size="icon" className="text-destructive" asChild>
-                                    <a href={route('freelancer.files.destroy', file.id)} onClick={(e) => { e.preventDefault(); /* Add delete logic */ }}>
-                                        <Trash2 className="h-4 w-4" />
-                                    </a>
-                                </Button>
+                                <ConfirmDialog
+                                    trigger={
+                                        <Button variant="ghost" size="icon" className="text-destructive">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    }
+                                    title="Delete File"
+                                    description={`Are you sure you want to delete "${file.file_name}"?`}
+                                    confirmText="Delete File"
+                                    variant="destructive"
+                                    onConfirm={() => handleDelete(file.id)}
+                                />
                             )}
                         </div>
                     </div>

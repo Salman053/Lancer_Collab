@@ -77,9 +77,12 @@ class TaskController extends Controller
             abort(403);
         }
 
+        $isCompleted = $task->status === 'completed';
+        
         $task->update([
-            'status' => $task->status === 'completed' ? 'pending' : 'completed',
-            'completed_at' => $task->status === 'completed' ? null : now(),
+            'status' => $isCompleted ? 'pending' : 'completed',
+            'is_completed' => !$isCompleted,
+            'completed_at' => $isCompleted ? null : now(),
         ]);
 
         return back()->with('success', 'Task status updated.');

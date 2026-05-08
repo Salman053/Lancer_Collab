@@ -72,6 +72,7 @@ class ProjectsController extends Controller
                 'client.account', 
                 'milestones', 
                 'files',
+                'tasks',
                 'updates' => fn($q) => $q->latest(),
                 'messages' => fn($q) => $q->with('sender')->oldest()
             ]),

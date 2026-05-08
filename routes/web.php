@@ -71,6 +71,8 @@ Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freel
     Route::put('clients/{client}', [ClientController::class, 'update'])->name('freelancer.clients.update');
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('freelancer.clients.destroy');
     
+    Route::get('projects/{project}/invoice', [\App\Http\Controllers\InvoiceController::class, 'generate'])->name('projects.invoice');
+
     // Projects Routes
     Route::get('projects', [ProjectsController::class, 'index'])->name('freelancer.projects');
     Route::get('projects/create', [ProjectsController::class, 'create'])->name('freelancer.projects.create');

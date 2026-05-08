@@ -63,8 +63,8 @@ export default function ClientProjectShow() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={project.title} />
-            
-            <div className="flex flex-col gap-6 p-4 md:p-6 max-w-7xl mx-auto w-full">
+
+            <div className="flex flex-col gap-6 p-4 md:p-6  mx-auto w-full">
                 {/* Header Section */}
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between bg-card p-6 rounded-xl border shadow-sm">
                     <div>
@@ -93,11 +93,12 @@ export default function ClientProjectShow() {
                             <TabsList className="w-full justify-start rounded-none bg-transparent h-12 border-b px-0 gap-6">
                                 <TabsTrigger value="overview" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 h-12 font-medium">Overview</TabsTrigger>
                                 <TabsTrigger value="milestones" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 h-12 font-medium">Milestones</TabsTrigger>
+                                <TabsTrigger value="tasks" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 h-12 font-medium">Tasks</TabsTrigger>
                                 <TabsTrigger value="updates" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 h-12 font-medium">Updates</TabsTrigger>
                                 <TabsTrigger value="files" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 h-12 font-medium">Files</TabsTrigger>
                                 <TabsTrigger value="payments" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 h-12 font-medium">Payments</TabsTrigger>
                             </TabsList>
-                            
+
                             <div className="bg-card border rounded-b-xl border-t-0">
                                 <CardContent className="pt-6">
                                     <TabsContent value="overview" className="mt-0 space-y-6">
@@ -110,7 +111,7 @@ export default function ClientProjectShow() {
                                                 {project.description || 'No description provided.'}
                                             </div>
                                         </div>
-                                        
+
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
                                             <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/20">
                                                 <Calendar className="h-5 w-5 text-primary" />
@@ -127,6 +128,17 @@ export default function ClientProjectShow() {
                                                 </div>
                                             </div>
                                         </div>
+                                    </TabsContent>
+
+                                    <TabsContent value="tasks" className="mt-0 space-y-4">
+                                        {project.tasks?.length > 0 ? project.tasks.map((task: any) => (
+                                            <div key={task.id} className="flex items-center gap-3 p-4 border rounded-lg">
+                                                {task.is_completed ? <CheckCircle2 className="text-green-500 size-5"/> : <Circle className="text-muted-foreground size-5" />}
+                                                <span className={task.is_completed ? 'line-through text-muted-foreground' : 'font-medium'}>{task.title}</span>
+                                            </div>
+                                        )) : (
+                                            <div className="text-center py-12 border border-dashed rounded-xl text-muted-foreground">No tasks.</div>
+                                        )}
                                     </TabsContent>
 
                                     <TabsContent value="milestones" className="mt-0">
@@ -154,24 +166,24 @@ export default function ClientProjectShow() {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div className="mt-4 flex items-center justify-between">
                                                             <Badge variant={milestone.status === 'completed' ? 'default' : 'secondary'} className="capitalize">
                                                                 {milestone.status.replace('_', ' ')}
                                                             </Badge>
-                                                            
+
                                                             {milestone.status === 'in_review' && (
                                                                 <div className="flex gap-2">
-                                                                    <Button 
-                                                                        size="sm" 
-                                                                        className="h-8 gap-1.5" 
+                                                                    <Button
+                                                                        size="sm"
+                                                                        className="h-8 gap-1.5"
                                                                         onClick={() => handleMilestoneAction(milestone.id, 'completed')}
                                                                     >
                                                                         <Check className="h-3.5 w-3.5" /> Approve
                                                                     </Button>
-                                                                    <Button 
-                                                                        size="sm" 
-                                                                        variant="outline" 
+                                                                    <Button
+                                                                        size="sm"
+                                                                        variant="outline"
                                                                         className="h-8 gap-1.5"
                                                                         onClick={() => handleMilestoneAction(milestone.id, 'revision')}
                                                                     >
@@ -273,7 +285,7 @@ export default function ClientProjectShow() {
 
                     {/* Right Column - Chat */}
                     <div className="lg:col-span-1 h-[600px] lg:h-[calc(100vh-250px)] sticky top-6">
-                        <ChatBox 
+                        <ChatBox
                             title={project.user.name}
                             avatarFallback={project.user.name.charAt(0)}
                             messages={project.messages}

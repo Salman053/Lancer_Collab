@@ -1,55 +1,87 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { useState } from 'react';
 import { Head, usePage } from '@inertiajs/react';
+import { Search, FileText, Download, Share2, DollarSign, Filter } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { DollarSign, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Payments & Invoices', href: '/client/payments' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Payments & Invoices', href: '/client/payments' }];
 
-export default function PaymentsIndex() {
+export default function ClientPaymentsIndex() {
     const { payments } = usePage<{ payments: any[] }>().props;
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
+
+    const filtered = payments.filter(p => 
+        p.project.title.toLowerCase().includes(search.toLowerCase()) &&
+        (statusFilter === 'all' || p.status === statusFilter)
+    );
+
+    const shareInvoice = (projectId: number) => {
+        navigator.clipboard.writeText(window.location.origin + route('projects.invoice', projectId));
+        alert('Invoice link copied to clipboard!');
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Payments & Invoices" />
-            <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Payments & Invoices</h1>
-                <div className="space-y-4">
-                    {payments.length > 0 ? payments.map((payment) => (
-                        <Card key={payment.id}>
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-lg font-medium">{payment.project.title}</CardTitle>
-                                <Badge variant={payment.status === 'paid' ? 'default' : 'secondary'}>
-                                    {payment.status.toUpperCase()}
-                                </Badge>
-                            </CardHeader>
-                            <CardContent className="flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className="rounded-full bg-green-100 p-2 text-green-700">
-                                        <DollarSign className="h-5 w-5" />
-                                    </div>
-                                    <div>
-                                        <p className="font-bold text-lg">${payment.amount}</p>
-                                        <p className="text-xs text-muted-foreground">
-                                            {new Date(payment.created_at).toLocaleDateString()} • {payment.method}
-                                        </p>
-                                    </div>
-                                </div>
-                                <Button variant="ghost" size="sm">
-                                    <Download className="mr-2 h-4 w-4" /> Receipt
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    )) : (
-                        <div className="py-8 text-center text-muted-foreground">
-                            No payment history available.
-                        </div>
-                    )}
+            <div className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-bold">Payments & Invoices</h1>
                 </div>
+
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                        <CardTitle>History</CardTitle>
+                        <div className="flex gap-2">
+                            <Input placeholder="Filter projects..." className="w-64" onChange={(e) => setSearch(e.target.value)} />
+                            <Select onValueChange={setStatusFilter}>
+                                <SelectTrigger className="w-32"><SelectValue placeholder="Status" /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Status</SelectItem>
+                                    <SelectItem value="paid">Paid</SelectItem>
+                                    <SelectItem value="pending">Pending</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Project</TableHead>
+                                    <TableHead>Amount</TableHead>
+                                    <TableHead>Method</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {filtered.map((p) => (
+                                    <TableRow key={p.id}>
+                                        <TableCell className="font-medium">{p.project.title}</TableCell>
+                                        <TableCell><DollarSign className="inline size-4" />{parseFloat(p.amount).toLocaleString()}</TableCell>
+                                        <TableCell className="capitalize">{p.method}</TableCell>
+                                        <TableCell><Badge variant={p.status === 'paid' ? 'default' : 'secondary'}>{p.status.toUpperCase()}</Badge></TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="ghost" size="icon" asChild title="Download PDF">
+                                                <a href={route('projects.invoice', p.project_id)}><FileText className="size-4" /></a>
+                                            </Button>
+                                            <Button variant="ghost" size="icon" onClick={() => shareInvoice(p.project_id)} title="Share Invoice">
+                                                <Share2 className="size-4" />
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
             </div>
         </AppLayout>
     );

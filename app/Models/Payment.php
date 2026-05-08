@@ -13,6 +13,7 @@ class Payment extends Model
         'project_id', 
         'milestone_id', 
         'amount', 
+        'due_date',
         'method', 
         'status', 
         'transaction_id', 
@@ -25,6 +26,7 @@ class Payment extends Model
         'status' => PaymentStatus::class,
         'method' => PaymentMethods::class,
         'paid_at' => 'datetime',
+        'due_date' => 'date',
         'amount' => 'decimal:2',
     ];
 

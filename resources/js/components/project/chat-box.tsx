@@ -17,8 +17,10 @@ export default function ChatBox({ title, avatarFallback, messages, auth, onSendM
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (!message.trim() || processing) return;
-        onSendMessage(message);
+        const trimmedMessage = message.trim();
+        if (!trimmedMessage || processing) return;
+        
+        onSendMessage(trimmedMessage);
         setMessage('');
     };
 

@@ -63,7 +63,7 @@ export default function ClientDashboard() {
                         <Button size="sm" className="shadow-md bg-brand hover:bg-brand/90 text-white" asChild>
                             <Link href="/client/messages">
                                 <MessageSquare className="h-4 w-4 mr-2" />
-                                Contact Agency
+                                Contact Support
                             </Link>
                         </Button>
                     </div>
@@ -97,7 +97,7 @@ export default function ClientDashboard() {
 
                 <div className="grid gap-8 lg:grid-cols-12">
                     {/* Activity Feed */}
-                    <Card className="lg:col-span-7 shadow-sm border-sidebar-border/50 overflow-hidden">
+                    <Card className="lg:col-span-7 shadow-sm  overflow-hidden">
                         <CardHeader className="border-b bg-muted/30">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -155,7 +155,7 @@ export default function ClientDashboard() {
 
                     {/* Milestones & Actions */}
                     <div className="lg:col-span-5 space-y-6">
-                        <Card className="shadow-sm border-sidebar-border/50">
+                        <Card className="shadow-sm ">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <Calendar className="h-5 w-5 text-brand" />
@@ -244,7 +244,7 @@ function ImpactCard({ title, value, subtitle, icon, color, active = false }: any
     };
 
     return (
-        <Card className={`relative overflow-hidden group border-sidebar-border/50 hover:shadow-lg transition-all duration-300 ${active ? 'ring-2 ring-brand ring-offset-2 dark:ring-offset-background' : ''}`}>
+        <Card className={`relative overflow-hidden group  hover:shadow-lg transition-all duration-300 ${active ? 'ring-2 ring-brand ring-offset-2 dark:ring-offset-background' : ''}`}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</CardTitle>
                 <div className={`p-2 rounded-xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12 ${colors[color]}`}>

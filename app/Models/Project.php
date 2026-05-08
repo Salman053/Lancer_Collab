@@ -84,6 +84,11 @@ class Project extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function getProgressAttribute(): int
     {
         $total = $this->milestones()->count();

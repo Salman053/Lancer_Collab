@@ -1,100 +1,86 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { useState } from 'react';
 import { Head, usePage } from '@inertiajs/react';
-import { CreditCard, DollarSign, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { FileText, Share2, DollarSign, Clock, CreditCard, ArrowDownLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Payments',
-        href: '/freelancer/payments',
-    },
-];
-
-export default function PaymentsIndex() {
+export default function FreelancerPaymentsIndex() {
     const { payments } = usePage<{ payments: any[] }>().props;
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
 
-    const totalEarnings = payments.reduce((acc, p) => acc + parseFloat(p.amount), 0);
+    const totalEarnings = payments.filter(p => p.status === 'paid').reduce((acc, p) => acc + parseFloat(p.amount), 0);
+    const filtered = payments.filter(p => 
+        p.project.title.toLowerCase().includes(search.toLowerCase()) &&
+        (statusFilter === 'all' || p.status === statusFilter)
+    );
+
+    const shareInvoice = (projectId: number) => {
+        navigator.clipboard.writeText(window.location.origin + route('projects.invoice', projectId));
+        alert('Invoice link copied to clipboard!');
+    };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Earnings" />
-            <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Earnings & Payments</h1>
-                </div>
+        <AppLayout breadcrumbs={[{ title: 'Payments', href: '/freelancer/payments' }]}>
+            <Head title="Earnings & Payments" />
+            <div className="p-6 space-y-6">
+                <h1 className="text-2xl font-bold">Earnings & Payments</h1>
 
                 <div className="grid gap-4 md:grid-cols-3">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Earnings</CardTitle>
-                            <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">${totalEarnings.toLocaleString()}</div>
-                            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Pending Payments</CardTitle>
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">$0</div>
-                            <p className="text-xs text-muted-foreground">All caught up!</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Invoices Sent</CardTitle>
-                            <CreditCard className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{payments.length}</div>
-                            <p className="text-xs text-muted-foreground">Across {new Set(payments.map(p => p.project_id)).size} projects</p>
-                        </CardContent>
-                    </Card>
+                    <Card><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium">Total Earnings</CardTitle><DollarSign className="size-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">${totalEarnings.toLocaleString()}</div></CardContent></Card>
+                    <Card><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium">Pending</CardTitle><Clock className="size-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">${payments.filter(p => p.status === 'pending').reduce((acc, p) => acc + parseFloat(p.amount), 0).toLocaleString()}</div></CardContent></Card>
+                    <Card><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium">Total Transactions</CardTitle><CreditCard className="size-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{payments.length}</div></CardContent></Card>
                 </div>
 
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Recent Transactions</CardTitle>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                        <CardTitle>Transaction History</CardTitle>
+                        <div className="flex gap-2">
+                            <Input placeholder="Filter projects..." className="w-64" onChange={(e) => setSearch(e.target.value)} />
+                            <Select onValueChange={setStatusFilter}>
+                                <SelectTrigger className="w-32"><SelectValue placeholder="Status" /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Status</SelectItem>
+                                    <SelectItem value="paid">Paid</SelectItem>
+                                    <SelectItem value="pending">Pending</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
-                            {payments.length === 0 ? (
-                                <div className="text-center text-muted-foreground py-8">
-                                    No transactions recorded yet.
-                                </div>
-                            ) : (
-                                payments.map((payment) => (
-                                    <div key={payment.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
-                                        <div className="flex items-center gap-3">
-                                            <div className="rounded-full bg-green-100 p-2 dark:bg-green-900">
-                                                <ArrowDownLeft className="h-4 w-4 text-green-600 dark:text-green-400" />
-                                            </div>
-                                            <div>
-                                                <div className="font-medium">{payment.project.title}</div>
-                                                <div className="text-xs text-muted-foreground">
-                                                    {payment.milestone ? payment.milestone.title : 'General Payment'} • {new Date(payment.paid_at || payment.created_at).toLocaleDateString()}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="font-bold text-green-600 dark:text-green-400">+${parseFloat(payment.amount).toLocaleString()}</div>
-                                            <Badge variant="outline" className="text-[10px]">{payment.status.toUpperCase()}</Badge>
-                                        </div>
-                                    </div>
-                                ))
-                            )}
-                        </div>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Project</TableHead>
+                                    <TableHead>Amount</TableHead>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {filtered.map((p) => (
+                                    <TableRow key={p.id}>
+                                        <TableCell className="font-medium">{p.project.title}</TableCell>
+                                        <TableCell className="font-bold text-green-600">${parseFloat(p.amount).toLocaleString()}</TableCell>
+                                        <TableCell>{new Date(p.created_at).toLocaleDateString()}</TableCell>
+                                        <TableCell><Badge variant={p.status === 'paid' ? 'default' : 'secondary'}>{p.status.toUpperCase()}</Badge></TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="ghost" size="icon" asChild title="Invoice"><a href={route('projects.invoice', p.project_id)}><FileText className="size-4" /></a></Button>
+                                            <Button variant="ghost" size="icon" onClick={() => shareInvoice(p.project_id)} title="Share"><Share2 className="size-4" /></Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     </CardContent>
                 </Card>
             </div>
         </AppLayout>
     );
 }
-
-import { Clock } from 'lucide-react';

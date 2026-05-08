@@ -88,6 +88,7 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
                         type="date"
                         value={data.due_date || ''}
                         onChange={(e) => setData('due_date', e.target.value)}
+                        className='block'
                     />
                     {errors.due_date && <p className="text-sm text-destructive">{errors.due_date}</p>}
                 </div>

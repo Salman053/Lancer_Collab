@@ -70,6 +70,7 @@ export default function PaymentForm({ project, onSuccess }: PaymentFormProps) {
                         id="paid_at"
                         type="date"
                         value={data.paid_at}
+                        className='block'
                         onChange={(e) => setData('paid_at', e.target.value)}
                     />
                 </div>
