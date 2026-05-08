@@ -1,11 +1,11 @@
-import { useForm } from '@inertiajs/react';
-import { Project } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { FormEventHandler } from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import { Project } from '@/types';
+import { useForm } from '@inertiajs/react';
 import { Loader2, Send } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 interface ProjectUpdateFormProps {
     project: Project;
@@ -41,7 +41,7 @@ export default function ProjectUpdateForm({ project, onSuccess }: ProjectUpdateF
                     rows={3}
                     required
                 />
-                {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
+                {errors.message && <p className="text-destructive text-sm">{errors.message}</p>}
             </div>
 
             <div className="flex items-center justify-between">
@@ -51,16 +51,12 @@ export default function ProjectUpdateForm({ project, onSuccess }: ProjectUpdateF
                         checked={data.visible_to_client}
                         onCheckedChange={(checked: any) => setData('visible_to_client', checked)}
                     />
-                    <Label htmlFor="visible_to_client" className="text-xs text-muted-foreground">
+                    <Label htmlFor="visible_to_client" className="text-muted-foreground text-xs">
                         Visible to client
                     </Label>
                 </div>
                 <Button type="submit" disabled={processing || !data.message.trim()}>
-                    {processing ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                        <Send className="mr-2 h-4 w-4" />
-                    )}
+                    {processing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
                     Post Update
                 </Button>
             </div>

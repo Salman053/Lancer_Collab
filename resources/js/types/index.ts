@@ -94,7 +94,7 @@ export interface Project {
     deleted_at: string | null;
     created_at: string;
     updated_at: string;
-    
+
     // Relationships
     client?: Client;
     milestones?: Milestone[];
@@ -135,11 +135,14 @@ export interface ProjectUpdate {
     user?: User;
 }
 
+
+
 export interface ChatBoxProps {
     title: string;
     avatarFallback: string;
     messages: any[];
     auth: any;
-    onSendMessage: (message: string) => void;
+    onSendMessage: (message: string, attachment?: File | null) => void;
+    onDeleteMessage?: (messageId: number) => void;
     processing: boolean;
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectUpdate;
+use App\Events\ProjectUpdateCreated;
+use App\Events\ProjectUpdateDeleted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +31,9 @@ class ProjectUpdateController extends Controller
 
         $validated['user_id'] = Auth::id();
         
-        ProjectUpdate::create($validated);
+        $update = ProjectUpdate::create($validated);
+
+        broadcast(new ProjectUpdateCreated($update))->toOthers();
 
         return redirect()->back()->with('success', 'Update posted successfully.');
     }
@@ -43,7 +47,12 @@ class ProjectUpdateController extends Controller
             abort(403);
         }
 
+        $updateId = $update->id;
+        $projectId = $update->project_id;
+        
         $update->delete();
+
+        broadcast(new ProjectUpdateDeleted($updateId, $projectId))->toOthers();
 
         return redirect()->back()->with('success', 'Update deleted successfully.');
     }

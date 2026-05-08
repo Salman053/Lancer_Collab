@@ -17,8 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Index({ projects, clients }: { clients: Client[], projects: Project[] }) {
-
+export default function Index({ projects, clients }: { clients: Client[]; projects: Project[] }) {
     const handleEdit = (project: Project) => {
         router.get(route('freelancer.projects.edit', project.id));
     };
@@ -28,10 +27,7 @@ export default function Index({ projects, clients }: { clients: Client[], projec
             <Head title="Projects" />
             <div className="flex flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
-                    <PageHeader
-                        title="All Projects"
-                        subtitle="Manage all your projects from here"
-                    />
+                    <PageHeader title="All Projects" subtitle="Manage all your projects from here" />
 
                     <Link href={route('freelancer.projects.create')}>
                         <Button className="cursor-pointer" variant="primary">
@@ -43,7 +39,6 @@ export default function Index({ projects, clients }: { clients: Client[], projec
                 <div>
                     <ProjectTable projects={projects} onEdit={handleEdit} />
                 </div>
-
             </div>
         </AppLayout>
     );

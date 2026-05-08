@@ -1,19 +1,14 @@
-import { Project } from '@/types';
-import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Edit, Trash2, ExternalLink, Calendar, DollarSign, LayoutGrid, Table as TableIcon } from 'lucide-react';
-import { router } from '@inertiajs/react';
 import ConfirmDialog from '@/components/confirm-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { Progress } from '../ui/progress';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Project } from '@/types';
+import { router } from '@inertiajs/react';
+import { Calendar, DollarSign, Edit, ExternalLink, LayoutGrid, MoreHorizontal, Table as TableIcon, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Progress } from '../ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 interface ProjectTableProps {
     projects: Project[];
@@ -29,27 +24,37 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
 
     const getStatusBadgeVariant = (status: string) => {
         switch (status) {
-            case 'completed': return 'default';
-            case 'in_progress': return 'secondary';
-            case 'open': return 'outline';
-            case 'cancelled': return 'destructive';
-            default: return 'outline';
+            case 'completed':
+                return 'default';
+            case 'in_progress':
+                return 'secondary';
+            case 'open':
+                return 'outline';
+            case 'cancelled':
+                return 'destructive';
+            default:
+                return 'outline';
         }
     };
 
     const getPriorityBadgeVariant = (priority: string) => {
         switch (priority) {
-            case 'urgent': return 'destructive';
-            case 'high': return 'default';
-            case 'medium': return 'secondary';
-            case 'low': return 'outline';
-            default: return 'outline';
+            case 'urgent':
+                return 'destructive';
+            case 'high':
+                return 'default';
+            case 'medium':
+                return 'secondary';
+            case 'low':
+                return 'outline';
+            default:
+                return 'outline';
         }
     };
 
     if (projects.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center p-10 bg-muted/50 rounded-lg border border-dashed">
+            <div className="bg-muted/50 flex flex-col items-center justify-center rounded-lg border border-dashed p-10">
                 <p className="text-muted-foreground mb-4">No projects found. Add your first project to get started!</p>
             </div>
         );
@@ -59,21 +64,11 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
         <div className="space-y-4">
             {/* View Toggle Buttons */}
             <div className="flex justify-end gap-2">
-                <Button
-                    variant={viewMode === 'table' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setViewMode('table')}
-                    className="gap-2"
-                >
+                <Button variant={viewMode === 'table' ? 'default' : 'outline'} size="sm" onClick={() => setViewMode('table')} className="gap-2">
                     <TableIcon className="h-4 w-4" />
                     Table View
                 </Button>
-                <Button
-                    variant={viewMode === 'grid' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setViewMode('grid')}
-                    className="gap-2"
-                >
+                <Button variant={viewMode === 'grid' ? 'default' : 'outline'} size="sm" onClick={() => setViewMode('grid')} className="gap-2">
                     <LayoutGrid className="h-4 w-4" />
                     Grid View
                 </Button>
@@ -81,7 +76,7 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
 
             {/* Table View */}
             {viewMode === 'table' && (
-                <div className="rounded-md border bg-card">
+                <div className="bg-card rounded-md border">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -99,8 +94,8 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
                                     <TableCell className="font-medium">
                                         <div className="space-y-1">
                                             <div className="text-base font-semibold">{project.title}</div>
-                                            <div className="flex items-center text-xs text-muted-foreground gap-2">
-                                                <Badge variant="outline" className="text-[10px] py-0 px-1">
+                                            <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                                                <Badge variant="outline" className="px-1 py-0 text-[10px]">
                                                     {project.type}
                                                 </Badge>
                                                 <span className="flex items-center">
@@ -111,21 +106,15 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="text-sm font-medium">
-                                            {project.client?.name || 'Unknown Client'}
-                                        </div>
-                                        <div className="text-xs text-muted-foreground">
-                                            {project.client?.company}
-                                        </div>
+                                        <div className="text-sm font-medium">{project.client?.name || 'Unknown Client'}</div>
+                                        <div className="text-muted-foreground text-xs">{project.client?.company}</div>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center text-sm font-medium">
-                                            <DollarSign className="mr-1 h-3 w-3 text-muted-foreground" />
+                                            <DollarSign className="text-muted-foreground mr-1 h-3 w-3" />
                                             {project.budget} {project.currency}
                                         </div>
-                                        <div className="text-[10px] text-muted-foreground capitalize">
-                                            {project.billing_type.replace('_', ' ')}
-                                        </div>
+                                        <div className="text-muted-foreground text-[10px] capitalize">{project.billing_type.replace('_', ' ')}</div>
                                     </TableCell>
                                     <TableCell className="w-[150px]">
                                         <div className="space-y-1.5">
@@ -140,7 +129,10 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
                                             <Badge className="w-fit capitalize" variant={getStatusBadgeVariant(project.status)}>
                                                 {project.status.replace('_', ' ')}
                                             </Badge>
-                                            <Badge className="w-fit text-[10px] py-0 px-1 capitalize" variant={getPriorityBadgeVariant(project.priority)}>
+                                            <Badge
+                                                className="w-fit px-1 py-0 text-[10px] capitalize"
+                                                variant={getPriorityBadgeVariant(project.priority)}
+                                            >
                                                 {project.priority}
                                             </Badge>
                                         </div>
@@ -191,13 +183,13 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
 
             {/* Grid View */}
             {viewMode === 'grid' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {projects.map((project) => (
                         <Card key={project.id} className="overflow-hidden">
                             <CardHeader className="pb-3">
-                                <div className="flex justify-between items-start">
+                                <div className="flex items-start justify-between">
                                     <div className="space-y-1">
-                                        <h3 className="font-semibold text-lg leading-tight">{project.title}</h3>
+                                        <h3 className="text-lg leading-tight font-semibold">{project.title}</h3>
                                         <Badge variant="outline" className="text-xs">
                                             {project.type}
                                         </Badge>
@@ -237,36 +229,28 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
                                     </DropdownMenu>
                                 </div>
                             </CardHeader>
-                            
+
                             <CardContent className="space-y-4 pb-3">
                                 {/* Client Info */}
                                 <div className="space-y-1">
-                                    <p className="text-sm font-medium">
-                                        {project.client?.name || 'Unknown Client'}
-                                    </p>
-                                    {project.client?.company && (
-                                        <p className="text-xs text-muted-foreground">
-                                            {project.client.company}
-                                        </p>
-                                    )}
+                                    <p className="text-sm font-medium">{project.client?.name || 'Unknown Client'}</p>
+                                    {project.client?.company && <p className="text-muted-foreground text-xs">{project.client.company}</p>}
                                 </div>
 
                                 {/* Budget and Deadline */}
-                                <div className="flex justify-between items-center">
+                                <div className="flex items-center justify-between">
                                     <div className="flex items-center text-sm font-medium">
-                                        <DollarSign className="mr-1 h-4 w-4 text-muted-foreground" />
+                                        <DollarSign className="text-muted-foreground mr-1 h-4 w-4" />
                                         {project.budget} {project.currency}
                                     </div>
-                                    <div className="flex items-center text-xs text-muted-foreground">
+                                    <div className="text-muted-foreground flex items-center text-xs">
                                         <Calendar className="mr-1 h-3 w-3" />
                                         {project.deadline ? new Date(project.deadline).toLocaleDateString() : 'No deadline'}
                                     </div>
                                 </div>
 
                                 {/* Billing Type */}
-                                <div className="text-xs text-muted-foreground capitalize">
-                                    {project.billing_type.replace('_', ' ')}
-                                </div>
+                                <div className="text-muted-foreground text-xs capitalize">{project.billing_type.replace('_', ' ')}</div>
 
                                 {/* Progress */}
                                 <div className="space-y-1.5">
@@ -287,11 +271,11 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
                                     </Badge>
                                 </div>
                             </CardContent>
-                            
+
                             <CardFooter className="pt-3">
-                                <Button 
-                                    variant="outline" 
-                                    size="sm" 
+                                <Button
+                                    variant="outline"
+                                    size="sm"
                                     className="w-full"
                                     onClick={() => router.get(route('freelancer.projects.show', project.id))}
                                 >

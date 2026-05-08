@@ -18,7 +18,6 @@ class MessageController extends Controller
     {
         $userId = Auth::id();
 
-        // Get projects where the user is either the freelancer or the client
         $projects = Project::where('user_id', $userId)
             ->orWhereHas('client', function($q) use ($userId) {
                 $q->where('account_id', $userId);
@@ -44,11 +43,10 @@ class MessageController extends Controller
             $selectedProject = $projects->firstWhere('id', $selectedProjectId);
             if ($selectedProject) {
                 $messages = Message::where('project_id', $selectedProjectId)
-                    ->with(['sender', 'reciever'])
+                    ->with(['sender', 'receiver'])
                     ->oldest()
                     ->get();
                 
-                // Mark as read
                 Message::where('project_id', $selectedProjectId)
                     ->where('to_user_id', $userId)
                     ->whereNull('read_at')
@@ -63,37 +61,99 @@ class MessageController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'message' => 'required|string',
-            'to_user_id' => 'required|exists:users,id',
-        ]);
+    
+     public function store(Request $request)
+     {
+         $validated = $request->validate([
+             'project_id' => 'required|exists:projects,id',
+             'message' => 'required|string',
+             'to_user_id' => 'required|exists:users,id',
+             'attachment' => 'nullable|file|max:512', // Max 512KB (0.5MB)
+         ]);
 
-        $project = Project::with('client')->findOrFail($validated['project_id']);
-        $user = Auth::user();
+         $project = Project::with('client')->findOrFail($validated['project_id']);
+         $user = Auth::user();
 
-        // Authorization: Ensure the user is either the freelancer or the client assigned to the project
-        $isFreelancer = $project->user_id === $user->id;
-        $isClient = $project->client && $project->client->account_id === $user->id;
+         // Authorization: Ensure the user is either the freelancer or the client assigned to the project
+         $isFreelancer = $project->user_id === $user->id;
+         $isClient = $project->client && $project->client->account_id === $user->id;
 
-        if (! $isFreelancer && ! $isClient) {
-            abort(403, 'You are not authorized to send messages to this project.');
-        }
+         if (! $isFreelancer && ! $isClient) {
+             abort(403, 'You are not authorized to send messages to this project.');
+         }
 
-        Message::create([
-            'project_id' => $validated['project_id'],
-            'from_user_id' => $user->id,
-            'to_user_id' => $validated['to_user_id'],
-            'message' => $validated['message'],
-            'sent_at' => now(),
-            'created_at' => now(),
-        ]);
+         $attachmentPath = null;
+         $attachmentName = null;
 
-        return redirect()->back()->with('success', 'Message sent.');
-    }
+         if ($request->hasFile('attachment')) {
+             $file = $request->file('attachment');
+             $attachmentPath = $file->store('attachments/messages', 'public');
+             $attachmentName = $file->getClientOriginalName();
+         }
+
+         $message = Message::create([
+             'project_id' => $validated['project_id'],
+             'from_user_id' => $user->id,
+             'to_user_id' => $validated['to_user_id'],
+             'message' => $validated['message'],
+             'attachment_path' => $attachmentPath,
+             'attachment_name' => $attachmentName,
+             'sent_at' => now(),
+             'created_at' => now(),
+         ]);
+
+         event(new \App\Events\MessageSent($message));
+
+         return redirect()->back()->with('success', 'Message sent.');
+     }
+
+     /**
+      * Remove the specified resource from storage.
+      */
+     public function destroy(Message $message)
+     {
+         $user = Auth::user();
+
+         // Only the sender can delete the message
+         if ($message->from_user_id !== $user->id) {
+             abort(403, 'You are not authorized to delete this message.');
+         }
+
+         // Cleanup attachment if exists
+         if ($message->attachment_path) {
+             \Illuminate\Support\Facades\Storage::disk('public')->delete($message->attachment_path);
+         }
+
+         $messageClone = clone $message; // Clone to keep data for event after delete
+         $message->delete();
+
+         event(new \App\Events\MessageDeleted($messageClone));
+
+         return redirect()->back()->with('success', 'Message deleted.');
+     }
+
+     /**
+      * Delete only the attachment from a message.
+      */
+     public function deleteAttachment(Message $message)
+     {
+         $user = Auth::user();
+
+         if ($message->from_user_id !== $user->id) {
+             abort(403, 'You are not authorized to modify this message.');
+         }
+
+         if ($message->attachment_path) {
+             \Illuminate\Support\Facades\Storage::disk('public')->delete($message->attachment_path);
+             
+             $message->update([
+                 'attachment_path' => null,
+                 'attachment_name' => null,
+             ]);
+
+             event(new \App\Events\MessageSent($message)); // Re-fire sent event to update UI
+         }
+
+         return redirect()->back()->with('success', 'Attachment deleted.');
+     }
 }

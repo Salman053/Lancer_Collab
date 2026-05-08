@@ -8,8 +8,8 @@ interface NavigationSectionsProps {
 
 export function NavigationSections({ items, className = '' }: NavigationSectionsProps) {
     const sections = {
-        main: items.filter(item => !['Settings', 'Support'].includes(item.title)),
-        secondary: items.filter(item => ['Settings', 'Support'].includes(item.title)),
+        main: items.filter((item) => !['Settings', 'Support'].includes(item.title)),
+        secondary: items.filter((item) => ['Settings', 'Support'].includes(item.title)),
     };
 
     return (
@@ -21,7 +21,7 @@ export function NavigationSections({ items, className = '' }: NavigationSections
             )}
 
             {sections.secondary.length > 0 && (
-                <div className="border-t border-border pt-4 mt-4">
+                <div className="border-border mt-4 border-t pt-4">
                     <NavMain items={sections.secondary} />
                 </div>
             )}

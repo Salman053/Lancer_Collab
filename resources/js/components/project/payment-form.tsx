@@ -1,13 +1,13 @@
-import { useForm } from '@inertiajs/react';
-import { Project } from '@/types';
 import { Button } from '@/components/ui/button';
+import { DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DialogFooter } from '@/components/ui/dialog';
-import { FormEventHandler } from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import { Project } from '@/types';
+import { useForm } from '@inertiajs/react';
 import { Loader2 } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 interface PaymentFormProps {
     project: Project;
@@ -66,13 +66,7 @@ export default function PaymentForm({ project, onSuccess }: PaymentFormProps) {
 
                 <div className="space-y-2">
                     <Label htmlFor="paid_at">Date</Label>
-                    <Input
-                        id="paid_at"
-                        type="date"
-                        value={data.paid_at}
-                        className='block'
-                        onChange={(e) => setData('paid_at', e.target.value)}
-                    />
+                    <Input id="paid_at" type="date" value={data.paid_at} className="block" onChange={(e) => setData('paid_at', e.target.value)} />
                 </div>
             </div>
 
@@ -88,12 +82,7 @@ export default function PaymentForm({ project, onSuccess }: PaymentFormProps) {
 
             <div className="space-y-2">
                 <Label htmlFor="notes">Notes</Label>
-                <Textarea
-                    id="notes"
-                    value={data.notes}
-                    onChange={(e) => setData('notes', e.target.value)}
-                    rows={2}
-                />
+                <Textarea id="notes" value={data.notes} onChange={(e) => setData('notes', e.target.value)} rows={2} />
             </div>
 
             <DialogFooter>

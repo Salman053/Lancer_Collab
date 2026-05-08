@@ -1,22 +1,11 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, usePage, Link } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import {
-    Briefcase,
-    Users,
-    DollarSign,
-    CheckCircle2,
-    ArrowUpRight,
-    Clock,
-    Calendar,
-    Plus,
-    MoreHorizontal,
-    Sparkles
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { ArrowUpRight, Briefcase, Calendar, CheckCircle2, Clock, DollarSign, MoreHorizontal, Plus, Sparkles, Users } from 'lucide-react';
 import React from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,19 +34,17 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Freelancer Dashboard" />
 
-            <div className="p-6 space-y-8 animate-in fade-in duration-500">
+            <div className="animate-in fade-in space-y-8 p-6 duration-500">
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                        <h1 className="from-foreground to-foreground/70 bg-gradient-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent">
                             Freelancer Hub
                         </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Overview of your agency's performance and upcoming work.
-                        </p>
+                        <p className="text-muted-foreground mt-1">Overview of your agency's performance and upcoming work.</p>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" size="sm" className="hidden sm:flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="hidden items-center gap-2 sm:flex">
                             <Calendar className="h-4 w-4" />
                             View Schedule
                         </Button>
@@ -108,7 +95,7 @@ export default function Dashboard() {
 
                 <div className="grid gap-6 lg:grid-cols-7">
                     {/* Recent Projects */}
-                    <Card className="lg:col-span-4 shadow-sm ">
+                    <Card className="shadow-sm lg:col-span-4">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle>Recent Projects</CardTitle>
@@ -122,49 +109,51 @@ export default function Dashboard() {
                             <div className="space-y-6">
                                 {recent_projects.length > 0 ? (
                                     recent_projects.map((project) => (
-                                        <div key={project.id} className="group relative flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-all duration-200">
+                                        <div
+                                            key={project.id}
+                                            className="group hover:bg-muted/50 relative flex items-center justify-between rounded-xl p-3 transition-all duration-200"
+                                        >
                                             <div className="flex items-center gap-4">
-                                                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                                <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-lg font-bold">
                                                     {project.title.charAt(0)}
                                                 </div>
                                                 <div>
-                                                    <Link href={route('freelancer.projects.show', project.id)} className="font-medium hover:underline block">
+                                                    <Link
+                                                        href={route('freelancer.projects.show', project.id)}
+                                                        className="block font-medium hover:underline"
+                                                    >
                                                         {project.title}
                                                     </Link>
-                                                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                                    <span className="text-muted-foreground flex items-center gap-1 text-xs">
                                                         <Users className="h-3 w-3" />
                                                         {project.client?.name || 'No Client'}
                                                     </span>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-4">
-                                                <div className="hidden md:block text-right">
+                                                <div className="hidden text-right md:block">
                                                     <div className="text-sm font-medium">85%</div>
-                                                    <Progress value={85} className="h-1 w-16 mt-1" />
+                                                    <Progress value={85} className="mt-1 h-1 w-16" />
                                                 </div>
                                                 <Badge variant="secondary" className="capitalize">
                                                     {project.status.replace('_', ' ')}
                                                 </Badge>
-                                                <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                <ArrowUpRight className="text-muted-foreground h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                                             </div>
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="text-center py-10 text-muted-foreground italic">
-                                        No projects found. Start by creating one!
-                                    </div>
+                                    <div className="text-muted-foreground py-10 text-center italic">No projects found. Start by creating one!</div>
                                 )}
                             </div>
-                            <Button variant="link" className="w-full mt-4 text-primary" asChild>
-                                <Link href={route('freelancer.projects')}>
-                                    View all projects
-                                </Link>
+                            <Button variant="link" className="text-primary mt-4 w-full" asChild>
+                                <Link href={route('freelancer.projects')}>View all projects</Link>
                             </Button>
                         </CardContent>
                     </Card>
 
                     {/* Upcoming Tasks */}
-                    <Card className="lg:col-span-3 shadow-sm">
+                    <Card className="shadow-sm lg:col-span-3">
                         <CardHeader>
                             <CardTitle>Upcoming Tasks</CardTitle>
                             <CardDescription>Tasks due in the next 7 days</CardDescription>
@@ -173,16 +162,14 @@ export default function Dashboard() {
                             <div className="space-y-4">
                                 {upcoming_tasks.length > 0 ? (
                                     upcoming_tasks.map((task) => (
-                                        <div key={task.id} className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/30 transition-colors">
+                                        <div key={task.id} className="hover:bg-muted/30 flex items-start gap-3 rounded-lg p-2 transition-colors">
                                             <div className="mt-1">
                                                 <div className={`h-2 w-2 rounded-full ${task.priority === 'high' ? 'bg-red-500' : 'bg-blue-500'}`} />
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium leading-none truncate">{task.title}</p>
-                                                <p className="text-xs text-muted-foreground mt-1 truncate">
-                                                    {task.project?.title}
-                                                </p>
-                                                <div className="flex items-center gap-2 mt-2 text-[10px] uppercase font-bold text-muted-foreground">
+                                            <div className="min-w-0 flex-1">
+                                                <p className="truncate text-sm leading-none font-medium">{task.title}</p>
+                                                <p className="text-muted-foreground mt-1 truncate text-xs">{task.project?.title}</p>
+                                                <div className="text-muted-foreground mt-2 flex items-center gap-2 text-[10px] font-bold uppercase">
                                                     <Clock className="h-3 w-3" />
                                                     {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No date'}
                                                 </div>
@@ -193,17 +180,15 @@ export default function Dashboard() {
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="text-center py-10 text-muted-foreground italic">
-                                        All caught up! No pending tasks.
-                                    </div>
+                                    <div className="text-muted-foreground py-10 text-center italic">All caught up! No pending tasks.</div>
                                 )}
                             </div>
-                            <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-brand/5 to-brand/10 border border-brand/10">
-                                <h4 className="text-sm font-bold flex items-center gap-2 text-brand">
+                            <div className="from-brand/5 to-brand/10 border-brand/10 mt-6 rounded-xl border bg-gradient-to-br p-4">
+                                <h4 className="text-brand flex items-center gap-2 text-sm font-bold">
                                     <Sparkles className="h-4 w-4" />
                                     Agency Pro Tip
                                 </h4>
-                                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                                <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
                                     Completing milestones on time increases client satisfaction by 40%. Keep it up!
                                 </p>
                             </div>
@@ -249,34 +234,33 @@ export function StatCard({ title, value, icon, description, trend, color }: Stat
     const isPositive = trend.startsWith('+');
 
     return (
-        <Card className="relative overflow-hidden group transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] border-border/50 bg-card/50 backdrop-blur-sm">
+        <Card className="group border-border/50 bg-card/50 relative overflow-hidden backdrop-blur-sm transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
             {/* Top accent line that appears on hover */}
-            <div className={`absolute top-0 left-0 w-full h-[2px] transition-transform duration-500 -translate-x-full group-hover:translate-x-0 ${colorMap[color].split(' ')[0].replace('text', 'bg')}`} />
+            <div
+                className={`absolute top-0 left-0 h-[2px] w-full -translate-x-full transition-transform duration-500 group-hover:translate-x-0 ${colorMap[color].split(' ')[0].replace('text', 'bg')}`}
+            />
 
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/70">
-                    {title}
-                </CardTitle>
-                <div className={`p-2.5 rounded-xl border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${colorMap[color]}`}>
+                <CardTitle className="text-muted-foreground/70 text-[11px] font-bold tracking-widest uppercase">{title}</CardTitle>
+                <div className={`rounded-xl border p-2.5 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${colorMap[color]}`}>
                     {React.cloneElement(icon as React.ReactElement<any>, { className: 'size-4' })}
                 </div>
             </CardHeader>
 
             <CardContent>
-                <div className="text-3xl font-bold tracking-tight text-foreground tabular-nums">
-                    {value}
-                </div>
+                <div className="text-foreground text-3xl font-bold tracking-tight tabular-nums">{value}</div>
 
-                <div className="flex items-center gap-2 mt-3">
-                    <div className={`flex items-center text-[11px] font-bold px-2 py-0.5 rounded-md ${isPositive
-                            ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400'
-                            : 'text-rose-600 bg-rose-50 dark:bg-rose-500/10 dark:text-rose-400'
-                        }`}>
+                <div className="mt-3 flex items-center gap-2">
+                    <div
+                        className={`flex items-center rounded-md px-2 py-0.5 text-[11px] font-bold ${
+                            isPositive
+                                ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
+                                : 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
+                        }`}
+                    >
                         {isPositive ? '↑' : '↓'} {trend}
                     </div>
-                    <p className="text-[11px] text-muted-foreground font-medium italic">
-                        {description}
-                    </p>
+                    <p className="text-muted-foreground text-[11px] font-medium italic">{description}</p>
                 </div>
             </CardContent>
         </Card>

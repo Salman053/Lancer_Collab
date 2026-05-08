@@ -14,12 +14,16 @@ class SendPaymentReminders extends Command
 
     public function handle()
     {
-        $overduePayments = Payment::where('status', PaymentStatus::PENDING)
+        $overduePayments = Payment::with(['project.client.user'])
+            ->where('status', PaymentStatus::PENDING)
             ->where('due_date', '<', now())
-            ->with(['project.client.user'])
             ->get();
 
         foreach ($overduePayments as $payment) {
+            if (! $payment instanceof Payment) {
+                continue;
+            }
+
             $user = $payment->project->client->user;
             if ($user) {
                 $user->notify(new PaymentReminderNotification($payment));

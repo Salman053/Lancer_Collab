@@ -4,10 +4,10 @@ import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
 import { type BreadcrumbItem } from '@/types';
 
-import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
 import { ThemeVariantSelector } from '@/components/ui/animated-theme-toggler';
 import { useAppearance } from '@/hooks/use-appearance';
+import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,12 +31,12 @@ export default function Appearance() {
                     </div>
 
                     <div className="space-y-6">
-                        <HeadingSmall title="Theme Transition" description="Choose your preferred animation when switching between light and dark mode" />
-                        <div className="rounded-xl border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden">
-                            <ThemeVariantSelector 
-                                currentVariant={animationVariant} 
-                                onVariantChange={updateAnimationVariant} 
-                            />
+                        <HeadingSmall
+                            title="Theme Transition"
+                            description="Choose your preferred animation when switching between light and dark mode"
+                        />
+                        <div className="bg-card/50 overflow-hidden rounded-xl border shadow-sm backdrop-blur-sm">
+                            <ThemeVariantSelector currentVariant={animationVariant} onVariantChange={updateAnimationVariant} />
                         </div>
                     </div>
                 </div>

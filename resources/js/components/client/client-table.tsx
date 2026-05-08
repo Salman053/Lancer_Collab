@@ -1,19 +1,14 @@
-import { Client } from '@/types';
-import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Edit, Trash2, Mail, Phone, Building2, LayoutGrid, Table2 } from 'lucide-react';
-import { router } from '@inertiajs/react';
 import ConfirmDialog from '@/components/confirm-dialog';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Client } from '@/types';
+import { router } from '@inertiajs/react';
+import { Building2, Edit, LayoutGrid, Mail, MoreHorizontal, Phone, Table2, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 interface ClientTableProps {
     clients: Client[];
@@ -32,7 +27,7 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
     const getInitials = (name: string) => {
         return name
             .split(' ')
-            .map(word => word[0])
+            .map((word) => word[0])
             .join('')
             .toUpperCase()
             .slice(0, 2);
@@ -40,7 +35,7 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
 
     if (clients.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center p-10 bg-muted/50 rounded-lg border border-dashed">
+            <div className="bg-muted/50 flex flex-col items-center justify-center rounded-lg border border-dashed p-10">
                 <p className="text-muted-foreground mb-4">No clients found. Add your first client to get started!</p>
             </div>
         );
@@ -50,23 +45,13 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
         <div className="space-y-4">
             {/* View Toggle */}
             <div className="flex justify-end">
-                <div className="flex items-center gap-1 p-1 bg-muted rounded-lg">
-                    <Button
-                        variant={viewMode === 'table' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setViewMode('table')}
-                        className="h-8 px-3"
-                    >
-                        <Table2 className="h-4 w-4 mr-2" />
+                <div className="bg-muted flex items-center gap-1 rounded-lg p-1">
+                    <Button variant={viewMode === 'table' ? 'default' : 'ghost'} size="sm" onClick={() => setViewMode('table')} className="h-8 px-3">
+                        <Table2 className="mr-2 h-4 w-4" />
                         Table
                     </Button>
-                    <Button
-                        variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setViewMode('grid')}
-                        className="h-8 px-3"
-                    >
-                        <LayoutGrid className="h-4 w-4 mr-2" />
+                    <Button variant={viewMode === 'grid' ? 'default' : 'ghost'} size="sm" onClick={() => setViewMode('grid')} className="h-8 px-3">
+                        <LayoutGrid className="mr-2 h-4 w-4" />
                         Grid
                     </Button>
                 </div>
@@ -91,17 +76,17 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                                     <TableCell className="font-medium">
                                         <div>
                                             <div className="text-base font-semibold">{client.name}</div>
-                                            <div className="text-xs text-muted-foreground">{client.timezone}</div>
+                                            <div className="text-muted-foreground text-xs">{client.timezone}</div>
                                         </div>
                                     </TableCell>
                                     <TableCell>
                                         <div className="space-y-1">
                                             <div className="flex items-center text-sm">
-                                                <Mail className="mr-2 h-3 w-3 text-muted-foreground" />
+                                                <Mail className="text-muted-foreground mr-2 h-3 w-3" />
                                                 {client.email}
                                             </div>
                                             {client.phone && (
-                                                <div className="flex items-center text-sm text-muted-foreground">
+                                                <div className="text-muted-foreground flex items-center text-sm">
                                                     <Phone className="mr-2 h-3 w-3" />
                                                     {client.phone}
                                                 </div>
@@ -110,17 +95,17 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center">
-                                            <Building2 className="mr-2 h-4 w-4 text-muted-foreground" />
+                                            <Building2 className="text-muted-foreground mr-2 h-4 w-4" />
                                             {client.company || <span className="text-muted-foreground italic">N/A</span>}
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex flex-col gap-1 capitalize w-fit">
-                                            <Badge className='w-fit' variant={client.status === 'active' ? 'secondary' : 'outline'}>
+                                        <div className="flex w-fit flex-col gap-1 capitalize">
+                                            <Badge className="w-fit" variant={client.status === 'active' ? 'secondary' : 'outline'}>
                                                 {client.status || 'Active'}
                                             </Badge>
                                             {client.account_id && (
-                                                <Badge variant={"secondary"} className="text-[10px] py-0 px-1">
+                                                <Badge variant={'secondary'} className="px-1 py-0 text-[10px]">
                                                     Account Provisioned
                                                 </Badge>
                                             )}
@@ -168,27 +153,23 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
 
             {/* Grid/Card View */}
             {viewMode === 'grid' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {clients.map((client) => (
-                        <Card key={client.id} className="group hover:shadow-lg transition-shadow duration-200">
+                        <Card key={client.id} className="group transition-shadow duration-200 hover:shadow-lg">
                             <CardHeader className="pb-3">
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center space-x-3">
                                         <Avatar className="h-10 w-10">
-                                            <AvatarFallback className="bg-primary/10 text-primary">
-                                                {getInitials(client.name)}
-                                            </AvatarFallback>
+                                            <AvatarFallback className="bg-primary/10 text-primary">{getInitials(client.name)}</AvatarFallback>
                                         </Avatar>
                                         <div>
-                                            <h3 className="font-semibold text-lg leading-none">{client.name}</h3>
-                                            {client.timezone && (
-                                                <p className="text-xs text-muted-foreground mt-1">{client.timezone}</p>
-                                            )}
+                                            <h3 className="text-lg leading-none font-semibold">{client.name}</h3>
+                                            {client.timezone && <p className="text-muted-foreground mt-1 text-xs">{client.timezone}</p>}
                                         </div>
                                     </div>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
-                                            <Button variant="ghost" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Button variant="ghost" className="h-8 w-8 p-0 opacity-0 transition-opacity group-hover:opacity-100">
                                                 <MoreHorizontal className="h-4 w-4" />
                                             </Button>
                                         </DropdownMenuTrigger>
@@ -220,24 +201,24 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                             <CardContent className="space-y-3 pb-3">
                                 <div className="space-y-2">
                                     <div className="flex items-center text-sm">
-                                        <Mail className="mr-2 h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                                        <Mail className="text-muted-foreground mr-2 h-3.5 w-3.5 flex-shrink-0" />
                                         <span className="truncate">{client.email}</span>
                                     </div>
                                     {client.phone && (
                                         <div className="flex items-center text-sm">
-                                            <Phone className="mr-2 h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                                            <Phone className="text-muted-foreground mr-2 h-3.5 w-3.5 flex-shrink-0" />
                                             <span>{client.phone}</span>
                                         </div>
                                     )}
                                     {client.company && (
                                         <div className="flex items-center text-sm">
-                                            <Building2 className="mr-2 h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                                            <Building2 className="text-muted-foreground mr-2 h-3.5 w-3.5 flex-shrink-0" />
                                             <span className="truncate">{client.company}</span>
                                         </div>
                                     )}
                                 </div>
                             </CardContent>
-                            <CardFooter className="pt-3 flex items-center justify-between border-t">
+                            <CardFooter className="flex items-center justify-between border-t pt-3">
                                 <div className="flex flex-col gap-1">
                                     <Badge variant={client.status === 'active' ? 'default' : 'secondary'} className="capitalize">
                                         {client.status || 'Active'}
@@ -248,8 +229,8 @@ export default function ClientTable({ clients, onEdit }: ClientTableProps) {
                                         </Badge>
                                     )}
                                 </div>
-                                <Button 
-                                    variant="ghost" 
+                                <Button
+                                    variant="ghost"
                                     size="sm"
                                     onClick={() => router.visit(route('freelancer.clients.show', client.id))}
                                     className="text-xs"

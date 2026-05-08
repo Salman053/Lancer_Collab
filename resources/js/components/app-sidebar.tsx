@@ -1,18 +1,18 @@
 import { NavFooter } from '@/components/nav-footer';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { useRoleNavigation } from '@/hooks/useRoleNavigation';
 import { Link } from '@inertiajs/react';
 import AppLogo from './app-logo';
-import { useRoleNavigation } from '@/hooks/useRoleNavigation';
 import { NavigationSections } from './navigation-sections';
 
 export function AppSidebar() {
     const { userRole, dashboardRoute, navigationItems, footerItems } = useRoleNavigation();
 
     return (
-        <Sidebar collapsible="icon" variant="inset" >
-            <SidebarHeader  >
-                <SidebarMenu >
+        <Sidebar collapsible="icon" variant="inset">
+            <SidebarHeader>
+                <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboardRoute} prefetch>

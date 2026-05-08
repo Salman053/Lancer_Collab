@@ -17,7 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Index({ clients }: { clients: Client[] }) {
-
     const handleEdit = (client: Client) => {
         router.get(route('freelancer.clients.edit', client.id));
     };
@@ -26,15 +25,11 @@ export default function Index({ clients }: { clients: Client[] }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Clients" />
             <div className="flex flex-col gap-6 p-6">
-
                 <div className="flex items-center justify-between">
-                    <PageHeader
-                        title="All Clients"
-                        subtitle="Manage all your clients from here"
-                    />
+                    <PageHeader title="All Clients" subtitle="Manage all your clients from here" />
 
                     <Link href={route('freelancer.clients.create')}>
-                        <Button className='cursor-pointer' variant={'primary'}>
+                        <Button className="cursor-pointer" variant={'primary'}>
                             New Client
                         </Button>
                     </Link>

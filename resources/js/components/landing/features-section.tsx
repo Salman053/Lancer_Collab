@@ -1,17 +1,10 @@
-import React from 'react';
-import { 
-    Users, 
-    Layers, 
-    CreditCard, 
-    MessageSquare, 
-    ShieldCheck, 
-    BarChart3 
-} from 'lucide-react';
+import { BarChart3, CreditCard, Layers, MessageSquare, ShieldCheck, Users } from 'lucide-react';
 
 const features = [
     {
         name: 'Client Management',
-        description: 'Comprehensive CRM designed specifically for agencies. Track leads, active clients, and historical partnerships in one elegant interface.',
+        description:
+            'Comprehensive CRM designed specifically for agencies. Track leads, active clients, and historical partnerships in one elegant interface.',
         icon: Users,
     },
     {
@@ -43,48 +36,45 @@ const features = [
 
 export default function FeaturesSection() {
     return (
-        <section id="features" className="relative py-24 bg-background overflow-hidden">
+        <section id="features" className="bg-background relative overflow-hidden py-24">
             {/* Subtle background decoration */}
-            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-                 style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
+            <div
+                className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]"
+                style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '32px 32px' }}
             />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="text-center max-w-3xl mx-auto mb-20">
-                    <h2 className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">
-                        Core Capabilities
-                    </h2>
-                    <p className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase italic mb-6">
+            <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto mb-20 max-w-3xl text-center">
+                    <h2 className="text-primary mb-4 text-sm font-bold tracking-[0.3em] uppercase">Core Capabilities</h2>
+                    <p className="text-foreground mb-6 text-4xl font-extrabold tracking-tight uppercase italic md:text-5xl">
                         Deliver <span className="text-primary not-italic">exceptional</span> client experiences.
                     </p>
-                    <p className="text-lg text-muted-foreground leading-relaxed">
-                        LaraCollab automates the administrative overhead of client collaboration, 
-                        allowing your team to focus on high-impact deliverables.
+                    <p className="text-muted-foreground text-lg leading-relaxed">
+                        LaraCollab automates the administrative overhead of client collaboration, allowing your team to focus on high-impact
+                        deliverables.
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {features.map((feature) => (
-                        <div 
-                            key={feature.name} 
-                            className="group relative p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/5"
+                        <div
+                            key={feature.name}
+                            className="group border-border bg-card/50 hover:border-primary/50 hover:shadow-primary/5 relative rounded-2xl border p-8 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl"
                         >
                             {/* Icon container with subtle glow on hover */}
-                            <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-xl mb-6 group-hover:bg-brand group-hover:text-foreground transition-colors duration-75">
+                            <div className="bg-secondary group-hover:bg-brand group-hover:text-foreground mb-6 inline-flex items-center justify-center rounded-xl p-3 transition-colors duration-75">
                                 <feature.icon className="h-6 w-6" aria-hidden="true" />
                             </div>
-                            
-                            <h3 className="text-lg font-bold text-foreground uppercase tracking-wider mb-3 group-hover:text-primary transition-colors">
+
+                            <h3 className="text-foreground group-hover:text-primary mb-3 text-lg font-bold tracking-wider uppercase transition-colors">
                                 {feature.name}
                             </h3>
-                            
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                {feature.description}
-                            </p>
+
+                            <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
 
                             {/* Corner accent for a modern touch */}
-                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div className="h-1 w-1 rounded-full bg-primary" />
+                            <div className="absolute top-0 right-0 p-4 opacity-0 transition-opacity group-hover:opacity-100">
+                                <div className="bg-primary h-1 w-1 rounded-full" />
                             </div>
                         </div>
                     ))}

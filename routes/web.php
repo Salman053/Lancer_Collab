@@ -32,8 +32,10 @@ Route::middleware(['auth', 'role:'.UserRoles::ADMIN->value])->prefix('admin')->g
 Route::middleware(['auth'])->group(function () {
     Route::get('files/{file}/download', [FileController::class, 'download'])->name('files.download');
     
-    Route::post('messages', [MessageController::class, 'store'])->name('messages.store');
-});
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+    Route::delete('/messages/{message}/attachment', [MessageController::class, 'deleteAttachment'])->name('messages.attachment.destroy');
+    });
 
 Route::middleware(['auth', 'role:'.UserRoles::CLIENT->value])->prefix('client')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\ClientDashboardController::class, 'index'])->name('client.dashboard');

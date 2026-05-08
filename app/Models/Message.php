@@ -25,6 +25,8 @@ class Message extends Model
         'is_reply',
         'sent_at',
         'created_at',
+        'attachment_path',
+        'attachment_name',
     ];
 
     protected $casts = [
@@ -50,7 +52,7 @@ class Message extends Model
         return $this->belongsTo(User::class, 'from_user_id');
     }
 
-    public function reciever(): BelongsTo
+    public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'to_user_id');
     }

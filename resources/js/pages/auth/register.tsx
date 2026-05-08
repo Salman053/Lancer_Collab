@@ -1,6 +1,6 @@
 // pages/auth/register.tsx
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle, User, Mail, Lock } from 'lucide-react';
+import { LoaderCircle, Lock, Mail, User } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
@@ -34,10 +34,7 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout
-            title="Create an account"
-            description="Start managing your projects professionally"
-        >
+        <AuthLayout title="Create an account" description="Start managing your projects professionally">
             <Head title="Register" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -48,7 +45,7 @@ export default function Register() {
                             Full name
                         </Label>
                         <div className="relative">
-                            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 id="name"
                                 type="text"
@@ -72,7 +69,7 @@ export default function Register() {
                             Email address
                         </Label>
                         <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 id="email"
                                 type="email"
@@ -95,7 +92,7 @@ export default function Register() {
                             Password
                         </Label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 id="password"
                                 type="password"
@@ -110,9 +107,7 @@ export default function Register() {
                             />
                         </div>
                         <InputError message={errors.password} />
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Must be at least 8 characters
-                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Must be at least 8 characters</p>
                     </div>
 
                     {/* Confirm Password Field */}
@@ -121,7 +116,7 @@ export default function Register() {
                             Confirm password
                         </Label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 id="password_confirmation"
                                 type="password"
@@ -139,7 +134,7 @@ export default function Register() {
                     </div>
 
                     {/* Terms Agreement */}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                    <p className="text-center text-xs text-gray-500 dark:text-gray-400">
                         By creating an account, you agree to our{' '}
                         <a href="#" className="text-brand hover:underline">
                             Terms of Service
@@ -154,13 +149,13 @@ export default function Register() {
                     <Button
                         type="submit"
                         variant="primary"
-                        className="mt-2 w-full py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                        className="mt-2 w-full rounded-lg py-2.5 shadow-md transition-all duration-200 hover:shadow-lg"
                         tabIndex={5}
                         disabled={processing}
                     >
                         {processing ? (
                             <>
-                                <LoaderCircle className="h-4 w-4 animate-spin mr-2" />
+                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                 Creating account...
                             </>
                         ) : (
@@ -172,11 +167,7 @@ export default function Register() {
                 {/* Login Link */}
                 <div className="text-center text-sm text-gray-600 dark:text-gray-400">
                     Already have an account?{' '}
-                    <TextLink
-                        href={route('login')}
-                        tabIndex={6}
-                        className="font-medium"
-                    >
+                    <TextLink href={route('login')} tabIndex={6} className="font-medium">
                         Sign in instead
                     </TextLink>
                 </div>

@@ -1,10 +1,10 @@
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { ShieldCheck, Mail, AlertTriangle } from 'lucide-react';
+import { Mail, ShieldCheck } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,7 +34,7 @@ export default function AuditLogsIndex() {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <ShieldCheck className="h-5 w-5 text-primary" />
+                            <ShieldCheck className="text-primary h-5 w-5" />
                             Email & Notification Trail
                         </CardTitle>
                     </CardHeader>
@@ -51,7 +51,7 @@ export default function AuditLogsIndex() {
                             <TableBody>
                                 {logs.data.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                                        <TableCell colSpan={4} className="text-muted-foreground py-8 text-center">
                                             No logs found.
                                         </TableCell>
                                     </TableRow>
@@ -60,7 +60,7 @@ export default function AuditLogsIndex() {
                                         <TableRow key={log.id}>
                                             <TableCell className="font-medium">
                                                 <div className="flex items-center gap-2">
-                                                    <Mail className="h-3 w-3 text-muted-foreground" />
+                                                    <Mail className="text-muted-foreground h-3 w-3" />
                                                     {log.type.replace('_', ' ').toUpperCase()}
                                                 </div>
                                             </TableCell>
@@ -70,7 +70,7 @@ export default function AuditLogsIndex() {
                                                     {log.status.toUpperCase()}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="text-sm text-muted-foreground">
+                                            <TableCell className="text-muted-foreground text-sm">
                                                 {new Date(log.created_at).toLocaleString()}
                                             </TableCell>
                                         </TableRow>

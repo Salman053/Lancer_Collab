@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\Milestone;
+use App\Events\TaskCreated;
+use App\Events\TaskUpdated;
+use App\Events\TaskDeleted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -42,7 +45,9 @@ class TaskController extends Controller
 
         $validated['user_id'] = Auth::id();
 
-        Task::create($validated);
+        $task = Task::create($validated);
+
+        broadcast(new TaskCreated($task))->toOthers();
 
         return back()->with('success', 'Task created successfully.');
     }
@@ -68,6 +73,8 @@ class TaskController extends Controller
 
         $task->update($validated);
 
+        broadcast(new TaskUpdated($task))->toOthers();
+
         return back()->with('success', 'Task updated successfully.');
     }
 
@@ -85,6 +92,8 @@ class TaskController extends Controller
             'completed_at' => $isCompleted ? null : now(),
         ]);
 
+        broadcast(new TaskUpdated($task))->toOthers();
+
         return back()->with('success', 'Task status updated.');
     }
 
@@ -94,7 +103,12 @@ class TaskController extends Controller
             abort(403);
         }
 
+        $taskId = $task->id;
+        $projectId = $task->project_id;
+        
         $task->delete();
+
+        broadcast(new TaskDeleted($taskId, $projectId))->toOthers();
 
         return back()->with('success', 'Task deleted successfully.');
     }

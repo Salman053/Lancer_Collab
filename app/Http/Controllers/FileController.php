@@ -7,6 +7,8 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Events\FileUploaded;
+use App\Events\FileDeleted;
 
 class FileController extends Controller
 {
@@ -29,7 +31,7 @@ class FileController extends Controller
         $upload = $request->file('file');
         $path = $upload->store('projects/'.$project->id.'/files', 'public');
 
-        File::create([
+        $file = File::create([
             'project_id' => $project->id,
             'user_id' => Auth::id(),
             'file_name' => $upload->getClientOriginalName(),
@@ -40,6 +42,8 @@ class FileController extends Controller
             'client_can_download' => $request->boolean('client_can_download', true),
             'created_at' => now(),
         ]);
+
+        event(new FileUploaded($file));
 
         return back()->with('success', 'File uploaded successfully.');
     }
@@ -74,7 +78,11 @@ class FileController extends Controller
         }
 
         Storage::disk('public')->delete($file->file_path);
+        
+        $fileClone = clone $file;
         $file->delete();
+
+        event(new FileDeleted($fileClone));
 
         return back()->with('success', 'File deleted successfully.');
     }

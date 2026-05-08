@@ -11,10 +11,7 @@ export default function Create({ clients }: { clients: Client[] }) {
             ]}
         >
             <div className="p-4">
-                <ProjectForm
-                    className="border-none p-4 shadow-none bg-transparent"
-                    clients={clients}
-                />
+                <ProjectForm className="border-none bg-transparent p-4 shadow-none" clients={clients} />
             </div>
         </AppLayout>
     );

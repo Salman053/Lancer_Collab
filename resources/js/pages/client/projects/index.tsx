@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Folder } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,9 +18,7 @@ export default function ClientProjectsIndex() {
     const { projects } = usePage<{ projects: any[] }>().props;
     const [statusFilter, setStatusFilter] = useState('all');
 
-    const filteredProjects = statusFilter === 'all' 
-        ? projects 
-        : projects.filter(p => p.status === statusFilter);
+    const filteredProjects = statusFilter === 'all' ? projects : projects.filter((p) => p.status === statusFilter);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -34,9 +32,9 @@ export default function ClientProjectsIndex() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Statuses</SelectItem>
-                            <SelectItem value="in-progress">In Progress</SelectItem>
+                            <SelectItem value="in_progress">In Progress</SelectItem>
                             <SelectItem value="completed">Completed</SelectItem>
-                            <SelectItem value="on-hold">On Hold</SelectItem>
+                            <SelectItem value="on_hold">On Hold</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -44,35 +42,32 @@ export default function ClientProjectsIndex() {
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {filteredProjects.length === 0 ? (
                         <Card className="md:col-span-2 lg:col-span-3">
-                            <CardContent className="flex h-32 items-center justify-center text-muted-foreground">
+                            <CardContent className="text-muted-foreground flex h-32 items-center justify-center">
                                 No projects found matching your filter.
                             </CardContent>
                         </Card>
                     ) : (
                         filteredProjects.map((project) => (
                             <Link key={project.id} href={route('client.projects.show', project.id)}>
-                                <Card className="transition-all hover:border-primary/50 hover:shadow-md cursor-pointer h-full">
+                                <Card className="hover:border-primary/50 h-full cursor-pointer transition-all hover:shadow-md">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-lg font-bold">{project.title}</CardTitle>
-                                        <Folder className="h-4 w-4 text-muted-foreground" />
+                                        <Folder className="text-muted-foreground h-4 w-4" />
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="flex items-center justify-between mt-2">
-                                            <Badge variant="secondary" className="capitalize">{project.status.replace('-', ' ')}</Badge>
-                                            <span className="text-xs text-muted-foreground">
-                                                By {project.user.name}
-                                            </span>
+                                        <div className="mt-2 flex items-center justify-between">
+                                            <Badge variant="secondary" className="capitalize">
+                                                {project.status.replace('_', ' ')}
+                                            </Badge>
+                                            <span className="text-muted-foreground text-xs">By {project.user.name}</span>
                                         </div>
                                         <div className="mt-4">
-                                            <div className="flex justify-between text-xs mb-1">
+                                            <div className="mb-1 flex justify-between text-xs">
                                                 <span>Progress</span>
                                                 <span>{project.progress}%</span>
                                             </div>
-                                            <div className="w-full bg-muted rounded-full h-1.5">
-                                                <div 
-                                                    className="bg-primary h-1.5 rounded-full" 
-                                                    style={{ width: `${project.progress}%` }}
-                                                />
+                                            <div className="bg-muted h-1.5 w-full rounded-full">
+                                                <div className="bg-primary h-1.5 rounded-full" style={{ width: `${project.progress}%` }} />
                                             </div>
                                         </div>
                                     </CardContent>

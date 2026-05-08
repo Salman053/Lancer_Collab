@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Milestone;
 use App\Models\Project;
+use App\Events\MilestoneCreated;
+use App\Events\MilestoneUpdated;
+use App\Events\MilestoneDeleted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +34,9 @@ class MilestoneController extends Controller
 
         $validated['user_id'] = Auth::id();
         
-        Milestone::create($validated);
+        $milestone = Milestone::create($validated);
+
+        broadcast(new MilestoneCreated($milestone))->toOthers();
 
         return redirect()->back()->with('success', 'Milestone created successfully.');
     }
@@ -58,6 +63,8 @@ class MilestoneController extends Controller
         }
 
         $milestone->update($validated);
+
+        broadcast(new MilestoneUpdated($milestone))->toOthers();
 
         return redirect()->back()->with('success', 'Milestone updated successfully.');
     }
@@ -89,6 +96,10 @@ class MilestoneController extends Controller
             ]);
         }
 
+        $milestone->save(); // Just to be sure if we updated it above via update()
+
+        broadcast(new MilestoneUpdated($milestone))->toOthers();
+
         return redirect()->back()->with('success', 'Milestone status updated.');
     }
 
@@ -101,7 +112,12 @@ class MilestoneController extends Controller
             abort(403);
         }
 
+        $milestoneId = $milestone->id;
+        $projectId = $milestone->project_id;
+        
         $milestone->delete();
+
+        broadcast(new MilestoneDeleted($milestoneId, $projectId))->toOthers();
 
         return redirect()->back()->with('success', 'Milestone deleted successfully.');
     }

@@ -1,11 +1,11 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 
 export default function UsersEdit({ user }: { user: any }) {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -80,12 +80,22 @@ export default function UsersEdit({ user }: { user: any }) {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="password">New Password (optional)</Label>
-                                    <Input id="password" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} />
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
+                                    />
                                     {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="password_confirmation">Confirm New Password</Label>
-                                    <Input id="password_confirmation" type="password" value={data.password_confirmation} onChange={(e) => setData('password_confirmation', e.target.value)} />
+                                    <Input
+                                        id="password_confirmation"
+                                        type="password"
+                                        value={data.password_confirmation}
+                                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    />
                                 </div>
                             </div>
 

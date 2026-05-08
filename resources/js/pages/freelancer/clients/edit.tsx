@@ -11,10 +11,7 @@ export default function Edit({ client }: { client: Client }) {
             ]}
         >
             <div className="p-6">
-                <ClientForm 
-                    className="border-none shadow-none bg-transparent" 
-                    client={client} 
-                />
+                <ClientForm className="border-none bg-transparent shadow-none" client={client} />
             </div>
         </AppLayout>
     );

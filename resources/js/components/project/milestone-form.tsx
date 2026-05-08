@@ -1,13 +1,13 @@
-import { useForm } from '@inertiajs/react';
-import { Milestone, Project } from '@/types';
 import { Button } from '@/components/ui/button';
+import { DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DialogFooter } from '@/components/ui/dialog';
-import { FormEventHandler } from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import { Milestone, Project } from '@/types';
+import { useForm } from '@inertiajs/react';
 import { Loader2 } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 interface MilestoneFormProps {
     project: Project;
@@ -29,7 +29,7 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        
+
         if (isEditing) {
             put(route('freelancer.milestones.update', milestone.id), {
                 onSuccess: () => onSuccess(),
@@ -52,7 +52,7 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
                     placeholder="e.g. Initial Prototype"
                     required
                 />
-                {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
+                {errors.title && <p className="text-destructive text-sm">{errors.title}</p>}
             </div>
 
             <div className="space-y-2">
@@ -64,7 +64,7 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
                     placeholder="Describe the deliverables for this milestone"
                     rows={3}
                 />
-                {errors.description && <p className="text-sm text-destructive">{errors.description}</p>}
+                {errors.description && <p className="text-destructive text-sm">{errors.description}</p>}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -78,7 +78,7 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
                         onChange={(e) => setData('amount', e.target.value)}
                         placeholder="0.00"
                     />
-                    {errors.amount && <p className="text-sm text-destructive">{errors.amount}</p>}
+                    {errors.amount && <p className="text-destructive text-sm">{errors.amount}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -88,9 +88,9 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
                         type="date"
                         value={data.due_date || ''}
                         onChange={(e) => setData('due_date', e.target.value)}
-                        className='block'
+                        className="block"
                     />
-                    {errors.due_date && <p className="text-sm text-destructive">{errors.due_date}</p>}
+                    {errors.due_date && <p className="text-destructive text-sm">{errors.due_date}</p>}
                 </div>
             </div>
 
@@ -109,7 +109,7 @@ export default function MilestoneForm({ project, milestone, onSuccess }: Milesto
                         <SelectItem value="cancelled">Cancelled</SelectItem>
                     </SelectContent>
                 </Select>
-                {errors.status && <p className="text-sm text-destructive">{errors.status}</p>}
+                {errors.status && <p className="text-destructive text-sm">{errors.status}</p>}
             </div>
 
             <DialogFooter className="pt-4">

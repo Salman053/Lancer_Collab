@@ -1,23 +1,20 @@
 // config/navigation.ts
+import { type NavItem } from '@/types';
 import {
-    LayoutGrid,
-    Briefcase,
-    Users,
-    Settings,
-    FileText,
-    Calendar,
-    MessageSquare,
-    CreditCard,
-    Folder,
-    BookOpen,
-    Home,
     BarChart,
     Bell,
-    Shield,
-    Truck,
-    Star
+    BookOpen,
+    Briefcase,
+    Calendar,
+    CreditCard,
+    FileText,
+    Folder,
+    LayoutGrid,
+    MessageSquare,
+    Settings,
+    Star,
+    Users,
 } from 'lucide-react';
-import { type NavItem } from '@/types';
 
 export const commonNavItems: NavItem[] = [
     {
@@ -95,7 +92,6 @@ export const clientNavItems: NavItem[] = [
 
 // Freelancer specific navigation items
 export const freelancerNavItems: NavItem[] = [
-
     {
         title: 'Clients',
         url: '/freelancer/clients',
@@ -151,18 +147,10 @@ export const guestNavItems: NavItem[] = [
 
 // Footer navigation items configuration
 export const footerNavItems: Record<string, NavItem[]> = {
-    common: [
-      
-    ],
-    admin: [
-      
-    ],
-    client: [
-       
-    ],
-    freelancer: [
-      
-    ],
+    common: [],
+    admin: [],
+    client: [],
+    freelancer: [],
 };
 
 // Role to dashboard route mapping

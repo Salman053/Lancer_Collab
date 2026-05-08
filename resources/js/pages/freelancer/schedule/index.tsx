@@ -1,9 +1,9 @@
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { Calendar as CalendarIcon, ChevronRight } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -36,16 +36,21 @@ export default function ScheduleIndex() {
                 <div className="grid gap-6">
                     {sortedDates.length === 0 ? (
                         <Card>
-                            <CardContent className="flex h-32 items-center justify-center text-muted-foreground">
+                            <CardContent className="text-muted-foreground flex h-32 items-center justify-center">
                                 No upcoming tasks or milestones scheduled.
                             </CardContent>
                         </Card>
                     ) : (
                         sortedDates.map((date) => (
                             <div key={date} className="space-y-2">
-                                <h2 className="flex items-center gap-2 text-lg font-semibold text-muted-foreground">
+                                <h2 className="text-muted-foreground flex items-center gap-2 text-lg font-semibold">
                                     <CalendarIcon className="h-4 w-4" />
-                                    {new Date(date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                    {new Date(date).toLocaleDateString(undefined, {
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric',
+                                    })}
                                 </h2>
                                 <div className="grid gap-3">
                                     {groupedEvents[date].map((event: any) => (
@@ -60,9 +65,9 @@ export default function ScheduleIndex() {
                                                                 {event.type}
                                                             </Badge>
                                                         </div>
-                                                        <span className="text-xs text-muted-foreground">{event.project}</span>
+                                                        <span className="text-muted-foreground text-xs">{event.project}</span>
                                                     </div>
-                                                    <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+                                                    <div className="text-muted-foreground mt-2 flex items-center justify-between text-xs">
                                                         <span>Status: {event.status}</span>
                                                         <ChevronRight className="h-3 w-3" />
                                                     </div>

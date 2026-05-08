@@ -1,6 +1,6 @@
 // pages/auth/login.tsx
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle, Mail, Lock } from 'lucide-react';
+import { LoaderCircle, Lock, Mail } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
@@ -38,14 +38,11 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout
-            title="Welcome back"
-            description="Enter your email and password to access your account"
-        >
+        <AuthLayout title="Welcome back" description="Enter your email and password to access your account">
             <Head title="Log in" />
 
             {status && (
-                <div className="mb-4 rounded-lg bg-green-50 dark:bg-green-900/20 p-3 text-center text-sm font-medium text-green-600 dark:text-green-400">
+                <div className="mb-4 rounded-lg bg-green-50 p-3 text-center text-sm font-medium text-green-600 dark:bg-green-900/20 dark:text-green-400">
                     {status}
                 </div>
             )}
@@ -58,7 +55,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             Email address
                         </Label>
                         <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 id="email"
                                 type="email"
@@ -82,17 +79,13 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 Password
                             </Label>
                             {canResetPassword && (
-                                <TextLink
-                                    href={route('password.request')}
-                                    className="text-sm font-medium"
-                                    tabIndex={5}
-                                >
+                                <TextLink href={route('password.request')} className="text-sm font-medium" tabIndex={5}>
                                     Forgot password?
                                 </TextLink>
                             )}
                         </div>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 id="password"
                                 type="password"
@@ -125,13 +118,13 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     <Button
                         type="submit"
                         variant="primary"
-                        className="mt-2 w-full py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                        className="mt-2 w-full rounded-lg py-2.5 shadow-md transition-all duration-200 hover:shadow-lg"
                         tabIndex={4}
                         disabled={processing}
                     >
                         {processing ? (
                             <>
-                                <LoaderCircle className="h-4 w-4 animate-spin mr-2" />
+                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                 Signing in...
                             </>
                         ) : (
@@ -143,11 +136,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 {/* Sign Up Link */}
                 <div className="text-center text-sm text-gray-600 dark:text-gray-400">
                     Don't have an account?{' '}
-                    <TextLink
-                        href={route('register')}
-                        tabIndex={6}
-                        className="font-medium"
-                    >
+                    <TextLink href={route('register')} tabIndex={6} className="font-medium">
                         Create an account
                     </TextLink>
                 </div>

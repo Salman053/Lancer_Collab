@@ -1,12 +1,8 @@
 // hooks/useRoleNavigation.ts
+import { footerNavItems, roleDashboardRoutes, roleNavItems } from '@/constants/navigation';
+import { Auth, type NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { useMemo } from 'react';
-import {
-    roleDashboardRoutes,
-    roleNavItems,
-    footerNavItems,
-} from '@/constants/navigation';
-import { Auth, type NavItem } from '@/types';
 
 export function useRoleNavigation() {
     const { auth } = usePage<{ auth: Auth }>().props;
@@ -27,7 +23,7 @@ export function useRoleNavigation() {
     }, [userRole]);
 
     const getDynamicNavItems = useMemo(() => {
-        return navigationItems.map(item => {
+        return navigationItems.map((item) => {
             if (item.title === 'Dashboard') {
                 return { ...item, url: dashboardRoute };
             }

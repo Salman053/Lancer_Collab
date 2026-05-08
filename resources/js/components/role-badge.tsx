@@ -1,10 +1,10 @@
-import { Shield, Briefcase, Users, User } from 'lucide-react';
+import { Briefcase, Shield, User, Users } from 'lucide-react';
 
 interface RoleBadgeProps {
     role: string;
 }
 
-const roleConfig: Record<string, { icon: React.ComponentType<{ className?: string }>, label: string, color: string }> = {
+const roleConfig: Record<string, { icon: React.ComponentType<{ className?: string }>; label: string; color: string }> = {
     admin: {
         icon: Shield,
         label: 'Administrator',
@@ -32,7 +32,7 @@ export function RoleBadge({ role }: RoleBadgeProps) {
     const Icon = config.icon;
 
     return (
-        <div className={`flex items-center gap-2 overflow-hidden  rounded-md px-3 py-1.5 text-xs font-medium ${config.color}`}>
+        <div className={`flex items-center gap-2 overflow-hidden rounded-md px-3 py-1.5 text-xs font-medium ${config.color}`}>
             <Icon className="h-3 w-3" />
             <span>{config.label}</span>
         </div>

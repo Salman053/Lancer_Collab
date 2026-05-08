@@ -1,10 +1,10 @@
+import ClientForm from '@/components/client/client-form';
 import { ClientHeader } from '@/components/client/client-header';
 import { ClientInfoCard } from '@/components/client/client-info-card';
 import { ClientNotes } from '@/components/client/client-notes';
 import { ClientStats } from '@/components/client/client-stats';
-import ClientForm from '@/components/client/client-form';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import AppLayout from '@/layouts/app-layout';
 import { Client, type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
@@ -33,15 +33,15 @@ export default function Show({ client }: { client: Client }) {
     };
 
     const handleUpdate = () => {
-        router.reload(); 
+        router.reload();
         setIsSheetOpen(false);
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${client.name} - Client Details`} />
-            
-            <div className="flex flex-col gap-6 p-4 md:p-6 ">
+
+            <div className="flex flex-col gap-6 p-4 md:p-6">
                 {/* Header Section */}
                 <ClientHeader client={client} onEdit={handleEdit} />
 
@@ -49,20 +49,20 @@ export default function Show({ client }: { client: Client }) {
                 <ClientStats client={client} />
 
                 {/* Main Content Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {/* Left Column - Contact & Business Info */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="space-y-6 lg:col-span-2">
                         <ClientInfoCard client={client} />
                     </div>
 
                     {/* Right Column - Notes & Additional Info */}
                     <div className="space-y-6">
                         <ClientNotes client={client} onEdit={handleEdit} onNoteUpdate={handleUpdate} />
-                        
+
                         {/* Additional Info Card */}
                         {client.preferences && (
                             <div className="bg-muted/50 rounded-lg p-4">
-                                <h3 className="font-semibold mb-2">Preferences</h3>
+                                <h3 className="mb-2 font-semibold">Preferences</h3>
                                 <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-muted-foreground">Newsletter:</span>
@@ -81,21 +81,19 @@ export default function Show({ client }: { client: Client }) {
 
             {/* Edit Client Sheet */}
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetContent className="sm:max-w-[600px] p-0 border-l">
+                <SheetContent className="border-l p-0 sm:max-w-[600px]">
                     <ScrollArea className="h-full">
                         <div className="p-6">
                             <SheetHeader className="mb-6">
                                 <SheetTitle>Edit Client</SheetTitle>
-                                <SheetDescription>
-                                    Update client information and preferences.
-                                </SheetDescription>
+                                <SheetDescription>Update client information and preferences.</SheetDescription>
                             </SheetHeader>
-                            
-                            <ClientForm 
-                                client={client} 
+
+                            <ClientForm
+                                client={client}
                                 onSuccess={handleUpdate}
                                 hideHeader={true}
-                                className="border-none shadow-none bg-transparent p-0"
+                                className="border-none bg-transparent p-0 shadow-none"
                             />
                         </div>
                     </ScrollArea>

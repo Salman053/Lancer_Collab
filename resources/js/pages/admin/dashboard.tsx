@@ -1,8 +1,8 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Folder, ShieldAlert, BarChart3 } from 'lucide-react';
+import { BarChart3, Folder, ShieldAlert, Users } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,7 +11,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function AdminDashboard({ totalUsers, activeProjects, recentLogs }: { totalUsers: number, activeProjects: number, recentLogs: any[] }) {
+export default function AdminDashboard({
+    totalUsers,
+    activeProjects,
+    recentLogs,
+}: {
+    totalUsers: number;
+    activeProjects: number;
+    recentLogs: any[];
+}) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin Dashboard" />
@@ -25,7 +33,7 @@ export default function AdminDashboard({ totalUsers, activeProjects, recentLogs 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <Users className="text-muted-foreground h-4 w-4" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{totalUsers}</div>
@@ -34,7 +42,7 @@ export default function AdminDashboard({ totalUsers, activeProjects, recentLogs 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
-                            <Folder className="h-4 w-4 text-muted-foreground" />
+                            <Folder className="text-muted-foreground h-4 w-4" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{activeProjects}</div>
@@ -43,7 +51,7 @@ export default function AdminDashboard({ totalUsers, activeProjects, recentLogs 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Security Alerts</CardTitle>
-                            <ShieldAlert className="h-4 w-4 text-muted-foreground" />
+                            <ShieldAlert className="text-muted-foreground h-4 w-4" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">0</div>
@@ -52,7 +60,7 @@ export default function AdminDashboard({ totalUsers, activeProjects, recentLogs 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">System Health</CardTitle>
-                            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                            <BarChart3 className="text-muted-foreground h-4 w-4" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold text-green-500">100%</div>
@@ -71,19 +79,15 @@ export default function AdminDashboard({ totalUsers, activeProjects, recentLogs 
                                     {recentLogs.map((log) => (
                                         <div key={log.id} className="flex items-center justify-between">
                                             <div className="space-y-1">
-                                                <p className="text-sm font-medium leading-none">{log.type.replace('_', ' ').toUpperCase()}</p>
-                                                <p className="text-sm text-muted-foreground">{log.to_email}</p>
+                                                <p className="text-sm leading-none font-medium">{log.type.replace('_', ' ').toUpperCase()}</p>
+                                                <p className="text-muted-foreground text-sm">{log.to_email}</p>
                                             </div>
-                                            <div className="text-sm text-muted-foreground">
-                                                {new Date(log.created_at).toLocaleString()}
-                                            </div>
+                                            <div className="text-muted-foreground text-sm">{new Date(log.created_at).toLocaleString()}</div>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="flex h-40 items-center justify-center text-muted-foreground italic">
-                                    No recent logs found.
-                                </div>
+                                <div className="text-muted-foreground flex h-40 items-center justify-center italic">No recent logs found.</div>
                             )}
                         </CardContent>
                     </Card>

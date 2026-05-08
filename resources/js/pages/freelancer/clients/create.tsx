@@ -10,7 +10,7 @@ export default function Create() {
             ]}
         >
             <div className="p-6">
-                <ClientForm className="border-none shadow-none bg-transparent" />
+                <ClientForm className="border-none bg-transparent shadow-none" />
             </div>
         </AppLayout>
     );

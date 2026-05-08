@@ -2,7 +2,7 @@ import ProjectForm from '@/components/project/project-form';
 import AppLayout from '@/layouts/app-layout';
 import { Client, Project } from '@/types';
 
-export default function Edit({ project, clients }: { project: Project, clients: Client[] }) {
+export default function Edit({ project, clients }: { project: Project; clients: Client[] }) {
     return (
         <AppLayout
             breadcrumbs={[
@@ -11,11 +11,7 @@ export default function Edit({ project, clients }: { project: Project, clients: 
             ]}
         >
             <div className="p-6">
-                <ProjectForm
-                    className="border-none p-4 shadow-none bg-transparent"
-                    project={project}
-                    clients={clients}
-                />
+                <ProjectForm className="border-none bg-transparent p-4 shadow-none" project={project} clients={clients} />
             </div>
         </AppLayout>
     );

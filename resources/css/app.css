@@ -186,33 +186,33 @@
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 .animate-blob {
-  animation: blob 7s infinite;
+    animation: blob 7s infinite;
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
 }
 
 .animation-delay-2000 {
-  animation-delay: 2s;
+    animation-delay: 2s;
 }
 
 .animation-delay-4000 {
-  animation-delay: 4s;
+    animation-delay: 4s;
 }
 
-::view-transition-old(root), ::view-transition-new(root) {
-    animation:
-        none;
-    mix-blend-mode:
-        normal;
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
 }

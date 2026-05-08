@@ -17,7 +17,7 @@ class ProjectsController extends Controller
         $query = Auth::user()->projects()->with('client')->latest();
 
         if ($request->has('active')) {
-            $query->where('status', 'in-progress');
+            $query->where('status', 'in_progress');
         }
 
         $projects = $query->get();
@@ -74,7 +74,7 @@ class ProjectsController extends Controller
                 'files',
                 'tasks',
                 'updates' => fn($q) => $q->latest(),
-                'messages' => fn($q) => $q->with('sender')->oldest()
+                'messages' => fn($q) => $q->with('sender', 'receiver')->oldest()
             ]),
         ]);
     }
