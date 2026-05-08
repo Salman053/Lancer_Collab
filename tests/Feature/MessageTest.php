@@ -25,7 +25,7 @@ class MessageTest extends TestCase
         $freelancer = User::factory()->create();
         $clientUser = User::factory()->create();
         $client = Client::factory()->create(['account_id' => $clientUser->id, 'user_id' => $freelancer->id]);
-        $project = Project::factory()->create(['user_id' => $freelancer->id, 'client_id' => $clientUser->id]);
+        $project = Project::factory()->create(['user_id' => $freelancer->id, 'client_id' => $client->id]);
 
         $response = $this->actingAs($freelancer)->post(route('messages.store'), [
             'project_id' => $project->id,
