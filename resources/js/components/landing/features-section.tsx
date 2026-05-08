@@ -47,10 +47,10 @@ export default function FeaturesSection() {
                 <div className="mx-auto mb-20 max-w-3xl text-center">
                     <h2 className="text-primary mb-4 text-sm font-bold tracking-[0.3em] uppercase">Core Capabilities</h2>
                     <p className="text-foreground mb-6 text-4xl font-extrabold tracking-tight uppercase italic md:text-5xl">
-                        Deliver <span className="text-primary not-italic">exceptional</span> client experiences.
+                        Deliver &nbsp; <span className="text-primary not-italic"> exceptional</span> client experiences.
                     </p>
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                        LaraCollab automates the administrative overhead of client collaboration, allowing your team to focus on high-impact
+                        LancerCollab automates the administrative overhead of client collaboration, allowing your team to focus on high-impact
                         deliverables.
                     </p>
                 </div>
@@ -62,7 +62,7 @@ export default function FeaturesSection() {
                             className="group border-border bg-card/50 hover:border-primary/50 hover:shadow-primary/5 relative rounded-2xl border p-8 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl"
                         >
                             {/* Icon container with subtle glow on hover */}
-                            <div className="bg-secondary group-hover:bg-brand group-hover:text-foreground mb-6 inline-flex items-center justify-center rounded-xl p-3 transition-colors duration-75">
+                            <div className="bg-secondary group-hover:bg-brand group-hover:text-white mb-6 inline-flex items-center justify-center rounded-xl p-3 transition-colors duration-75">
                                 <feature.icon className="h-6 w-6" aria-hidden="true" />
                             </div>
 

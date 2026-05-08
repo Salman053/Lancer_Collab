@@ -39,10 +39,9 @@ const HeroSection = () => {
                     )}
                 >
                     <div className="group flex cursor-pointer items-center gap-2">
-                        <div className="bg-brand text-brand-foreground shadow-brand/20 flex aspect-square size-9 items-center justify-center rounded-xl shadow-lg transition-transform group-hover:scale-110">
-                            <Layers className="size-5" />
+<div className="bg-brand text-brand-foreground shadow-brand/20 flex aspect-square rounded-full size-9 items-center justify-center overflow-hidden shadow-lg transition-all duration-300 group-hover:shadow-[0_0_15px_5px_rgba(var(--brand-color),0.5)]">                           <img src="/logo.png" alt="LancerCollab Logo" className="w-full h-full object-cover scale-105 aspect-square" />
                         </div>
-                        <span className="text-foreground text-lg font-bold tracking-tight">LaraCollab</span>
+                        <span className="text-foreground text-lg font-bold tracking-tight">LancerCollab</span>
                     </div>
 
                     <div className="hidden items-center gap-8 md:flex">

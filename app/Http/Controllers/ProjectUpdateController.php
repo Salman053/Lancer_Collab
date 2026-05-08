@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Models\ProjectUpdate;
 use App\Events\ProjectUpdateCreated;
 use App\Events\ProjectUpdateDeleted;
+use App\Events\DashboardUpdated;
+use App\Notifications\ProjectNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +36,22 @@ class ProjectUpdateController extends Controller
         $update = ProjectUpdate::create($validated);
 
         broadcast(new ProjectUpdateCreated($update))->toOthers();
+
+        // Notify Client
+        if ($project->client && $project->client->account) {
+            $project->client->account->notify(new ProjectNotification([
+                'title' => 'New Project Update',
+                'message' => "A new update has been posted for project \"{$project->title}\".",
+                'url' => route('client.projects.show', $project->id),
+                'project_id' => $project->id,
+                'type' => 'success',
+                'icon' => 'History'
+            ]));
+
+            broadcast(new DashboardUpdated($project->client->account_id, 'updates'))->toOthers();
+        }
+
+        broadcast(new DashboardUpdated($project->user_id, 'updates'))->toOthers();
 
         return redirect()->back()->with('success', 'Update posted successfully.');
     }

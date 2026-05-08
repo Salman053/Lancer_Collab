@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from 'sonner';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, Milestone, Project, ProjectUpdate, User } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
@@ -34,6 +35,7 @@ export default function ClientProjectShow() {
     const [tasks, setTasks] = useState(project.tasks || []);
     const [updates, setUpdates] = useState(project.updates || []);
     const [milestones, setMilestones] = useState(project.milestones || []);
+    const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
 
     useEffect(() => {
         setMessages(project.messages);
@@ -44,65 +46,100 @@ export default function ClientProjectShow() {
     }, [project.messages, project.files, project.tasks, project.updates, project.milestones]);
 
     useEffect(() => {
-        window.Echo.private(`project.${project.id}`)
-            .listen('.MessageSent', (e: any) => {
-                setMessages((prev: any) => {
-                    if (prev.find((msg: any) => msg.id === e.message.id)) {
-                        return prev;
-                    }
-                    return [...prev, e.message];
+        console.log('Initializing Echo for project:', project.id);
+        if (!window.Echo) {
+            console.error('Echo not found on window');
+            return;
+        }
+
+        try {
+            window.Echo.private(`project.${project.id}`)
+                .listen('.MessageSent', (e: any) => {
+                    setMessages((prev: any) => {
+                        if (prev.find((msg: any) => msg.id === e.message.id)) {
+                            return prev;
+                        }
+                        return [...prev, e.message];
+                    });
+                })
+                .listen('.MessageDeleted', (e: any) => {
+                    setMessages((prev: any) => prev.filter((msg: any) => msg.id !== e.message.id));
+                })
+                .listen('.FileUploaded', (e: any) => {
+                    setFiles((prev: any) => {
+                        if (prev.find((f: any) => f.id === e.file.id)) {
+                            return prev;
+                        }
+                        return [...prev, e.file];
+                    });
+                })
+                .listen('.FileDeleted', (e: any) => {
+                    setFiles((prev: any) => prev.filter((f: any) => f.id !== e.file.id));
+                })
+                .listen('.TaskCreated', (e: any) => {
+                    setTasks((prev: any) => {
+                        if (prev.find((t: any) => t.id === e.task.id)) return prev;
+                        return [...prev, e.task];
+                    });
+                })
+                .listen('.TaskUpdated', (e: any) => {
+                    setTasks((prev: any) => prev.map((t: any) => (t.id === e.task.id ? e.task : t)));
+                })
+                .listen('.TaskDeleted', (e: any) => {
+                    setTasks((prev: any) => prev.filter((t: any) => t.id !== e.taskId));
+                })
+                .listen('.ProjectUpdateCreated', (e: any) => {
+                    setUpdates((prev: any) => {
+                        if (prev.find((u: any) => u.id === e.update.id)) return prev;
+                        return [e.update, ...prev];
+                    });
+                })
+                .listen('.ProjectUpdateDeleted', (e: any) => {
+                    setUpdates((prev: any) => prev.filter((u: any) => u.id !== e.updateId));
+                })
+                .listen('.MilestoneCreated', (e: any) => {
+                    setMilestones((prev: any) => {
+                        if (prev.find((m: any) => m.id === e.milestone.id)) return prev;
+                        return [...prev, e.milestone];
+                    });
+                })
+                .listen('.MilestoneUpdated', (e: any) => {
+                    setMilestones((prev: any) => prev.map((m: any) => (m.id === e.milestone.id ? e.milestone : m)));
+                })
+                .listen('.MilestoneDeleted', (e: any) => {
+                    setMilestones((prev: any) => prev.filter((m: any) => m.id !== e.milestoneId));
                 });
-            })
-            .listen('.MessageDeleted', (e: any) => {
-                setMessages((prev: any) => prev.filter((msg: any) => msg.id !== e.message.id));
-            })
-            .listen('.FileUploaded', (e: any) => {
-                setFiles((prev: any) => {
-                    if (prev.find((f: any) => f.id === e.file.id)) {
-                        return prev;
-                    }
-                    return [...prev, e.file];
+
+            console.log('Joining presence channel:', `project-presence.${project.id}`);
+            window.Echo.join(`project-presence.${project.id}`)
+                .here((users: any) => {
+                    console.log('Online users:', users);
+                    setOnlineUsers(users);
+                })
+                .joining((user: any) => {
+                    console.log('User joined:', user);
+                    setOnlineUsers((prev) => [...prev, user]);
+                    toast.success(`${user.name} is now online`, {
+                        icon: <div className="h-2 w-2 rounded-full bg-green-500" />,
+                    });
+                })
+                .leaving((user: any) => {
+                    console.log('User left:', user);
+                    setOnlineUsers((prev) => prev.filter((u) => u.id !== user.id));
+                    toast.info(`${user.name} went offline`);
+                })
+                .error((error: any) => {
+                    console.error('Echo join error:', error);
                 });
-            })
-            .listen('.FileDeleted', (e: any) => {
-                setFiles((prev: any) => prev.filter((f: any) => f.id !== e.file.id));
-            })
-            .listen('.TaskCreated', (e: any) => {
-                setTasks((prev: any) => {
-                    if (prev.find((t: any) => t.id === e.task.id)) return prev;
-                    return [...prev, e.task];
-                });
-            })
-            .listen('.TaskUpdated', (e: any) => {
-                setTasks((prev: any) => prev.map((t: any) => (t.id === e.task.id ? e.task : t)));
-            })
-            .listen('.TaskDeleted', (e: any) => {
-                setTasks((prev: any) => prev.filter((t: any) => t.id !== e.taskId));
-            })
-            .listen('.ProjectUpdateCreated', (e: any) => {
-                setUpdates((prev: any) => {
-                    if (prev.find((u: any) => u.id === e.update.id)) return prev;
-                    return [e.update, ...prev];
-                });
-            })
-            .listen('.ProjectUpdateDeleted', (e: any) => {
-                setUpdates((prev: any) => prev.filter((u: any) => u.id !== e.updateId));
-            })
-            .listen('.MilestoneCreated', (e: any) => {
-                setMilestones((prev: any) => {
-                    if (prev.find((m: any) => m.id === e.milestone.id)) return prev;
-                    return [...prev, e.milestone];
-                });
-            })
-            .listen('.MilestoneUpdated', (e: any) => {
-                setMilestones((prev: any) => prev.map((m: any) => (m.id === e.milestone.id ? e.milestone : m)));
-            })
-            .listen('.MilestoneDeleted', (e: any) => {
-                setMilestones((prev: any) => prev.filter((m: any) => m.id !== e.milestoneId));
-            });
+        } catch (err) {
+            console.error('Failed to setup Echo listeners:', err);
+        }
 
         return () => {
-            window.Echo.leave(`project.${project.id}`);
+            if (window.Echo) {
+                window.Echo.leave(`project.${project.id}`);
+                window.Echo.leave(`project-presence.${project.id}`);
+            }
         };
     }, [project.id]);
 
@@ -476,6 +513,7 @@ export default function ClientProjectShow() {
                             onDeleteMessage={handleDeleteMessage}
                             onDeleteAttachment={handleDeleteAttachment}
                             onSendMessage={handleSendMessage}
+                            isOnline={onlineUsers.some((u) => Number(u.id) === Number(project.user_id))}
                         />
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { Quote, Star } from 'lucide-react';
 const testimonials = [
     {
         content:
-            "LaraCollab transformed our agency's client onboarding. What used to take days now happens in minutes with Magic Tokens and automated portals.",
+            "LancerCollab transformed our agency's client onboarding. What used to take days now happens in minutes with Magic Tokens and automated portals.",
         author: 'Sarah Jenkins',
         role: 'CEO, Pixel & Grain Agency',
         image: 'https://i.pravatar.cc/150?u=sarah',
@@ -17,7 +17,7 @@ const testimonials = [
     },
     {
         content:
-            "We've seen a 40% reduction in 'status update' emails since switching to LaraCollab. The project update feature is a game-changer for focus.",
+            "We've seen a 40% reduction in 'status update' emails since switching to LancerCollab. The project update feature is a game-changer for focus.",
         author: 'Elena Rodriguez',
         role: 'Creative Director, Studio Flux',
         image: 'https://i.pravatar.cc/150?u=elena',
@@ -38,7 +38,7 @@ export default function TestimonialsSection() {
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="bg-card group border-border relative flex flex-col rounded-xl border p-10 shadow-sm">
-                            <Quote className="text-primary/10 group-hover:text-brand absolute top-6 right-6 h-12 w-12 animate-pulse duration-500 group-hover:rotate-12" />
+                            <Quote className="text-primary/10 group-hover:text-brand absolute top-6 right-6 h-12 w-12 animate-pulse duration-1000 group-hover:rotate-12" />
                             <div className="mb-6 flex gap-1">
                                 {[...Array(5)].map((_, i) => (
                                     <Star key={i} className="fill-brand text-brand h-4 w-4" />

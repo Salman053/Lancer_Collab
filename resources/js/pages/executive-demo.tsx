@@ -55,7 +55,7 @@ export default function ExecutiveDemo() {
 
     return (
         <AppLayout breadcrumbs={[{ title: 'Executive Profile', href: '/executive-demo' }]}>
-            <Head title="Executive Profile - LaraCollab" />
+            <Head title="Executive Profile - LancerCollab" />
             <div className="bg-muted/30 dark:bg-background min-h-screen">
                 <div className="py-12">
                     <ExecutiveProfile {...executiveData} />

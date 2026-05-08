@@ -7,7 +7,7 @@ import { ChatBoxProps } from '@/types';
 import { Paperclip, Send, X, FileIcon, Download, Trash2 } from 'lucide-react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
-function ChatBox({ title, avatarFallback, messages = [], auth, onSendMessage, onDeleteMessage, onDeleteAttachment, processing }: ChatBoxProps & { onDeleteAttachment?: (id: number) => void }) {
+function ChatBox({ title, avatarFallback, messages = [], auth, onSendMessage, onDeleteMessage, onDeleteAttachment, processing, isOnline }: ChatBoxProps & { onDeleteAttachment?: (id: number) => void; isOnline?: boolean }) {
     const [message, setMessage] = useState('');
     const [attachment, setAttachment] = useState<File | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -48,11 +48,18 @@ function ChatBox({ title, avatarFallback, messages = [], auth, onSendMessage, on
                                 {avatarFallback?.substring(0, 2)}
                             </AvatarFallback>
                         </Avatar>
-                        <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-background" />
+                        {isOnline && (
+                            <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-background animate-pulse" />
+                        )}
                     </div>
                     <div>
                         <h3 className="text-sm font-bold tracking-tight">{title}</h3>
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Active Now</p>
+                        <p className={cn(
+                            "text-[10px] font-semibold uppercase tracking-widest",
+                            isOnline ? "text-emerald-500" : "text-muted-foreground"
+                        )}>
+                            {isOnline ? "Active Now" : "Offline"}
+                        </p>
                     </div>
                 </div>
             </div>

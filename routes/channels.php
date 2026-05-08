@@ -17,3 +17,16 @@ Broadcast::channel('project.{projectId}', function ($user, $projectId) {
     return $user->id === $project->user_id ||
            ($project->client && $project->client->account_id === $user->id);
 });
+
+Broadcast::channel('project-presence.{projectId}', function ($user, $projectId) {
+    $project = Project::find($projectId);
+    if (!$project) {
+        return false;
+    }
+
+    if ($user->id == $project->user_id || ($project->client && $project->client->account_id == $user->id)) {
+        return ['id' => $user->id, 'name' => $user->name];
+    }
+
+    return false;
+});

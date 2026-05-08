@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FileType;
+use App\Events\FileDeleted;
+use App\Events\FileUploaded;
 use App\Models\File;
 use App\Models\Project;
+use App\Notifications\ProjectNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Events\FileUploaded;
-use App\Events\FileDeleted;
 
 class FileController extends Controller
 {
@@ -36,7 +38,7 @@ class FileController extends Controller
             'user_id' => Auth::id(),
             'file_name' => $upload->getClientOriginalName(),
             'file_path' => $path,
-            'file_type' => \App\Enums\FileType::GENERAL->value,
+            'file_type' => FileType::GENERAL->value,
             'file_size' => $upload->getSize(),
             'mime_type' => $upload->getMimeType(),
             'client_can_download' => $request->boolean('client_can_download', true),
@@ -44,6 +46,18 @@ class FileController extends Controller
         ]);
 
         event(new FileUploaded($file));
+
+        // Notify Client
+        if ($project->client && $project->client->account) {
+            $project->client->account->notify(new ProjectNotification([
+                'title' => 'New File Uploaded',
+                'message' => "A new file \"{$file->file_name}\" has been uploaded to project \"{$project->title}\".",
+                'url' => route('client.projects.show', $project->id),
+                'project_id' => $project->id,
+                'type' => 'info',
+                'icon' => 'FileText',
+            ]));
+        }
 
         return back()->with('success', 'File uploaded successfully.');
     }
@@ -78,7 +92,7 @@ class FileController extends Controller
         }
 
         Storage::disk('public')->delete($file->file_path);
-        
+
         $fileClone = clone $file;
         $file->delete();
 

@@ -31,7 +31,7 @@ class MagicLinkEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to LaraCollab - Your Access Link',
+            subject: 'Welcome to LancerCollab - Your Access Link',
         );
     }
 

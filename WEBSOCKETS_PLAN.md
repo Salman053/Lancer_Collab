@@ -1,6 +1,6 @@
 # Real-Time WebSocket Implementation Plan (Laravel Reverb)
 
-This document outlines the steps required to implement real-time messaging functionality in LaraCollab using Laravel Reverb.
+This document outlines the steps required to implement real-time messaging functionality in LancerCollab using Laravel Reverb.
 
 ## 1. Prerequisites & Configuration
 - [ ] Verify `reverb` is installed: Ensure `composer.json` contains `laravel/reverb`.

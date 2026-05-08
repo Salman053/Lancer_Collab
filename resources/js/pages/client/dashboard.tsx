@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage, router } from '@inertiajs/react';
 import { ArrowRight, Calendar, CheckCircle2, Clock, Folder, MessageSquare, ShieldCheck, TrendingUp, User, Zap } from 'lucide-react';
+import React, { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,6 +26,24 @@ interface DashboardProps {
 
 export default function ClientDashboard() {
     const { auth, activeProjectsCount, unreadMessagesCount, upcomingMilestones, recentActivity } = usePage<DashboardProps>().props;
+
+    useEffect(() => {
+        if (window.Echo) {
+            window.Echo.private(`App.Models.User.${auth.user.id}`)
+                .listen('.DashboardUpdated', (e: any) => {
+                    router.reload({ 
+                        only: ['activeProjectsCount', 'unreadMessagesCount', 'upcomingMilestones', 'recentActivity'],
+                        preserveScroll: true 
+                    });
+                });
+        }
+
+        return () => {
+            if (window.Echo) {
+                window.Echo.leave(`App.Models.User.${auth.user.id}`);
+            }
+        };
+    }, [auth.user.id]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

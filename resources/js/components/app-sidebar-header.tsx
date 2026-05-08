@@ -2,6 +2,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import AnimatedThemeToggler from './ui/animated-theme-toggler';
+import { NotificationDropdown } from './notification-dropdown';
 
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
     return (
@@ -11,6 +12,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className="ml-auto flex items-center gap-2">
+                <NotificationDropdown />
                 <AnimatedThemeToggler />
             </div>
         </header>

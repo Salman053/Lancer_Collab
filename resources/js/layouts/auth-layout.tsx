@@ -54,7 +54,7 @@ export default function AuthLayout({ children, title, description, showBranding 
                                     <div className="relative">
                                         <Sparkles className="text-brand absolute -top-1 -right-1 h-3 w-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                     </div>
-                                    <span className="from-brand to-brand/70 bg-gradient-to-r bg-clip-text text-transparent">LaraCollab</span>
+                                    <span className="from-brand to-brand/70 bg-gradient-to-r bg-clip-text text-transparent">LancerCollab</span>
                                 </Link>
                                 <div className="bg-brand mt-1 h-0.5 w-0 transition-all duration-500 group-hover:w-full"></div>
                             </div>
@@ -129,7 +129,7 @@ export default function AuthLayout({ children, title, description, showBranding 
                         {showBranding && (
                             <div className="mb-10 flex justify-center lg:hidden">
                                 <Link href={route('home')} className="flex items-center gap-2">
-                                    <span className="text-brand text-2xl font-bold tracking-tight">LaraCollab</span>
+                                    <span className="text-brand text-2xl font-bold tracking-tight">LancerCollab</span>
                                 </Link>
                             </div>
                         )}

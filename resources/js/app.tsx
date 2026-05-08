@@ -20,6 +20,8 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
+console.log('Laravel Echo initialized with Reverb');
+
 declare global {
     const route: typeof routeFn;
     interface Window {
@@ -39,7 +41,7 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: '#4B5563',
+       color: '#2563EB', 
     },
 });
 

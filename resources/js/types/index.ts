@@ -145,4 +145,5 @@ export interface ChatBoxProps {
     onSendMessage: (message: string, attachment?: File | null) => void;
     onDeleteMessage?: (messageId: number) => void;
     processing: boolean;
+    isOnline?: boolean;
 }

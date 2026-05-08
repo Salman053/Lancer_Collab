@@ -13,7 +13,7 @@ export default function LandingFooter() {
                         <div className="bg-brand flex aspect-square size-10 items-center justify-center rounded-xl text-white shadow-sm">
                             <Sparkles className="size-6" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight">LaraCollab</span>
+                        <span className="text-xl font-bold tracking-tight">LancerCollab</span>
                     </div>
                     <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
                         The definitive client collaboration platform for modern agencies and high-performing freelancers. Professional. Secure.
@@ -119,7 +119,7 @@ export default function LandingFooter() {
 
             {/* Bottom Bar */}
             <div className="border-border text-muted-foreground/60 mx-auto mt-16 flex max-w-7xl flex-col items-center justify-between gap-4 border-t pt-8 text-[11px] font-medium tracking-wider uppercase md:flex-row">
-                <p>&copy; {currentYear} LaraCollab SaaS. All rights reserved.</p>
+                <p>&copy; {currentYear} LancerCollab SaaS. All rights reserved.</p>
                 <div className="flex gap-6">
                     <span className="hover:text-primary cursor-default transition-colors">New York</span>
                     <span className="hover:text-primary cursor-default transition-colors">London</span>

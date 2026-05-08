@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DashboardUpdated;
+use App\Events\MilestoneCreated;
+use App\Events\MilestoneDeleted;
+use App\Events\MilestoneUpdated;
 use App\Models\Milestone;
 use App\Models\Project;
-use App\Events\MilestoneCreated;
-use App\Events\MilestoneUpdated;
-use App\Events\MilestoneDeleted;
+use App\Notifications\ProjectNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,16 +29,24 @@ class MilestoneController extends Controller
         ]);
 
         $project = Project::findOrFail($validated['project_id']);
-        
+
         if ($project->user_id !== Auth::id()) {
             abort(403);
         }
 
         $validated['user_id'] = Auth::id();
-        
+
         $milestone = Milestone::create($validated);
 
         broadcast(new MilestoneCreated($milestone))->toOthers();
+
+        // Notify Client
+        if ($project->client && $project->client->account) {
+
+            broadcast(new DashboardUpdated($project->client->account_id, 'milestones'))->toOthers();
+        }
+
+        broadcast(new DashboardUpdated($project->user_id, 'milestones'))->toOthers();
 
         return redirect()->back()->with('success', 'Milestone created successfully.');
     }
@@ -77,7 +87,7 @@ class MilestoneController extends Controller
         $project = $milestone->project;
         $client = Auth::user()->client;
 
-        if (!$client || $project->client_id !== $client->id) {
+        if (! $client || $project->client_id !== $client->id) {
             abort(403);
         }
 
@@ -100,6 +110,23 @@ class MilestoneController extends Controller
 
         broadcast(new MilestoneUpdated($milestone))->toOthers();
 
+        // Notify Freelancer
+        if ($project->user) {
+            $project->user->notify(new ProjectNotification([
+                'title' => 'Milestone Status Updated',
+                'message' => "The client has marked milestone \"{$milestone->title}\" as \"{$milestone->status}\".",
+                'url' => route('freelancer.projects.show', $project->id),
+                'project_id' => $project->id,
+                'type' => $validated['status'] === 'completed' ? 'success' : 'warning',
+                'icon' => $validated['status'] === 'completed' ? 'CheckCircle' : 'AlertTriangle',
+            ]));
+        }
+
+        broadcast(new DashboardUpdated($project->user_id, 'milestones'))->toOthers();
+        if ($project->client && $project->client->account_id) {
+            broadcast(new DashboardUpdated($project->client->account_id, 'milestones'))->toOthers();
+        }
+
         return redirect()->back()->with('success', 'Milestone status updated.');
     }
 
@@ -114,7 +141,7 @@ class MilestoneController extends Controller
 
         $milestoneId = $milestone->id;
         $projectId = $milestone->project_id;
-        
+
         $milestone->delete();
 
         broadcast(new MilestoneDeleted($milestoneId, $projectId))->toOthers();

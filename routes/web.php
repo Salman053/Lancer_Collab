@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\ProjectUpdateController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\AuditLogController;
@@ -30,12 +31,18 @@ Route::middleware(['auth', 'role:'.UserRoles::ADMIN->value])->prefix('admin')->g
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('files/{file}/download', [FileController::class, 'download'])->name('files.download');
-    
-    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
-    Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
-    Route::delete('/messages/{message}/attachment', [MessageController::class, 'deleteAttachment'])->name('messages.attachment.destroy');
+    Route::get('/api/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
+    Route::post('/notifications/mark-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::get('files/{file}/download', [FileController::class, 'download'])->name('files.download');
+        
+        Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+        Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+        Route::delete('/messages/{message}/attachment', [MessageController::class, 'deleteAttachment'])->name('messages.attachment.destroy');
     });
+});
 
 Route::middleware(['auth', 'role:'.UserRoles::CLIENT->value])->prefix('client')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\ClientDashboardController::class, 'index'])->name('client.dashboard');

@@ -8,7 +8,7 @@ const faqs = [
     },
     {
         question: 'Is my client data isolated and secure?',
-        answer: 'Yes. LaraCollab uses a multi-tenant architecture at the application level. Clients can only see projects specifically assigned to them, and freelancers can only see their own clients. All data is encrypted and backed by immutable audit logs.',
+        answer: 'Yes. LancerCollab uses a multi-tenant architecture at the application level. Clients can only see projects specifically assigned to them, and freelancers can only see their own clients. All data is encrypted and backed by immutable audit logs.',
     },
     {
         question: 'Can I use my own domain for the client portal?',

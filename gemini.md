@@ -1,10 +1,10 @@
-LaraCollab — Product Documentation
+LancerCollab — Product Documentation
 Enterprise-Grade Client Collaboration Platform for Freelancers & Agencies
 
-LaraCollab is a comprehensive, multi-tenant SaaS platform designed to streamline client-facing project management. It enables freelancers, agencies, and creative teams to deliver exceptional client experiences through dedicated portals, real-time collaboration, and automated workflows — all without building custom infrastructure.
+LancerCollab is a comprehensive, multi-tenant SaaS platform designed to streamline client-facing project management. It enables freelancers, agencies, and creative teams to deliver exceptional client experiences through dedicated portals, real-time collaboration, and automated workflows — all without building custom infrastructure.
 
 Executive Summary
-LaraCollab solves a critical pain point for service providers: the lack of professional, branded client portals that provide transparency without administrative overhead. The platform automates client onboarding, centralizes communication, and provides granular access controls, allowing businesses to focus on delivering work rather than managing client expectations.
+LancerCollab solves a critical pain point for service providers: the lack of professional, branded client portals that provide transparency without administrative overhead. The platform automates client onboarding, centralizes communication, and provides granular access controls, allowing businesses to focus on delivering work rather than managing client expectations.
 
 Target Market: Freelancers, digital agencies, creative studios, consultants, and any service-based business managing multiple clients with project-based deliverables.
 
@@ -27,7 +27,7 @@ Dark mode with system preference detection + manual toggle
 Fully responsive across desktop, tablet, and mobile breakpoints
 
 User Roles & Access Control
-LaraCollab implements Role-Based Access Control (RBAC) with three distinct personas, each with isolated dashboards, permissions, and visible data models.
+LancerCollab implements Role-Based Access Control (RBAC) with three distinct personas, each with isolated dashboards, permissions, and visible data models.
 
 Role Route Prefix Primary Capabilities
 Admin /admin Global platform oversight, user management, system configuration, billing oversight
@@ -130,7 +130,7 @@ Milestone completion velocity
 Payment collection timeline metrics
 
 User Interface Framework
-LaraCollab features two distinct layout systems optimized for their respective contexts:
+LancerCollab features two distinct layout systems optimized for their respective contexts:
 
 App Layout (Authenticated Portal)
 Comprehensive dashboard with breadcrumb navigation
@@ -179,7 +179,7 @@ resources/js/components/
 → Reusable UI components
 → Form-specific patterns (client-form, project-form) with Zod schemas
 Key Differentiators (Competitive Analysis)
-Capability LaraCollab Basecamp Asana Trello Custom Build
+Capability LancerCollab Basecamp Asana Trello Custom Build
 Multi-tenant ✅ Native ❌ ❌ ❌ Requires dev
 Passwordless client login ✅ Built-in ❌ ❌ ❌ Requires dev
 Client portal isolation ✅ Per-client Partial ❌ ❌ Requires dev

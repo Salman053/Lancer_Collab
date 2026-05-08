@@ -1,5 +1,5 @@
 <x-mail::message>
-# Welcome to LaraCollab, {{ $name }}!
+# Welcome to LancerCollab, {{ $name }}!
 
 You've been invited to join your project portal. Click the button below to log in instantly. No password required.
 

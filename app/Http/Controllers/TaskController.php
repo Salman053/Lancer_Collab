@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\Project;
-use App\Models\Milestone;
+use App\Events\DashboardUpdated;
 use App\Events\TaskCreated;
-use App\Events\TaskUpdated;
 use App\Events\TaskDeleted;
+use App\Events\TaskUpdated;
+use App\Models\Project;
+use App\Models\Task;
+use App\Notifications\ProjectNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -49,6 +50,20 @@ class TaskController extends Controller
 
         broadcast(new TaskCreated($task))->toOthers();
 
+        // Notify Client
+        $project->client->account->notify(new ProjectNotification([
+            'title' => 'New Task Created',
+            'message' => "A new task \"{$task->title}\" has been added to project \"{$project->title}\".",
+            'url' => route('client.projects.show', $project->id),
+            'project_id' => $project->id,
+            'type' => 'info',
+            'icon' => 'PlusCircle',
+        ]));
+
+        broadcast(new DashboardUpdated($project->client->account_id, 'tasks'))->toOthers();
+
+        broadcast(new DashboardUpdated($project->user_id, 'tasks'))->toOthers();
+
         return back()->with('success', 'Task created successfully.');
     }
 
@@ -67,13 +82,18 @@ class TaskController extends Controller
             'completed_at' => 'nullable|date',
         ]);
 
-        if ($validated['status'] === 'completed' && !$task->completed_at) {
+        if ($validated['status'] === 'completed' && ! $task->completed_at) {
             $validated['completed_at'] = now();
         }
 
         $task->update($validated);
 
         broadcast(new TaskUpdated($task))->toOthers();
+
+        broadcast(new DashboardUpdated($task->project->user_id, 'tasks'))->toOthers();
+        if ($task->project->client && $task->project->client->account_id) {
+            broadcast(new DashboardUpdated($task->project->client->account_id, 'tasks'))->toOthers();
+        }
 
         return back()->with('success', 'Task updated successfully.');
     }
@@ -85,10 +105,10 @@ class TaskController extends Controller
         }
 
         $isCompleted = $task->status === 'completed';
-        
+
         $task->update([
             'status' => $isCompleted ? 'pending' : 'completed',
-            'is_completed' => !$isCompleted,
+            'is_completed' => ! $isCompleted,
             'completed_at' => $isCompleted ? null : now(),
         ]);
 
@@ -105,10 +125,15 @@ class TaskController extends Controller
 
         $taskId = $task->id;
         $projectId = $task->project_id;
-        
+
         $task->delete();
 
         broadcast(new TaskDeleted($taskId, $projectId))->toOthers();
+
+        broadcast(new DashboardUpdated($task->project->user_id, 'tasks'))->toOthers();
+        if ($task->project->client && $task->project->client->account_id) {
+            broadcast(new DashboardUpdated($task->project->client->account_id, 'tasks'))->toOthers();
+        }
 
         return back()->with('success', 'Task deleted successfully.');
     }

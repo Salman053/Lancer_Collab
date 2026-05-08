@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage, router } from '@inertiajs/react';
 import { ArrowUpRight, Briefcase, Calendar, CheckCircle2, Clock, DollarSign, MoreHorizontal, Plus, Sparkles, Users } from 'lucide-react';
 import React from 'react';
 
@@ -28,7 +28,25 @@ interface DashboardProps {
 }
 
 export default function Dashboard() {
-    const { stats, recent_projects, upcoming_tasks } = usePage<DashboardProps>().props;
+    const { auth, stats, recent_projects, upcoming_tasks } = usePage<DashboardProps>().props;
+
+    React.useEffect(() => {
+        if (window.Echo) {
+            window.Echo.private(`App.Models.User.${auth.user.id}`)
+                .listen('.DashboardUpdated', (e: any) => {
+                    router.reload({ 
+                        only: ['stats', 'recent_projects', 'upcoming_tasks'],
+                        preserveScroll: true 
+                    });
+                });
+        }
+
+        return () => {
+            if (window.Echo) {
+                window.Echo.leave(`App.Models.User.${auth.user.id}`);
+            }
+        };
+    }, [auth.user.id]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
