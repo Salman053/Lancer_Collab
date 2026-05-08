@@ -4,11 +4,9 @@ import LandingFooter from '@/components/landing/footer';
 import HeroSection from '@/components/landing/hero-section';
 import PricingSection from '@/components/landing/pricing-section';
 import TestimonialsSection from '@/components/landing/testimonials-section';
-import { type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 export default function Welcome() {
-    const { auth } = usePage<SharedData>().props;
 
     return (
         <div className="bg-background select-none">

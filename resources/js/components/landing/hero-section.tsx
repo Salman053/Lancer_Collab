@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Auth } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Globe, Layers, Lock, Zap } from 'lucide-react';
+import { ArrowRight, Globe, Lock, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NoiseTexture } from '../backgrounds/noise-texture';
 import DashboardButton from '../dashboard-button';

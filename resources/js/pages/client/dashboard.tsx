@@ -30,10 +30,10 @@ export default function ClientDashboard() {
     useEffect(() => {
         if (window.Echo) {
             window.Echo.private(`App.Models.User.${auth.user.id}`)
-                .listen('.DashboardUpdated', (e: any) => {
+                .listen('.DashboardUpdated', () => {
                     router.reload({ 
                         only: ['activeProjectsCount', 'unreadMessagesCount', 'upcomingMilestones', 'recentActivity'],
-                        preserveScroll: true 
+                        preserveUrl: true 
                     });
                 });
         }

@@ -28,7 +28,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Palette,
     easing: "ease-in-out",
     pseudoElement: "::view-transition-old(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { opacity: 1 },
       { opacity: 0 }
     ]
@@ -37,7 +37,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Sun,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "translateY(100%)", opacity: 0 },
       { transform: "translateY(0)", opacity: 1 }
     ]
@@ -46,7 +46,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Moon,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "translateY(-100%)", opacity: 0 },
       { transform: "translateY(0)", opacity: 1 }
     ]
@@ -55,7 +55,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: RotateCw,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "translateX(100%)", opacity: 0 },
       { transform: "translateX(0)", opacity: 1 }
     ]
@@ -64,7 +64,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: RotateCw,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "translateX(-100%)", opacity: 0 },
       { transform: "translateX(0)", opacity: 1 }
     ]
@@ -73,7 +73,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: RotateCw,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "rotate(-180deg) scale(0.5)", opacity: 0 },
       { transform: "rotate(0) scale(1)", opacity: 1 }
     ]
@@ -82,7 +82,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Sun,
     easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "scale(0)", opacity: 0 },
       { transform: "scale(1)", opacity: 1 }
     ]
@@ -91,7 +91,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Sparkles,
     easing: "ease-in-out",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { filter: "blur(8px)", opacity: 0 },
       { filter: "blur(0px)", opacity: 1 }
     ]
@@ -100,7 +100,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Sun,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "rotateY(90deg)", opacity: 0 },
       { transform: "rotateY(0deg)", opacity: 1 }
     ]
@@ -109,7 +109,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Sun,
     easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "scale(0) translateY(100px)", opacity: 0 },
       { transform: "scale(1.1) translateY(-10px)", opacity: 1, offset: 0.7 },
       { transform: "scale(1) translateY(0)", opacity: 1 }
@@ -119,7 +119,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Waves,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { clipPath: `inset(100% 0 0 0)`, opacity: 0 },
       { clipPath: `inset(0% 0 0 0)`, opacity: 1 }
     ]
@@ -128,7 +128,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Sparkles,
     easing: "ease-in-out",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { filter: "brightness(0) blur(4px)", opacity: 0 },
       { filter: "brightness(1) blur(0px)", opacity: 1 }
     ]
@@ -137,7 +137,7 @@ const variantConfigs: Record<AnimationVariant, VariantConfig> = {
     icon: Orbit,
     easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     pseudoElement: "::view-transition-new(root)",
-    customAnimation: (x: number, y: number, maxRadius: number) => [
+    customAnimation: () => [
       { transform: "scale(0) rotate(-360deg)", opacity: 0 },
       { transform: "scale(1) rotate(0deg)", opacity: 1 }
     ]
@@ -195,7 +195,6 @@ export const AnimatedThemeToggler = ({
 
     setIsAnimating(true)
 
-    // Add icon animation class
     if (showIconAnimation) {
       button.classList.add("animate-icon-bounce")
       setTimeout(() => {
@@ -351,7 +350,7 @@ export const ThemeVariantSelector = ({ currentVariant, onVariantChange }: ThemeV
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 p-4">
       {variants.map((variant) => {
-        const Icon = variant.icon
+        // const Icon = variant.icon
         return (
           <button
             key={variant.value}

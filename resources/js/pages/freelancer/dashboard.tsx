@@ -33,10 +33,10 @@ export default function Dashboard() {
     React.useEffect(() => {
         if (window.Echo) {
             window.Echo.private(`App.Models.User.${auth.user.id}`)
-                .listen('.DashboardUpdated', (e: any) => {
+                .listen('.DashboardUpdated', () => {
                     router.reload({ 
                         only: ['stats', 'recent_projects', 'upcoming_tasks'],
-                        preserveScroll: true 
+                        preserveUrl: true 
                     });
                 });
         }

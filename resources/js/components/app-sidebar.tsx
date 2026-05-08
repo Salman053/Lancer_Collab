@@ -7,7 +7,7 @@ import AppLogo from './app-logo';
 import { NavigationSections } from './navigation-sections';
 
 export function AppSidebar() {
-    const { userRole, dashboardRoute, navigationItems, footerItems } = useRoleNavigation();
+    const {  dashboardRoute, navigationItems, footerItems } = useRoleNavigation();
 
     return (
         <Sidebar collapsible="icon" variant="inset">

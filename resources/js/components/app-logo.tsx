@@ -1,10 +1,8 @@
-import { User } from "@/types";
 import { usePage } from "@inertiajs/react";
 
 export default function AppLogo() {
 
     const { auth } = usePage<{ auth: any }>().props;
-    console.log(auth)
     return (
         <div className="group/logo flex items-center gap-2">
             <div className="bg-brand text-brand-foreground flex aspect-square size-8 items-center justify-center rounded-lg shadow-sm transition-all duration-300 group-hover/logo:scale-110 overflow-hidden border border-border/50">

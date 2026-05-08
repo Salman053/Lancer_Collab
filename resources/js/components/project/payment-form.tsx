@@ -15,7 +15,7 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({ project, onSuccess }: PaymentFormProps) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing } = useForm({
         project_id: project.id,
         milestone_id: '',
         amount: '',

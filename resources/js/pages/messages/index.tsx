@@ -17,7 +17,7 @@ export default function MessagesIndex() {
 
     const selectedProject = projects.find((p: any) => p.id === selectedProjectId);
 
-    const { data, setData, processing, reset, post } = useForm({
+    const { data, setData, processing, reset } = useForm({
         project_id: selectedProjectId || '',
         to_user_id: selectedProject?.other_user?.id || '',
         message: '',
@@ -47,6 +47,7 @@ export default function MessagesIndex() {
         return () => {
             window.Echo.leave(`project.${selectedProjectId}`);
         };
+         
     }, [selectedProjectId]);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -89,6 +90,7 @@ export default function MessagesIndex() {
                 attachment: data.attachment,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProjectId]);
 
     useEffect(() => {
@@ -189,7 +191,7 @@ export default function MessagesIndex() {
                                         message: msg,
                                         attachment: attachment as any,
                                     };
-                                    
+
                                     setData(formData);
 
                                     router.post(route('messages.store'), formData, {

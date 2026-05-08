@@ -17,7 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Index({ projects, clients }: { clients: Client[]; projects: Project[] }) {
+export default function Index({ projects }: { clients?: Client[]; projects: Project[] }) {
     const handleEdit = (project: Project) => {
         router.get(route('freelancer.projects.edit', project.id));
     };

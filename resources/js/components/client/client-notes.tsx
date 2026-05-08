@@ -11,7 +11,7 @@ interface ClientNotesProps {
     onNoteUpdate?: () => void;
 }
 
-export function ClientNotes({ client, onEdit, onNoteUpdate }: ClientNotesProps) {
+export function ClientNotes({ client, onEdit }: ClientNotesProps) {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-3">

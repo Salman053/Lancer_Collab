@@ -3,7 +3,7 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { Moon, Sun } from 'lucide-react';
 
 export function ThemeToggle() {
-    const { appearance, updateAppearance } = useAppearance();
+    const { updateAppearance } = useAppearance();
 
     const toggleTheme = () => {
         const isDark = document.documentElement.classList.contains('dark');
