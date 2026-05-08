@@ -1,25 +1,75 @@
-# Laravel + React Starter Kit
+<div align="center">
+  <img src="public/logo.png" alt="LancerCollab Logo" width="120" />
+</div>
 
-## Introduction
+# LancerCollab
 
-Our React starter kit provides a robust, modern starting point for building Laravel applications with a React frontend using [Inertia](https://inertiajs.com).
+**Enterprise-Grade Client Collaboration Platform for Freelancers & Agencies**
 
-Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+LancerCollab is a comprehensive, multi-tenant SaaS platform designed to streamline client-facing project management. It enables freelancers, agencies, and creative teams to deliver exceptional client experiences through dedicated portals, real-time collaboration, and automated workflows — all without building custom infrastructure.
 
-This React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn/ui](https://ui.shadcn.com) component library.
+## Screenshots
 
-## Official Documentation
+### Landing & Authentication
+| Landing Page | Sign In | Sign Up |
+| :---: | :---: | :---: |
+| <img src="public/landing.png" alt="Landing Page" width="300" /> | <img src="public/sign-in.png" alt="Sign In" width="300" /> | <img src="public/sign-up.png" alt="Sign Up" width="300" /> |
 
-Documentation for all Laravel starter kits can be found on the [Laravel website](https://laravel.com/docs/starter-kits).
+### Freelancer / Agency Portal
+| Dashboard | Project View |
+| :---: | :---: |
+| <img src="public/dashboard-freelancer.png" alt="Freelancer Dashboard" width="400" /> | <img src="public/freelancer-project-view.png" alt="Freelancer Project View" width="400" /> |
 
-## Contributing
+### Client Portal
+| Dashboard | Project View |
+| :---: | :---: |
+| <img src="public/client-dashboard.png" alt="Client Dashboard" width="400" /> | <img src="public/client-project-view.png" alt="Client Project View" width="400" /> |
 
-Thank you for considering contributing to our starter kit! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Architecture & Technology Stack
 
-## Code of Conduct
+- **Backend:** Laravel (PHP)
+- **Frontend:** React 18
+- **Bridge:** Inertia.js
+- **Styling:** Tailwind CSS + Shadcn UI
+- **Database:** MySQL / PostgreSQL
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Core Features
 
-## License
+- **Multi-tenant Architecture:** Isolated dashboards and access levels for Admins, Freelancers, and Clients.
+- **Client Management (CRM):** Centralized directory, Magic Link onboarding, preference management.
+- **Project & Milestone Tracking:** Deliverable breakdown, budget variance, visual project cards.
+- **Financial & Payment Module:** Payment tracking, budget consumption alerts.
+- **Real-time Collaboration:** Threaded messaging, secure file sharing, activity feeds.
+- **Security & Compliance:** Audit logs, passwordless token expiry, and strict data isolation.
 
-The Laravel + React starter kit is open-sourced software licensed under the MIT license.
+## User Roles
+
+1. **Admin (`/admin`):** Global platform oversight, user management, and system configuration.
+2. **Freelancer/Agency (`/freelancer`):** Client and project management, milestone tracking, and financial reporting.
+3. **Client (`/client`):** Project viewing, milestone approval, file access, and messaging.
+
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   ```
+2. **Install dependencies:**
+   ```bash
+   composer install
+   npm install
+   ```
+3. **Environment Setup:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+4. **Database & Migrations:**
+   ```bash
+   php artisan migrate --seed
+   ```
+5. **Run the application:**
+   ```bash
+   php artisan serve
+   npm run dev
+   ```

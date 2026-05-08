@@ -330,7 +330,7 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                             </TabsContent>
                         </Tabs>
                     </div>
-                    <div className="max-h-[80vh] space-y-6">
+                    <div className="sticky top-6 h-[600px] lg:col-span-1 lg:h-[calc(100vh-250px)]">
                         <ChatBox
                             messages={messages}
                             auth={auth}

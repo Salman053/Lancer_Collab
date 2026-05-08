@@ -236,7 +236,7 @@ export default function ClientProjectShow() {
 
                 <div className="grid gap-6 lg:grid-cols-3">
                     {/* Left/Main Column */}
-                    <Card className="overflow-hidden border-none bg-transparent shadow-sm lg:col-span-2">
+                    <Card className="overflow-hidden max-h-fit border-none bg-transparent shadow-sm lg:col-span-2">
                         <Tabs defaultValue="overview" className="w-full">
                             <TabsList className="h-12 w-full justify-start gap-6 rounded-none border-b bg-transparent px-0">
                                 <TabsTrigger
@@ -277,7 +277,7 @@ export default function ClientProjectShow() {
                                 </TabsTrigger>
                             </TabsList>
 
-                            <div className="bg-card rounded-b-xl border border-t-0">
+                            <div className="bg-card p-3 rounded-b-xl border border-t-0">
                                 <CardContent className="pt-6">
                                     <TabsContent value="overview" className="mt-0 space-y-6">
                                         <div className="space-y-3">
@@ -312,7 +312,7 @@ export default function ClientProjectShow() {
                                         </div>
                                     </TabsContent>
 
-                                    <TabsContent value="tasks" className="mt-0 space-y-4">
+                                    <TabsContent value="tasks" className="mt-0 space-y-4 ">
                                         {tasks && tasks.length > 0 ? (
                                             <div className="space-y-3">
                                                 {tasks.map((task: any) => (
