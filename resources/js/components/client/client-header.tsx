@@ -2,7 +2,9 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Client } from '@/types';
-import { Pencil } from 'lucide-react';
+import { Mail, Pencil } from 'lucide-react';
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface ClientHeaderProps {
     client: Client;
@@ -17,6 +19,20 @@ export function ClientHeader({ client, onEdit }: ClientHeaderProps) {
             .join('')
             .toUpperCase()
             .slice(0, 2);
+    };
+
+    const [isSending, setIsSending] = useState(false);
+
+    const handleSendMagicLink = () => {
+        setIsSending(true);
+        router.post(
+            route('freelancer.clients.magic-link', client.id),
+            {},
+            {
+                onFinish: () => setIsSending(false),
+                preserveScroll: true,
+            }
+        );
     };
 
     return (
@@ -46,6 +62,10 @@ export function ClientHeader({ client, onEdit }: ClientHeaderProps) {
             </div>
 
             <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleSendMagicLink} disabled={isSending} className="gap-2">
+                    <Mail className="h-4 w-4" />
+                    {isSending ? 'Sending...' : 'Send Login Link'}
+                </Button>
                 <Button variant="outline" size="sm" onClick={onEdit} className="gap-2">
                     <Pencil className="h-4 w-4" />
                     Edit Client

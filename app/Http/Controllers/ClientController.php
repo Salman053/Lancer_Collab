@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -63,7 +64,7 @@ class ClientController extends Controller
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => $validated['name'].'123',
+                'password' => Hash::make(str_replace(' ', '', strtolower($validated['name'])).'123'),
                 'role' => UserRoles::CLIENT,
                 'status' => UserStatus::ACTIVE,
             ]);
@@ -86,7 +87,6 @@ class ClientController extends Controller
             try {
                 Mail::to($user->email)->send(new MagicLinkEmail($token, $user->name));
             } catch (\Exception $e) {
-                // Log error but don't fail the transaction
                 Log::error('Failed to send magic link: '.$e->getMessage());
             }
         });
@@ -159,5 +159,33 @@ class ClientController extends Controller
         $client->delete();
 
         return back()->with('success', 'Client deleted successfully.');
+    }
+
+    /**
+     * Send a magic link to the client.
+     */
+    public function sendMagicLink(Client $client)
+    {
+        if ($client->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $token = Str::random(64);
+
+        MagicToken::create([
+            'user_id' => $client->account_id,
+            'client_id' => $client->id,
+            'token' => $token,
+            'expires_at' => now()->addHours(24),
+            'created_at' => now(),
+        ]);
+
+        try {
+            Mail::to($client->email)->send(new MagicLinkEmail($token, $client->name));
+            return back()->with('success', 'Magic link sent successfully.');
+        } catch (\Exception $e) {
+            Log::error('Failed to send magic link: '.$e->getMessage());
+            return back()->with('error', 'Failed to send magic link.');
+        }
     }
 }

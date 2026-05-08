@@ -47,7 +47,7 @@ export default function MessagesIndex() {
         return () => {
             window.Echo.leave(`project.${selectedProjectId}`);
         };
-         
+
     }, [selectedProjectId]);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -125,11 +125,11 @@ export default function MessagesIndex() {
                                         className={`hover:bg-muted/50 flex w-full items-center gap-3 p-4 text-left transition-colors ${selectedProjectId === project.id ? 'bg-muted border-l-primary border-l-4' : ''}`}
                                     >
                                         <Avatar className="h-10 w-10 border shadow-sm">
-                                            <AvatarFallback className="bg-primary/5 text-primary">{project.other_user.name.charAt(0)}</AvatarFallback>
+                                            <AvatarFallback className="bg-primary/5 text-primary capitalize">{project.other_user.name.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex-1 overflow-hidden">
                                             <div className="flex items-start justify-between">
-                                                <div className="truncate text-sm font-medium">{project.other_user.name}</div>
+                                                <div className="truncate text-sm font-medium capitalize">{project.other_user.name}</div>
                                                 {project.unread_count > 0 && (
                                                     <Badge className="flex h-5 min-w-5 items-center justify-center rounded-full p-0">
                                                         {project.unread_count}
@@ -154,12 +154,12 @@ export default function MessagesIndex() {
                             <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10 flex items-center justify-between border-b p-4 backdrop-blur">
                                 <div className="flex items-center gap-3">
                                     <Avatar className="h-9 w-9 border shadow-sm">
-                                        <AvatarFallback className="bg-primary/5 text-primary">
+                                        <AvatarFallback className="bg-primary/5 text-primary capitalize">
                                             {selectedProject.other_user.name.charAt(0)}
                                         </AvatarFallback>
                                     </Avatar>
                                     <div>
-                                        <div className="text-sm leading-none font-semibold">{selectedProject.other_user.name}</div>
+                                        <div className="text-sm leading-none font-semibold capitalize">{selectedProject.other_user.name}</div>
                                         <div className="text-muted-foreground mt-1 text-[10px] tracking-tight uppercase">
                                             Project: {selectedProject.title}
                                         </div>

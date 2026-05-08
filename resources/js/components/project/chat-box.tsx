@@ -53,7 +53,7 @@ function ChatBox({ title, avatarFallback, messages = [], auth, onSendMessage, on
                         )}
                     </div>
                     <div>
-                        <h3 className="text-sm font-bold tracking-tight">{title}</h3>
+                        <h3 className="text-sm font-bold tracking-tight capitalize">{title}</h3>
                         <p className={cn(
                             "text-[10px] font-semibold uppercase tracking-widest",
                             isOnline ? "text-emerald-500" : "text-muted-foreground"
