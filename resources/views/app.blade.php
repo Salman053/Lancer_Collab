@@ -9,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <link rel="icon" class="rounded" type="image/png" href="/logo.png">
+    <link rel="icon" type="image/png" href="/logo.png">
 
     @routes
     @viteReactRefresh
