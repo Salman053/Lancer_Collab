@@ -35,6 +35,8 @@
         <h1>Invoice</h1>
         <p>Project: {{ $project->title }}</p>
     </div>
+
+    
     <div class="details">
         <p><strong>Client:</strong> {{ $project->client->name }}</p>
         <p><strong>Date:</strong> {{ date('Y-m-d') }}</p>

@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/mark-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
+    Route::get('projects/{project}/invoice', [InvoiceController::class, 'generate'])->name('projects.invoice');
+    Route::get('projects/{project}/payments/report', [PaymentController::class, 'generateProjectReport'])->name('projects.payments.report');
+
     Route::middleware('throttle:10,1')->group(function () {
         Route::get('files/{file}/download', [FileController::class, 'download'])->name('files.download');
 
@@ -58,10 +61,10 @@ Route::middleware(['auth', 'role:'.UserRoles::CLIENT->value])->prefix('client')-
     Route::get('projects/{project}', [ClientProjectController::class, 'show'])->name('client.projects.show');
     Route::get('freelancers', [FreelancerController::class, 'index'])->name('client.freelancers');
     Route::get('payments', [App\Http\Controllers\Client\PaymentController::class, 'index'])->name('client.payments');
+    Route::get('payments/report', [PaymentController::class, 'generateReport'])->name('client.payments.report');
     Route::post('tasks', [App\Http\Controllers\Client\TaskController::class, 'store'])->name('client.tasks.store');
 
     Route::put('milestones/{milestone}', [MilestoneController::class, 'clientUpdate'])->name('client.milestones.update');
-    Route::get('projects/{project}/invoice', [InvoiceController::class, 'generate'])->name('projects.invoice');
 
     Route::get('messages', [MessageController::class, 'index'])->name('client.messages');
 });
@@ -88,7 +91,6 @@ Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freel
     Route::put('clients/{client}', [ClientController::class, 'update'])->name('freelancer.clients.update');
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('freelancer.clients.destroy');
     Route::post('clients/{client}/magic-link', [ClientController::class, 'sendMagicLink'])->name('freelancer.clients.magic-link');
-    Route::get('projects/{project}/invoice', [InvoiceController::class, 'generate'])->name('projects.invoice');
 
     // Projects Routes
     Route::get('projects', [ProjectsController::class, 'index'])->name('freelancer.projects');
@@ -101,6 +103,7 @@ Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freel
 
     // Payment Routes
     Route::get('payments', [PaymentController::class, 'index'])->name('freelancer.payments');
+    Route::get('payments/report', [PaymentController::class, 'generateReport'])->name('freelancer.payments.report');
     Route::post('payments', [PaymentController::class, 'store'])->name('freelancer.payments.store');
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('freelancer.payments.update');
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('freelancer.payments.destroy');

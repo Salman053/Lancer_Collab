@@ -186,6 +186,11 @@ export default function ProjectTable({ projects, onEdit }: ProjectTableProps) {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {projects.map((project) => (
                         <Card key={project.id} className="overflow-hidden">
+                            {project.thumbnail && (
+                                <div className="aspect-video w-full overflow-hidden border-b">
+                                    <img src={project.thumbnail} alt={project.title} className="h-full w-full object-cover transition-transform hover:scale-105" />
+                                </div>
+                            )}
                             <CardHeader className="pb-3">
                                 <div className="flex items-start justify-between">
                                     <div className="space-y-1">

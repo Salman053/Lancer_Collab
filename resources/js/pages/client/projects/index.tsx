@@ -49,7 +49,12 @@ export default function ClientProjectsIndex() {
                     ) : (
                         filteredProjects.map((project) => (
                             <Link key={project.id} href={route('client.projects.show', project.id)}>
-                                <Card className="hover:border-primary/50 h-full cursor-pointer transition-all hover:shadow-md">
+                                <Card className="hover:border-primary/50 overflow-hidden h-full cursor-pointer transition-all hover:shadow-md">
+                                    {project.thumbnail && (
+                                        <div className="aspect-video w-full overflow-hidden border-b">
+                                            <img src={project.thumbnail} alt={project.title} className="h-full scale-125 w-full object-cover transition-transform duration-700 hover:translate-x-2" />
+                                        </div>
+                                    )}
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-lg font-bold">{project.title}</CardTitle>
                                         <Folder className="text-muted-foreground h-4 w-4" />

@@ -31,6 +31,7 @@ export function ClientHeader({ client, onEdit }: ClientHeaderProps) {
             {
                 onFinish: () => setIsSending(false),
                 preserveScroll: true,
+              
             }
         );
     };

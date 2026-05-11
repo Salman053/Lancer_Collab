@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { DollarSign, FileText, Share2 } from 'lucide-react';
+import { DollarSign, Download, FileText, Share2 } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Payments & Invoices', href: '/client/payments' }];
@@ -32,6 +32,11 @@ export default function ClientPaymentsIndex() {
             <div className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-bold">Payments & Invoices</h1>
+                    <Button variant="outline" asChild>
+                        <a href={route('client.payments.report')}>
+                            <Download className="mr-2 size-4" /> Download History Report
+                        </a>
+                    </Button>
                 </div>
 
                 <Card>

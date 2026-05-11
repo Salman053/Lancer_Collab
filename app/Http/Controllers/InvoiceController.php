@@ -10,10 +10,14 @@ class InvoiceController extends Controller
 {
     public function generate(Project $project)
     {
+        $user = Auth::user();
 
-        if (Auth::user()->role == 'freelancer' && $project->user_id !== Auth::id()) {
-            abort(403);
-        } elseif (Auth::user()->role == 'client' && $project->client->account_id !== Auth::id()) {
+        // Authorization
+        if ($user->role === \App\Enums\UserRoles::FREELANCER) {
+            if ($project->user_id !== $user->id) abort(403);
+        } elseif ($user->role === \App\Enums\UserRoles::CLIENT) {
+            if (!$user->client || $project->client_id !== $user->client->id) abort(403);
+        } elseif ($user->role !== \App\Enums\UserRoles::ADMIN) {
             abort(403);
         }
 

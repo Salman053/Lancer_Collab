@@ -14,30 +14,40 @@ class ScheduleController extends Controller
     {
         $userId = Auth::id();
 
-        $tasks = Task::where('user_id', $userId)
+        // Get tasks assigned to user OR part of user's projects
+        $tasks = Task::where(function($q) use ($userId) {
+                $q->where('user_id', $userId)
+                  ->orWhereHas('project', fn($pq) => $pq->where('user_id', $userId));
+            })
             ->whereNotNull('due_date')
             ->with('project')
             ->get()
             ->map(fn($task) => [
                 'id' => 'task-' . $task->id,
-                'title' => $task->title,
+                'title' => '[Task] ' . $task->title,
                 'start' => $task->due_date->format('Y-m-d'),
                 'type' => 'task',
                 'project' => $task->project->title,
                 'status' => $task->status,
+                'color' => '#3b82f6', // blue-500
             ]);
 
-        $milestones = Milestone::where('user_id', $userId)
+        // Get milestones assigned to user OR part of user's projects
+        $milestones = Milestone::where(function($q) use ($userId) {
+                $q->where('user_id', $userId)
+                  ->orWhereHas('project', fn($pq) => $pq->where('user_id', $userId));
+            })
             ->whereNotNull('due_date')
             ->with('project')
             ->get()
             ->map(fn($milestone) => [
                 'id' => 'milestone-' . $milestone->id,
-                'title' => $milestone->title,
+                'title' => '[Milestone] ' . $milestone->title,
                 'start' => $milestone->due_date->format('Y-m-d'),
                 'type' => 'milestone',
                 'project' => $milestone->project->title,
-                'status' => $milestone->status,
+                'status' => $milestone->status instanceof \UnitEnum ? $milestone->status->value : $milestone->status,
+                'color' => '#a855f7', // purple-500
             ]);
 
         $events = $tasks->concat($milestones);

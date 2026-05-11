@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { Head, usePage } from '@inertiajs/react';
-import { Clock, CreditCard, DollarSign, FileText, Share2 } from 'lucide-react';
+import { Clock, CreditCard, DollarSign, Download, FileText, Share2 } from 'lucide-react';
 import { useState } from 'react';
 
 export default function FreelancerPaymentsIndex() {
@@ -14,7 +14,8 @@ export default function FreelancerPaymentsIndex() {
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 
-    const totalEarnings = payments.filter((p) => p.status === 'paid').reduce((acc, p) => acc + parseFloat(p.amount), 0);
+    console.log(payments)
+    const totalEarnings = payments.filter((p) => p.status === 'completed').reduce((acc, p) => acc + parseFloat(p.amount), 0);
     const filtered = payments.filter(
         (p) => p.project.title.toLowerCase().includes(search.toLowerCase()) && (statusFilter === 'all' || p.status === statusFilter),
     );
@@ -28,7 +29,14 @@ export default function FreelancerPaymentsIndex() {
         <AppLayout breadcrumbs={[{ title: 'Payments', href: '/freelancer/payments' }]}>
             <Head title="Earnings & Payments" />
             <div className="space-y-6 p-6">
-                <h1 className="text-2xl font-bold">Earnings & Payments</h1>
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-bold">Earnings & Payments</h1>
+                    <Button variant="outline" asChild>
+                        <a href={route('freelancer.payments.report')}>
+                            <Download className="mr-2 size-4" /> Download History Report
+                        </a>
+                    </Button>
+                </div>
 
                 <div className="grid gap-4 md:grid-cols-3">
                     <Card>
@@ -47,7 +55,7 @@ export default function FreelancerPaymentsIndex() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">
-                                $
+                                
                                 {payments
                                     .filter((p) => p.status === 'pending')
                                     .reduce((acc, p) => acc + parseFloat(p.amount), 0)

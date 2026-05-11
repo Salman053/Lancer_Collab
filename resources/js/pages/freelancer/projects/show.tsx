@@ -16,7 +16,7 @@ import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem, Client, Milestone, Project, ProjectUpdate } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { CheckCircle2, DollarSign, Edit, FileText, History, MoreVertical, Target, Trash2 } from 'lucide-react';
+import { CheckCircle2, DollarSign, Download, Edit, FileText, History, MoreVertical, Target, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface ProjectShowProps {
@@ -220,16 +220,33 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
             <Head title={`Project: ${project.title}`} />
             <div className="space-y-6 p-6 pb-12">
                 <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                    <div className="space-y-1">
-                        <div className="flex flex-wrap items-center gap-3">
-                            <h1 className="text-3xl font-bold tracking-tight">{project.title}</h1>
-                            <Badge variant="outline" className={cn('px-2.5 py-0.5 capitalize', getStatusColor(project.status))}>
-                                {project.status.replace('_', ' ')}
-                            </Badge>
+                    <div className="flex items-center gap-4">
+                        {project.thumbnail && (
+                            <div className="h-24 w-32  shrink-0 overflow-hidden rounded-xl border shadow-md">
+                                <img src={project.thumbnail} alt={project.title} className="h-full w-full object-top object-cover" />
+                            </div>
+                        )}
+                        <div className="space-y-1">
+                            <div className="flex flex-wrap items-center gap-3">
+                                <h1 className="text-3xl font-bold tracking-tight">{project.title}</h1>
+                                <Badge variant="outline" className={cn('px-2.5 py-0.5 capitalize', getStatusColor(project.status))}>
+                                    {project.status.replace('_', ' ')}
+                                </Badge>
+                            </div>
+                            <p className="text-muted-foreground max-w-2xl">{project.description}</p>
                         </div>
-                        <p className="text-muted-foreground max-w-2xl">{project.description}</p>
                     </div>
                     <div className="flex items-center gap-3">
+                        <Button variant="outline" size="sm" asChild>
+                            <a href={route('projects.invoice', project.id)}>
+                                <FileText className="mr-2 h-4 w-4" /> Download Invoice
+                            </a>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild>
+                            <a href={route('projects.payments.report', project.id)}>
+                                <Download className="mr-2 h-4 w-4" /> Payment Report
+                            </a>
+                        </Button>
                         <Button variant="outline" size="sm" onClick={() => setPaymentDialogOpen(true)}>
                             <DollarSign className="mr-2 h-4 w-4" /> Record Payment
                         </Button>

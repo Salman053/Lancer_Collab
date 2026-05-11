@@ -91,4 +91,66 @@ class PaymentController extends Controller
 
         return back()->with('success', 'Payment deleted successfully.');
     }
+
+    public function generateReport()
+    {
+        $user = Auth::user();
+        $query = Payment::query()->with(['project.client', 'milestone']);
+        // dd($query->get());
+
+        if ($user->role === \App\Enums\UserRoles::FREELANCER) {
+            $query->whereHas('project', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        } elseif ($user->role === \App\Enums\UserRoles::CLIENT) {
+            $query->whereHas('project', function ($q) use ($user) {
+                if ($user->client) {
+                    $q->where('client_id', $user->client->id);
+                } else {
+                    $q->whereRaw('1=0');
+                }
+            });
+        } elseif ($user->role !== \App\Enums\UserRoles::ADMIN) {
+            abort(403);
+        }
+
+        $payments = $query->orderBy('created_at', 'asc')->get();
+
+        return $this->downloadPdf($payments, 'Overall Payments History Report');
+    }
+
+    public function generateProjectReport(Project $project)
+    {
+        // dd($project);
+        $user = Auth::user();
+
+        // Authorization
+        if ($user->role === \App\Enums\UserRoles::FREELANCER) {
+            if ($project->user_id !== $user->id) abort(403);
+        } elseif ($user->role === \App\Enums\UserRoles::CLIENT) {
+            if (!$user->client || $project->client_id !== $user->client->id) abort(403);
+        } elseif ($user->role !== \App\Enums\UserRoles::ADMIN) {
+            abort(403);
+        }
+
+        $payments = Payment::where('project_id', $project->id)
+            ->with(['project.client', 'milestone'])
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return $this->downloadPdf($payments, "Payments Report - {$project->title}");
+    }
+
+    protected function downloadPdf($payments, $title)
+    {
+
+    // dd($payments);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.payments_report', [
+            'payments' => $payments,
+            'user' => Auth::user(),
+            'title' => $title
+        ]);
+
+        return $pdf->download(\Illuminate\Support\Str::slug($title) . '-' . now()->format('Y-m-d') . '.pdf');
+    }
 }

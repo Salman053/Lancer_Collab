@@ -64,7 +64,7 @@ class ClientController extends Controller
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => Hash::make(str_replace(' ', '', strtolower($validated['name'])).'123'),
+                'password' => $validated['name'].'123',
                 'role' => UserRoles::CLIENT,
                 'status' => UserStatus::ACTIVE,
             ]);

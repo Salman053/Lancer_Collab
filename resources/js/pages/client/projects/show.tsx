@@ -178,7 +178,6 @@ export default function ClientProjectShow() {
         router.post(route('messages.store'), formData as any, {
             onSuccess: () => {
                 messageForm.reset('message', 'attachment' as any);
-                // Since we use Echo, we don't need to manually push to state here
             },
             preserveScroll: true,
         });
@@ -215,19 +214,36 @@ export default function ClientProjectShow() {
             <div className="mx-auto flex w-full flex-col gap-6 p-4 md:p-6">
                 {/* Header Section */}
                 <div className="bg-card flex flex-col gap-4 rounded-xl border p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <div className="mb-1 flex items-center gap-3">
-                            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{project.title}</h1>
-                            <Badge variant={getStatusVariant(project.status)} className="capitalize">
-                                {project.status.replace('_', ' ')}
-                            </Badge>
+                    <div className="flex items-center gap-4">
+                        {project.thumbnail && (
+                            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border shadow-sm">
+                                <img src={project.thumbnail} alt={project.title} className="h-full w-full object-cover" />
+                            </div>
+                        )}
+                        <div>
+                            <div className="mb-1 flex items-center gap-3">
+                                <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{project.title}</h1>
+                                <Badge variant={getStatusVariant(project.status)} className="capitalize">
+                                    {project.status.replace('_', ' ')}
+                                </Badge>
+                            </div>
+                            <p className="text-muted-foreground flex items-center gap-2">
+                                <UserIcon className="h-4 w-4" />
+                                Managed by <span className="text-foreground font-semibold">{project.user.name}</span>
+                            </p>
                         </div>
-                        <p className="text-muted-foreground flex items-center gap-2">
-                            <UserIcon className="h-4 w-4" />
-                            Managed by <span className="text-foreground font-semibold">{project.user.name}</span>
-                        </p>
                     </div>
                     <div className="flex items-center gap-3">
+                        <Button variant="outline" size="sm" asChild>
+                            <a href={route('projects.invoice', project.id)}>
+                                <FileText className="mr-2 h-4 w-4" /> Download Invoice
+                            </a>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild>
+                            <a href={route('projects.payments.report', project.id)}>
+                                <Download className="mr-2 h-4 w-4" /> Payment Report
+                            </a>
+                        </Button>
                         <Button onClick={() => setTaskDialogOpen(true)} className="shadow-sm">
                             <Plus className="mr-2 h-4 w-4" /> Add Task
                         </Button>
