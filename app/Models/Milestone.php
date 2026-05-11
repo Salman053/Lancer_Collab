@@ -30,6 +30,7 @@ class Milestone extends Model
       'order' => 'integer',
    ];
 
+   public $guarded = ['id'];
 
    protected static function boot()
    {

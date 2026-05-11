@@ -69,6 +69,8 @@ class ClientController extends Controller
                 'status' => UserStatus::ACTIVE,
             ]);
 
+            \App\Http\Controllers\Auth\EmailVerificationOTPController::sendOTP($user);
+
             $client = Client::create(array_merge($validated, [
                 'user_id' => Auth::id(),
                 'account_id' => $user->id,

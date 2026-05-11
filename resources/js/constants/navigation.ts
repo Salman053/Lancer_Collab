@@ -83,11 +83,11 @@ export const clientNavItems: NavItem[] = [
         icon: MessageSquare,
         badge: '2',
     },
-    {
-        title: 'Reviews',
-        url: '/client/reviews',
-        icon: Star,
-    },
+    // {
+    //     title: 'Reviews',
+    //     url: '/client/reviews',
+    //     icon: Star,
+    // },
 ];
 
 // Freelancer specific navigation items

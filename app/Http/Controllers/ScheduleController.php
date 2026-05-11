@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Milestone;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -14,7 +13,6 @@ class ScheduleController extends Controller
     {
         $userId = Auth::id();
 
-        // Get tasks assigned to user OR part of user's projects
         $tasks = Task::where(function($q) use ($userId) {
                 $q->where('user_id', $userId)
                   ->orWhereHas('project', fn($pq) => $pq->where('user_id', $userId));
@@ -32,7 +30,6 @@ class ScheduleController extends Controller
                 'color' => '#3b82f6', // blue-500
             ]);
 
-        // Get milestones assigned to user OR part of user's projects
         $milestones = Milestone::where(function($q) use ($userId) {
                 $q->where('user_id', $userId)
                   ->orWhereHas('project', fn($pq) => $pq->where('user_id', $userId));

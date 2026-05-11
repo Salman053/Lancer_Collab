@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -21,6 +21,8 @@ class User extends Authenticatable
         'role',
         'status',
         'phone',
+        'otp',
+        'otp_expires_at',
     ];
 
     protected $hidden = [
@@ -65,6 +67,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => UserRoles::class,
             'status' => UserStatus::class,
+            'otp_expires_at' => 'datetime',
         ];
     }
 }

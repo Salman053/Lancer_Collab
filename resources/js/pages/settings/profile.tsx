@@ -59,7 +59,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
+                            <Label htmlFor="email">Email address &nbsp;`` <span className='text-green-600'> {auth.user.email_verified_at ? 'verified' : 'Not verified'}</span> </Label>
 
                             <Input
                                 id="email"
