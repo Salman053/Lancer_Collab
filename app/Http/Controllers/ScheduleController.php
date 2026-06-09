@@ -27,7 +27,7 @@ class ScheduleController extends Controller
                 'type' => 'task',
                 'project' => $task->project->title,
                 'status' => $task->status,
-                'color' => '#3b82f6', // blue-500
+                'color' => '#3b82f6', 
             ]);
 
         $milestones = Milestone::where(function($q) use ($userId) {

@@ -51,6 +51,7 @@ const ClientForm = ({
         timezone: client?.timezone || 'UTC',
         status: client?.status || 'active',
         notes: client?.notes || '',
+        color: client?.color || '#3b82f6',
         preferences: client?.preferences || {
             newsletter: false,
             notifications: true,
@@ -310,6 +311,21 @@ const ClientForm = ({
                                     placeholder="Private notes about this client..."
                                     className="min-h-[100px] resize-none"
                                 />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="color" className="font-semibold">
+                                    Workspace Brand Color
+                                </Label>
+                                <div className="flex items-center gap-4">
+                                    <Input
+                                        id="color"
+                                        type="color"
+                                        value={data.color}
+                                        onChange={(e) => setData('color', e.target.value)}
+                                        className="h-10 w-20 p-1"
+                                    />
+                                    <span className="font-mono text-sm font-medium uppercase">{data.color}</span>
+                                </div>
                             </div>
                         </div>
 

@@ -57,6 +57,7 @@ export interface Client {
     timezone: string;
     status: 'active' | 'inactive' | 'lead' | 'suspended' | 'pending';
     notes: string | null;
+    color: string;
     preferences: {
         newsletter: boolean;
         notifications: boolean;

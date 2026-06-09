@@ -13,7 +13,6 @@ Broadcast::channel('project.{projectId}', function ($user, $projectId) {
         return false;
     }
 
-    // Allow access if the user is the owner of the project or if the user is the client associated with the project
     return $user->id === $project->user_id ||
            ($project->client && $project->client->account_id === $user->id);
 });

@@ -15,6 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function ScheduleIndex() {
     const { events } = usePage<{ events: any[] }>().props;
 
+
     // Group events by month first for better organization
     const groupedByMonth = events.reduce((acc: any, event: any) => {
         const date = new Date(event.start);
@@ -87,6 +88,7 @@ export default function ScheduleIndex() {
                                                                 <div className="space-y-1">
                                                                     <div className="flex items-center gap-2">
                                                                         <h3 className="font-bold text-lg leading-tight">{event.title}</h3>
+                                                                        <h3 className="font-bold text-lg leading-tight">{event.description}</h3>
                                                                     </div>
                                                                     <p className="text-sm text-muted-foreground font-medium flex items-center gap-1.5">
                                                                         <span className="w-2 h-2 rounded-full bg-border" />

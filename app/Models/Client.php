@@ -24,6 +24,7 @@ class Client extends Model
         'timezone',
         'status',
         'notes',
+        'color',
         'preferences',
         'last_login_at',
     ];

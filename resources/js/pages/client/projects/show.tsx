@@ -43,6 +43,11 @@ export default function ClientProjectShow() {
         setTasks(project.tasks || []);
         setUpdates(project.updates || []);
         setMilestones(project.milestones || []);
+        console.log('--- Effect Hook Running ---');
+        console.log('Project ID:', project.id);
+
+
+
     }, [project.messages, project.files, project.tasks, project.updates, project.milestones]);
 
     useEffect(() => {
@@ -338,9 +343,15 @@ export default function ClientProjectShow() {
                                                         ) : (
                                                             <Circle className="text-muted-foreground size-5" />
                                                         )}
-                                                        <span className={task.is_completed ? 'text-muted-foreground line-through' : 'font-medium'}>
-                                                            {task.title}
-                                                        </span>
+                                                        <div className="flex flex-col gap-0.5">
+
+                                                            <span className={task.is_completed ? 'text-muted-foreground line-through' : 'font-medium'}>
+                                                                {task.title}
+                                                            </span>
+                                                            <span className={"text-xs " + (task.is_completed ? 'text-muted-foreground line-through' : 'font-medium')}>
+                                                                {task.description}
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 ))}
                                             </div>

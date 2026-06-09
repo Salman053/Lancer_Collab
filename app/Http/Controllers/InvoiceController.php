@@ -23,6 +23,8 @@ class InvoiceController extends Controller
 
         $project->load(['client', 'milestones', 'payments']);
 
+
+        // return $project;
         $pdf = Pdf::loadView('invoices.template', ['project' => $project]);
 
         return $pdf->download('invoice-project-'.$project->id.'.pdf');

@@ -237,9 +237,14 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" size="sm" asChild>
+                        {/* <Button variant="outline" size="sm" asChild>
                             <a href={route('projects.invoice', project.id)}>
                                 <FileText className="mr-2 h-4 w-4" /> Download Invoice
+                            </a>
+                        </Button> */}
+                        <Button variant="outline" size="sm" asChild>
+                            <a href={route('freelancer.projects.documentation', project.id)}>
+                                <Download className="mr-2 h-4 w-4" /> Project Doc
                             </a>
                         </Button>
                         <Button variant="outline" size="sm" asChild>
@@ -325,9 +330,14 @@ export default function ProjectShow({ project, auth }: ProjectShowProps) {
                                                     <div className="border-muted-foreground hover:bg-muted size-5 rounded-full border" />
                                                 )}
                                             </button>
-                                            <span className={task.is_completed ? 'text-muted-foreground line-through' : 'font-medium'}>
-                                                {task.title}
-                                            </span>
+                                            <div className="flex flex-col gap-0.5">
+                                                <span className={task.is_completed ? 'text-muted-foreground line-through' : 'font-medium'}>
+                                                    {task.title}
+                                                </span>
+                                                <span className={"text-xs " + (task.is_completed ? 'text-muted-foreground line-through' : 'font-medium')}>
+                                                    {task.description}
+                                                </span>
+                                            </div>
                                         </div>
                                     ))
                                 ) : (

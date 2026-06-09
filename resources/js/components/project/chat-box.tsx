@@ -13,6 +13,8 @@ function ChatBox({ title, avatarFallback, messages = [], auth, onSendMessage, on
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+
+    console.log('ChatBox isOnline:', isOnline);
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
@@ -38,7 +40,7 @@ function ChatBox({ title, avatarFallback, messages = [], auth, onSendMessage, on
     };
 
     return (
-        <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card shadow-xl">
+        <div key={isOnline ? 'online' : 'offline'} className="flex h-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card shadow-xl">
             {/* Header */}
             <div className="z-20 flex items-center justify-between border-b bg-background/50 p-4 backdrop-blur-md">
                 <div className="flex items-center gap-3">

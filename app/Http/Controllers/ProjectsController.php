@@ -4,29 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+
+
+    public function index()
     {
-        $query = Auth::user()->projects()->with('client')->latest();
-
-        if ($request->has('active')) {
-            $query->where('status', 'in_progress');
-        }
-
-        $projects = $query->get();
-        $activeClients = Auth::user()->activeClients()->get();
+        $projects = Auth::user()->projects()->with('client')->latest()->get();
 
         return inertia('freelancer/projects/index', [
             'projects' => $projects,
-            'clients' => $activeClients,
         ]);
+    }
+    /**
+     * Generate project documentation PDF.
+     */
+    public function generateDocumentation(Project $project)
+    {
+        if ($project->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $project->load([
+            'client',
+            'milestones',
+            'tasks',
+            'updates',
+            'messages' => fn($q) => $q->with('sender')
+        ]);
+
+        $pdf = Pdf::loadView('reports.project-documentation', compact('project'));
+
+        return $pdf->download("Project_Documentation_{$project->title}.pdf");
     }
 
     /**
@@ -54,7 +67,7 @@ class ProjectsController extends Controller
 
             return redirect()->route('freelancer.projects')->with('success', 'Project created successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to create project: '.$e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create project: ' . $e->getMessage());
         }
     }
 
@@ -69,8 +82,8 @@ class ProjectsController extends Controller
 
         return inertia('freelancer/projects/show', [
             'project' => $project->load([
-                'client.account', 
-                'milestones', 
+                'client.account',
+                'milestones',
                 'files',
                 'tasks',
                 'updates' => fn($q) => $q->latest(),
@@ -104,7 +117,7 @@ class ProjectsController extends Controller
 
             return redirect()->route('freelancer.projects')->with('success', 'Project updated successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to update project: '.$e->getMessage());
+            return redirect()->back()->with('error', 'Failed to update project: ' . $e->getMessage());
         }
     }
 
@@ -122,7 +135,7 @@ class ProjectsController extends Controller
 
             return redirect()->route('freelancer.projects')->with('success', 'Project deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete project: '.$e->getMessage());
+            return redirect()->back()->with('error', 'Failed to delete project: ' . $e->getMessage());
         }
     }
 }

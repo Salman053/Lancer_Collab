@@ -100,6 +100,7 @@ Route::middleware(['auth', 'role:'.UserRoles::FREELANCER->value])->prefix('freel
     Route::post('projects', [ProjectsController::class, 'store'])->name('freelancer.projects.store');
     Route::put('projects/{project}', [ProjectsController::class, 'update'])->name('freelancer.projects.update');
     Route::delete('projects/{project}', [ProjectsController::class, 'destroy'])->name('freelancer.projects.destroy');
+    Route::get('projects/{project}/documentation', [ProjectsController::class, 'generateDocumentation'])->name('freelancer.projects.documentation');
 
     // Payment Routes
     Route::get('payments', [PaymentController::class, 'index'])->name('freelancer.payments');
